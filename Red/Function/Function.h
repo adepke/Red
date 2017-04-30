@@ -86,7 +86,7 @@ namespace Red
 			{
 				if (&Source != this)
 				{
-					if (FuncType == FunctionType::FT_Lambda && Source.Lambda_Internal)
+					if ((Source.FuncType == FunctionType::FT_Lambda) && Source.Lambda_Internal)
 					{
 						if (Lambda_Internal)
 							delete Lambda_Internal;
@@ -94,7 +94,7 @@ namespace Red
 						Lambda_Internal = new LambdaModel(Source.Lambda_Internal);
 					}
 
-					else if (FuncType == FunctionType::FT_FuncPtr && Source.Func_Internal)
+					else if ((Source.FuncType == FunctionType::FT_FuncPtr) && Source.Func_Internal)
 						Func_Internal = Source.Func_Internal;
 				}
 
@@ -104,6 +104,8 @@ namespace Red
 			template <typename Lambda>
 			Function<ReturnType(ArgumentTypes...)>& operator=(Lambda Func)
 			{
+				FuncType = FunctionType::FT_Lambda;
+			
 				if (Lambda_Internal)
 					delete Lambda_Internal;
 
@@ -114,6 +116,8 @@ namespace Red
 
 			Function<ReturnType(ArgumentTypes...)>& operator=(FunctionPtr Func)
 			{
+				FuncType = FunctionType::FT_FuncPtr;
+			
 				Func_Internal = Func;
 
 				return *this;
