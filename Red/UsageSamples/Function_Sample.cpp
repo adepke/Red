@@ -53,7 +53,7 @@ int main()
 	for (int i = 0; i < 500000; ++i)
 		MyStdFunc(true);
 	auto End2 = std::chrono::high_resolution_clock::now();
-	std::cout << "Call Time (50k Executions) | Std::Function: " << std::chrono::duration_cast<std::chrono::milliseconds>(End2 - Start2).count() << "ms" << std::endl;
+	std::cout << "Call Time (500k Executions) | Std::Function: " << std::chrono::duration_cast<std::chrono::milliseconds>(End2 - Start2).count() << "ms" << std::endl;
 
 	system("pause");
 
