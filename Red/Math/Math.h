@@ -1,8 +1,16 @@
 #pragma once
 
 #include "../Core/Definitions.h"
+
 #include "Vector.h"
 #include "Quaternion.h"
+#include "Matrix.h"
+#include "Ray.h"
+#include "LineSegment.h"
+#include "Box.h"
+#include "AABB.h"
+
+#include "Intersection.h"
 
 namespace Red
 {
