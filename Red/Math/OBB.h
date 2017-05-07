@@ -39,7 +39,7 @@ namespace Red
 			bool operator!=(const OBB& Target) const;
 			bool operator!=(const Vector3& TargetLocation) const;
 
-			// Resets Box To Defaults
+			// Resets OBB To Defaults
 			void Reset() { Location = Vector3::ZeroVector; HalfSize = Vector3(0.5, 0.5, 0.5); }
 
 			Vector3 Minimum() const
