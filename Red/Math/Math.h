@@ -7,7 +7,7 @@
 #include "Matrix.h"
 #include "Ray.h"
 #include "LineSegment.h"
-#include "Box.h"
+#include "OBB.h"
 #include "AABB.h"
 
 #include "Intersection.h"
