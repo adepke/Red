@@ -1,6 +1,5 @@
 #pragma once
 
-//#define STD
 #define ASSERTIONS
 //#define VEC_DOUBLE
 
@@ -20,7 +19,7 @@
 #define VEC_MEMBER double
 #else
 #define VEC_MEMBER float
-#endif  // DOUBlE_VEC
+#endif
 
 namespace Red
 {
@@ -70,11 +69,6 @@ namespace Red
 			bool operator==(VEC_MEMBER Scalar) const;
 			bool operator!=(const Vector2& Target) const;
 			bool operator!=(VEC_MEMBER Scalar) const;
-
-			#ifdef STD
-			// Output Stream
-			friend std::ostream& operator<<(std::ostream& Stream, const Vector2& Source) const;
-			#endif  // STD
 
 			void ZeroOut() { X = 0; Y = 0; }
 			bool IsZero() const { return((X == 0) && (Y == 0)); }
@@ -250,15 +244,6 @@ namespace Red
 			return !(operator==(Scalar));
 		}
 
-		#ifdef STD
-		std::ostream& operator<<(std::ostream& Stream, const Vector2& Source) const
-		{
-			Stream << "X: " << X << " Y: " << Y;
-
-			return Stream;
-		}
-		#endif  // STD
-
 		void Vector2::Normalize()
 		{
 			VEC_MEMBER Magnitude_ = Magnitude();
@@ -319,11 +304,6 @@ namespace Red
 			bool operator==(VEC_MEMBER Scalar) const;
 			bool operator!=(const Vector3& Target) const;
 			bool operator!=(VEC_MEMBER Scalar) const;
-
-			#ifdef STD
-			// Output Stream
-			friend std::ostream& operator<<(std::ostream& Stream, const Vector3& Source) const;
-			#endif  // STD
 
 			void ZeroOut() { X = 0; Y = 0; Z = 0; }
 			bool IsZero() const { return((X == 0) && (Y == 0) && (Z == 0)); }
@@ -503,15 +483,6 @@ namespace Red
 			return !(operator==(Scalar));
 		}
 
-		#ifdef STD
-		std::ostream& operator<<(std::ostream& Stream, const Vector3& Source) const
-		{
-			Stream << "X: " << X << " Y: " << Y << " Z: " << Z;
-
-			return Stream;
-		}
-		#endif  // STD
-
 		void Vector3::Normalize()
 		{
 			VEC_MEMBER Magnitude_ = Magnitude();
@@ -530,6 +501,9 @@ namespace Red
 		{
 		public:
 			VEC_MEMBER X, Y, Z, W;
+
+		public:
+			static const Vector4 ZeroVector;  // ( 0, 0, 0, 0 )
 
 		public:
 			Vector4() {}
@@ -568,11 +542,6 @@ namespace Red
 			bool operator==(VEC_MEMBER Scalar) const;
 			bool operator!=(const Vector4& Target) const;
 			bool operator!=(VEC_MEMBER Scalar) const;
-
-			#ifdef STD
-			// Output Stream
-			friend std::ostream& operator<<(std::ostream& Stream, const Vector4& Source) const;
-			#endif  // STD
 
 			void ZeroOut() { X = 0; Y = 0; Z = 0; W = 0; }
 			bool IsZero() const { return((X == 0) && (Y == 0) && (Z == 0) && (W == 0)); }
@@ -757,15 +726,6 @@ namespace Red
 		{
 			return !(operator==(Scalar));
 		}
-
-		#ifdef STD
-		std::ostream& operator<<(std::ostream& Stream, const Vector4& Source) const
-		{
-			Stream << "X: " << X << " Y: " << Y << " Z: " << Z << " W: " << W;
-
-			return Stream;
-		}
-		#endif  // STD
 
 		void Vector4::Normalize()
 		{
