@@ -14,7 +14,7 @@ namespace Red
 
 		public:
 			Ray() : Direction(0.0, 0.0, 1.0) {}
-			Ray(const Ray& Target) : Origin(Target.Origin), Direction(Target.Origin) {}
+			Ray(const Ray& Target) : Origin(Target.Origin), Direction(Target.Direction) {}
 			explicit Ray(const Vector3& Origin, const Vector3& Direction) : Origin(Origin), Direction(Direction) { Ray::Direction.Normalize(); }
 			~Ray() {}
 
@@ -42,6 +42,8 @@ namespace Red
 			void ZeroOut() { Origin = Vector3::ZeroVector; }
 
 			void Normalize() { Direction.Normalize(); }
+			bool IsNormalized() const { VEC_MEMBER Magnitude_ = Direction.Magnitude(); return ((Magnitude_ >= VEC_MEMBER(0.999999)) && (Magnitude_ <= VEC_MEMBER(1.000001))); }
+			bool IsNormalizedFast() const { VEC_MEMBER Magnitude_ = Direction.MagnitudeSquared(); return ((Magnitude_ >= VEC_MEMBER(0.999)) && (Magnitude_ <= VEC_MEMBER(1.001))); }
 		};
 
 		Ray& Ray::operator=(const Ray& Target)

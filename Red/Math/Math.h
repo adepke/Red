@@ -16,13 +16,17 @@ namespace Red
 {
 	namespace Math
 	{
-		const Vector3 Vector3::ZeroVector(0, 0, 0);
-		const Vector3 Vector3::ForwardVector(1, 0, 0);
-		const Vector3 Vector3::RightVector(0, 1, 0);
-		const Vector3 Vector3::UpVector(0, 0, 1);
+		const Vector2 Vector2::ZeroVector(0.0, 0.0);
 
-		const Quaternion Quaternion::ZeroQuaternion(0, 0, 0, 0);
-		const Quaternion Quaternion::IdentityQuaternion(0, 0, 0, 1);
+		const Vector3 Vector3::ZeroVector(0.0, 0.0, 0.0);
+		const Vector3 Vector3::ForwardVector(1.0, 0.0, 0.0);
+		const Vector3 Vector3::RightVector(0.0, 1.0, 0.0);
+		const Vector3 Vector3::UpVector(0.0, 0.0, 1.0);
+
+		const Vector4 Vector4::ZeroVector(0.0, 0.0, 0.0, 0.0);
+
+		const Quaternion Quaternion::ZeroQuaternion(0.0, 0.0, 0.0, 0.0);
+		const Quaternion Quaternion::IdentityQuaternion(0.0, 0.0, 0.0, 1.0);
 
 		uint64 Factorial(uint32 Factor)
 		{
