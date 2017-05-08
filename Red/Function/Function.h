@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "../Core/Definitions.h"
+
 namespace Red
 {
 	namespace Function
@@ -15,8 +17,8 @@ namespace Red
 		class Function<ReturnType(ArgumentTypes...)>
 		{
 		private:
-			// Stores Object Type. Possibility Of Union?
-			enum FunctionType
+			// Stores Object Type.
+			enum FunctionType : byte
 			{
 				FT_Unset,
 				FT_Lambda,
@@ -29,7 +31,7 @@ namespace Red
 			struct LambdaConcept
 			{
 				virtual ~LambdaConcept() {}
-				virtual ReturnType operator()(ArgumentTypes... Arguments) const = 0;
+				virtual ReturnType operator()(ArgumentTypes&... Arguments) const = 0;
 			};
 
 			template <typename Lambda>
@@ -40,9 +42,10 @@ namespace Red
 				LambdaModel(Lambda Func) : FunctionIn(Func) {}
 				virtual ~LambdaModel() {}
 
-				virtual ReturnType operator()(ArgumentTypes... Arguments) const override
+				// Arguments Are LValue References To Save On Extra Static Cast
+				virtual ReturnType operator()(ArgumentTypes&... Arguments) const override
 				{
-					return FunctionIn(Arguments...);
+					return FunctionIn(std::forward<ArgumentTypes>(Arguments)...);
 				}
 			};
 
@@ -50,7 +53,8 @@ namespace Red
 
 		// Function Pointer Internals
 		private:
-			typedef ReturnType (* FunctionPtr)(ArgumentTypes...);
+			// ArgumentTypes Are RValue References. Because By Reference Condensation, Resulting Type Of Native LValue Reference Is LValue Reference
+			typedef ReturnType (* FunctionPtr)(ArgumentTypes&&...);
 
 			FunctionPtr Func_Internal;
 
@@ -66,22 +70,29 @@ namespace Red
 
 			virtual ~Function()
 			{
-				if ((FuncType == FunctionType::FT_Lambda) && Lambda_Internal)
+				if (Lambda_Internal)
 				{
 					delete Lambda_Internal;
 				}
 			}
 
-			ReturnType operator()(ArgumentTypes... Arguments) const
+			ReturnType operator()(ArgumentTypes&&... Arguments) const
 			{
 				if (FuncType == FunctionType::FT_Lambda)
+				{
+					std::cout << "Called Lambda" << std::endl;
 					return Lambda_Internal->operator ()(Arguments...);
+				}
 				else if (FuncType == FunctionType::FT_FuncPtr)
-					return (* Func_Internal)(Arguments...);
+					return (* Func_Internal)(std::forward<ArgumentTypes>(Arguments)...);
 
 				return ReturnType();
 			}
 
+			// Testing For Copy Assignment
+
+			/*
+			template <typename DeducedSignature>  // Current Solution To Faking The Lambda Type. This Can't Possibly Work
 			Function<ReturnType(ArgumentTypes...)>& operator=(Function<ReturnType(ArgumentTypes...)>& Source)
 			{
 				if (&Source != this)
@@ -91,7 +102,7 @@ namespace Red
 						if (Lambda_Internal)
 							delete Lambda_Internal;
 
-						Lambda_Internal = new LambdaModel(Source.Lambda_Internal);
+						Lambda_Internal = new LambdaModel<DeducedSignature>(Source.Lambda_Internal);
 					}
 
 					else if ((Source.FuncType == FunctionType::FT_FuncPtr) && Source.Func_Internal)
@@ -100,16 +111,17 @@ namespace Red
 
 				return *this;
 			}
+			*/
 
 			template <typename Lambda>
 			Function<ReturnType(ArgumentTypes...)>& operator=(Lambda Func)
 			{
 				FuncType = FunctionType::FT_Lambda;
-			
+
 				if (Lambda_Internal)
 					delete Lambda_Internal;
 
-				Lambda_Internal = new LambdaModel(Func);
+				Lambda_Internal = new LambdaModel<Lambda>(Func);
 
 				return *this;
 			}
@@ -117,7 +129,7 @@ namespace Red
 			Function<ReturnType(ArgumentTypes...)>& operator=(FunctionPtr Func)
 			{
 				FuncType = FunctionType::FT_FuncPtr;
-			
+
 				Func_Internal = Func;
 
 				return *this;
