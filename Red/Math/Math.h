@@ -28,6 +28,8 @@ namespace Red
 		const Quaternion Quaternion::ZeroQuaternion(0.0, 0.0, 0.0, 0.0);
 		const Quaternion Quaternion::IdentityQuaternion(0.0, 0.0, 0.0, 1.0);
 
+		// Factorial Function
+		// Recursive Stack Based Algorithm, Produces Faster Results Than Loop Based
 		uint64 Factorial(uint32 Factor)
 		{
 			return (Factor == 1 ? 1 : Factor * Factorial(Factor - 1));
