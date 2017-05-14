@@ -30,7 +30,12 @@ namespace Red
 
 		// Factorial Function
 		// Recursive Stack Based Algorithm, Produces Faster Results Than Loop Based
-		uint64 Factorial(uint32 Factor)
+		uint64 Factorial(const uint32& Factor)
+		{
+			return (Factor == 1 ? 1 : Factor * Factorial(Factor - 1));
+		}
+
+		uint64 Factorial(const uint32&& Factor)
 		{
 			return (Factor == 1 ? 1 : Factor * Factorial(Factor - 1));
 		}
