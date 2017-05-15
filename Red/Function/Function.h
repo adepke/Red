@@ -53,7 +53,7 @@ namespace Red
 
 		// Function Pointer Internals
 		private:
-			// ArgumentTypes Are RValue References. Because By Reference Condensation, Resulting Type Of Native LValue Reference Is LValue Reference
+			// ArgumentTypes Are RValue References. Because Of Reference Collapsing Rules, Resulting Type Of Native LValue Reference Is LValue Reference
 			typedef ReturnType (* FunctionPtr)(ArgumentTypes&&...);
 
 			FunctionPtr Func_Internal;
@@ -79,10 +79,7 @@ namespace Red
 			ReturnType operator()(ArgumentTypes&&... Arguments) const
 			{
 				if (FuncType == FunctionType::FT_Lambda)
-				{
-					std::cout << "Called Lambda" << std::endl;
 					return Lambda_Internal->operator ()(Arguments...);
-				}
 				else if (FuncType == FunctionType::FT_FuncPtr)
 					return (* Func_Internal)(std::forward<ArgumentTypes>(Arguments)...);
 
