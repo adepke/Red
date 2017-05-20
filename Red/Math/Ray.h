@@ -2,151 +2,171 @@
 
 #include "Vector.h"
 
+#include <limits>
+
 namespace Red
 {
-	namespace Math
+	class Ray
 	{
-		class Ray
+	public:
+		Vector3 Origin;
+		Vector3 Direction;
+
+#ifdef PRECOMPUTED_RAY
+		Vector3 DirectionInv;
+#endif  // PRECOMPUTED_RAY
+
+	public:
+		Ray() : Direction(1.0, 0.0, 0.0)
+#ifdef PRECOMPUTED_RAY
+			, DirectionInv(1.0, std::numeric_limits<VEC_MEMBER>::infinity(), std::numeric_limits<VEC_MEMBER>::infinity())
+#endif  // PRECOMPUTED_RAY
+		{}
+		Ray(const Ray& Target) : Origin(Target.Origin), Direction(Target.Direction)
+#ifdef PRECOMPUTED_RAY
+			, DirectionInv(1.0 / Target.Direction.X, 1.0 / Target.Direction.Y, 1.0 / Target.Direction.Z)
+#endif  // PRECOMPUTED_RAY
+		{}
+		explicit Ray(const Vector3& Origin, const Vector3& Direction) : Origin(Origin), Direction(Direction)
 		{
-		public:
-			Vector3 Origin;
-			Vector3 Direction;
+			Ray::Direction.Normalize();
 
-		public:
-			Ray() : Direction(0.0, 0.0, 1.0) {}
-			Ray(const Ray& Target) : Origin(Target.Origin), Direction(Target.Direction) {}
-			explicit Ray(const Vector3& Origin, const Vector3& Direction) : Origin(Origin), Direction(Direction) { Ray::Direction.Normalize(); }
-			~Ray() {}
-
-			Ray& operator=(const Ray& Target);
-			Ray& operator=(const Vector3& TargetOrigin);
-
-			Ray operator+(const Ray& Target) const;
-			Ray operator+(const Vector3& TargetOrigin) const;
-			Ray operator-(const Ray& Target) const;
-			Ray operator-(const Vector3& TargetOrigin) const;
-
-			Ray& operator+=(const Ray& Target);
-			Ray& operator+=(const Vector3& TargetOrigin);
-			Ray& operator-=(const Ray& Target);
-			Ray& operator-=(const Vector3& TargetOrigin);
-
-			Ray& operator++();
-			Ray& operator--();
-
-			bool operator==(const Ray& Target) const;
-			bool operator==(const Vector3& TargetOrigin) const;
-			bool operator!=(const Ray& Target) const;
-			bool operator!=(const Vector3& TargetOrigin) const;
-
-			void ZeroOut() { Origin = Vector3::ZeroVector; }
-
-			void Normalize() { Direction.Normalize(); }
-			bool IsNormalized() const { VEC_MEMBER Magnitude_ = Direction.Magnitude(); return ((Magnitude_ >= VEC_MEMBER(0.999999)) && (Magnitude_ <= VEC_MEMBER(1.000001))); }
-			bool IsNormalizedFast() const { VEC_MEMBER Magnitude_ = Direction.MagnitudeSquared(); return ((Magnitude_ >= VEC_MEMBER(0.999)) && (Magnitude_ <= VEC_MEMBER(1.001))); }
-		};
-
-		Ray& Ray::operator=(const Ray& Target)
-		{
-			Origin = Target.Origin;
-			Direction = Target.Direction;
-
-			return *this;
+#ifdef PRECOMPUTED_RAY
+			DirectionInv = (1.0 / Ray::Direction.X, 1.0 / Ray::Direction.Y, 1.0 / Ray::Direction.Z);
+#endif  // PRECOMPUTED_RAY
 		}
+		~Ray() {}
 
-		Ray& Ray::operator=(const Vector3& TargetOrigin)
-		{
-			Origin = TargetOrigin;
+		Ray& operator=(const Ray& Target);
+		Ray& operator=(const Vector3& TargetOrigin);
 
-			return *this;
-		}
+		Ray operator+(const Ray& Target) const;
+		Ray operator+(const Vector3& TargetOrigin) const;
+		Ray operator-(const Ray& Target) const;
+		Ray operator-(const Vector3& TargetOrigin) const;
 
-		Ray Ray::operator+(const Ray& Target) const
-		{
-			Ray Result(Origin + Target.Origin, Direction + Target.Direction);
-			Result.Normalize();
+		Ray& operator+=(const Ray& Target);
+		Ray& operator+=(const Vector3& TargetOrigin);
+		Ray& operator-=(const Ray& Target);
+		Ray& operator-=(const Vector3& TargetOrigin);
 
-			return Result;
-		}
+		Ray& operator++();
+		Ray& operator--();
 
-		Ray Ray::operator+(const Vector3& TargetOrigin) const
-		{
-			return Ray(Origin + TargetOrigin, Direction);
-		}
+		bool operator==(const Ray& Target) const;
+		bool operator==(const Vector3& TargetOrigin) const;
+		bool operator!=(const Ray& Target) const;
+		bool operator!=(const Vector3& TargetOrigin) const;
 
-		Ray Ray::operator-(const Ray& Target) const
-		{
-			Ray Result(Origin - Target.Origin, Direction - Target.Direction);
-			Result.Normalize();
+		void ZeroOut() { Origin = Vector3::ZeroVector; }
 
-			return Result;
-		}
+		void Normalize() { Direction.Normalize(); }
+		bool IsNormalized() const { VEC_MEMBER Magnitude_ = Direction.Magnitude(); return ((Magnitude_ >= VEC_MEMBER(0.999999)) && (Magnitude_ <= VEC_MEMBER(1.000001))); }
+		bool IsNormalizedFast() const { VEC_MEMBER Magnitude_ = Direction.MagnitudeSquared(); return ((Magnitude_ >= VEC_MEMBER(0.999)) && (Magnitude_ <= VEC_MEMBER(1.001))); }
+	};
 
-		Ray Ray::operator-(const Vector3& TargetOrigin) const
-		{
-			return Ray(Origin - TargetOrigin, Direction);
-		}
+	Ray& Ray::operator=(const Ray& Target)
+	{
+		Origin = Target.Origin;
+		Direction = Target.Direction;
 
-		Ray& Ray::operator+=(const Ray& Target)
-		{
-			*this = *this + Target;
+#ifdef PRECOMPUTED_RAY
+		DirectionInv = Vector3(1.0 / Direction.X, 1.0 / Direction.Y, 1.0 / Direction.Z);
+#endif  // PRECOMPUTED_RAY
 
-			return *this;
-		}
+		return *this;
+	}
 
-		Ray& Ray::operator+=(const Vector3& TargetOrigin)
-		{
-			*this = *this + TargetOrigin;
+	Ray& Ray::operator=(const Vector3& TargetOrigin)
+	{
+		Origin = TargetOrigin;
 
-			return *this;
-		}
+		return *this;
+	}
 
-		Ray& Ray::operator-=(const Ray& Target)
-		{
-			*this = *this - Target;
+	Ray Ray::operator+(const Ray& Target) const
+	{
+		Ray Result(Origin + Target.Origin, Direction + Target.Direction);
 
-			return *this;
-		}
+		return Result;
+	}
 
-		Ray& Ray::operator-=(const Vector3& TargetOrigin)
-		{
-			*this = *this - TargetOrigin;
+	Ray Ray::operator+(const Vector3& TargetOrigin) const
+	{
+		return Ray(Origin + TargetOrigin, Direction);
+	}
 
-			return *this;
-		}
+	Ray Ray::operator-(const Ray& Target) const
+	{
+		Ray Result(Origin - Target.Origin, Direction - Target.Direction);
 
-		Ray& Ray::operator++()
-		{
-			++Origin;
+		return Result;
+	}
 
-			return *this;
-		}
+	Ray Ray::operator-(const Vector3& TargetOrigin) const
+	{
+		return Ray(Origin - TargetOrigin, Direction);
+	}
 
-		Ray& Ray::operator--()
-		{
-			--Origin;
+	Ray& Ray::operator+=(const Ray& Target)
+	{
+		*this = *this + Target;
 
-			return *this;
-		}
+		return *this;
+	}
 
-		bool Ray::operator==(const Ray& Target) const
-		{
-			return ((Origin == Target.Origin) && (Direction == Target.Direction));
-		}
+	Ray& Ray::operator+=(const Vector3& TargetOrigin)
+	{
+		*this = *this + TargetOrigin;
 
-		bool Ray::operator==(const Vector3& TargetOrigin) const
-		{
-			return (Origin == TargetOrigin);
-		}
+		return *this;
+	}
 
-		bool Ray::operator!=(const Ray& Target) const
-		{
-			return !(operator==(Target));
-		}
+	Ray& Ray::operator-=(const Ray& Target)
+	{
+		*this = *this - Target;
 
-		bool Ray::operator!=(const Vector3& TargetOrigin) const
-		{
-			return !(operator==(TargetOrigin));
-		}
-	}  // namespace Math
+		return *this;
+	}
+
+	Ray& Ray::operator-=(const Vector3& TargetOrigin)
+	{
+		*this = *this - TargetOrigin;
+
+		return *this;
+	}
+
+	Ray& Ray::operator++()
+	{
+		++Origin;
+
+		return *this;
+	}
+
+	Ray& Ray::operator--()
+	{
+		--Origin;
+
+		return *this;
+	}
+
+	bool Ray::operator==(const Ray& Target) const
+	{
+		return ((Origin == Target.Origin) && (Direction == Target.Direction));
+	}
+
+	bool Ray::operator==(const Vector3& TargetOrigin) const
+	{
+		return (Origin == TargetOrigin);
+	}
+
+	bool Ray::operator!=(const Ray& Target) const
+	{
+		return !(operator==(Target));
+	}
+
+	bool Ray::operator!=(const Vector3& TargetOrigin) const
+	{
+		return !(operator==(TargetOrigin));
+	}
 }  // namespace Red
