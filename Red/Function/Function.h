@@ -77,10 +77,7 @@ namespace Red
 		ReturnType operator()(ArgumentTypes&&... Arguments) const
 		{
 			if (FuncType == FunctionType::FT_Lambda)
-			{
-				std::cout << "Called Lambda" << std::endl;
 				return Lambda_Internal->operator ()(Arguments...);
-			}
 			else if (FuncType == FunctionType::FT_FuncPtr)
 				return (*Func_Internal)(std::forward<ArgumentTypes>(Arguments)...);
 
