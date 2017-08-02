@@ -2,6 +2,8 @@
 
 #include "Socket.h"
 
+#include <string>
+
 // Generic Socket Subsystem Interface
 class ISocketSubsystem
 {
@@ -21,6 +23,8 @@ public:
 		return Result;
 	}
 
+	virtual std::string GetHostName() const = 0;
+
 	// Automatically determines a local address and port, then binds the given socket to it. Returns port, 0 on failure.
-	virtual int BindSocket(ISocket* Socket, int MaxAttempts, int FailIncrement) = 0;
+	virtual int AutoBindSocket(ISocket* Socket, int MaxAttempts, int FailPortIncrement) = 0;
 };
