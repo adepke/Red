@@ -4,9 +4,6 @@
 
 #include "WSSocket.h"
 
-// API Specific Includes
-#include <WinSock2.h>
-
 class WSSocketSubsystem : public ISocketSubsystem
 {
 protected:
@@ -22,5 +19,7 @@ public:
 	// Used for creating local sockets, not ghost sockets.
 	virtual ISocket* CreateSocket(const SocketDescription& InDescription) override;
 
-	virtual int BindSocket(ISocket* Socket, int MaxAttempts, int FailIncrement) override;
+	virtual std::string GetHostName() const override;
+
+	virtual int AutoBindSocket(ISocket* Socket, int MaxAttempts, int FailPortIncrement) override;
 };

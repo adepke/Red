@@ -46,7 +46,7 @@ void WSSocket::Shutdown()
 {
 	if (SocketHandle != INVALID_SOCKET)
 	{
-		shutdown(SocketHandle, );
+		//shutdown(SocketHandle, );
 	}
 }
 
@@ -127,6 +127,8 @@ bool WSSocket::Listen(int MaxBacklog)
 bool WSSocket::HasPendingConnection()
 {
 	// Maybe use select() to poll the sockets if thread blocking is enabled?
+
+	return false;
 }
 
 bool WSSocket::AcceptConnection(IP4EndPoint* ClientEndPoint)
