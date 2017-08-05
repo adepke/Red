@@ -20,7 +20,7 @@ protected:
 	bool IsBound;
 
 public:
-	ISocket() : ConnectionEndPoint(IP4EndPoint(IP4Address(nullptr), 0)) {}
+	ISocket() {}
 	virtual ~ISocket() {}
 
 	virtual bool Initialize(const SocketDescription& InDescription) = 0;
