@@ -1,2 +1,2 @@
-# Red Libraries
-Open Source C++ Core Libraries Aimed At Maximum Efficiency
+# Red Library
+Open source C++ library divided into independent modules
