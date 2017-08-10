@@ -7,7 +7,7 @@ namespace Red
 	class WindowsCriticalSection
 	{
 	private:
-		CRITICAL_SECTION CriticalSectionHandle;
+		CRITICAL_SECTION Handle;
 
 	public:
 		WindowsCriticalSection();

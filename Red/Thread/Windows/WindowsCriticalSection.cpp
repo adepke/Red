@@ -6,21 +6,22 @@ namespace Red
 {
 	WindowsCriticalSection::WindowsCriticalSection()
 	{
-		InitializeCriticalSection(&CriticalSectionHandle);
+		InitializeCriticalSection(&Handle);
+		SetCriticalSectionSpinCount(&Handle, 2000);
 	}
 
 	WindowsCriticalSection::~WindowsCriticalSection()
 	{
-		DeleteCriticalSection(&CriticalSectionHandle);
+		DeleteCriticalSection(&Handle);
 	}
 
 	void WindowsCriticalSection::Lock()
 	{
-		EnterCriticalSection(&CriticalSectionHandle);
+		EnterCriticalSection(&Handle);
 	}
 
 	void WindowsCriticalSection::Unlock()
 	{
-		LeaveCriticalSection(&CriticalSectionHandle);
+		LeaveCriticalSection(&Handle);
 	}
 }  // namespace Red
