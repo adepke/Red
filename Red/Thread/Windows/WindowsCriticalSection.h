@@ -13,6 +13,7 @@ namespace Red
 		WindowsCriticalSection();
 		~WindowsCriticalSection();
 
+		bool TryLock();
 		void Lock();
 		void Unlock();
 
