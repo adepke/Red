@@ -21,7 +21,8 @@
 #endif
 
 // Ignore OS Redefinition
-#pragma warning (disable : C4005)
+#pragma warning (push)
+#pragma warning (disable : 4005)
 
 // Determine the platform
 #if   defined(__ANDROID__)
@@ -37,3 +38,5 @@
 #elif defined(__APPLE__) && !defined(__MACH__)
 	#define OS_IOS 1
 #endif
+
+#pragma warning (pop)
