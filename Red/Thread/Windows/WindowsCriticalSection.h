@@ -15,6 +15,10 @@ namespace Red
 
 		void Lock();
 		void Unlock();
+
+	private:
+		WindowsCriticalSection(const WindowsCriticalSection& Target);
+		WindowsCriticalSection& operator=(const WindowsCriticalSection& Target);
 	};
 
 	// Private inheritance to prevent calls to Lock() and Unlock()
