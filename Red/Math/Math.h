@@ -14,6 +14,8 @@
 
 #include "Intersection.h"
 
+#include "BinaryOps.h"
+
 namespace Red
 {
 	const Vector2 Vector2::ZeroVector(0.0, 0.0);
