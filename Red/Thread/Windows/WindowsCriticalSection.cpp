@@ -15,6 +15,11 @@ namespace Red
 		DeleteCriticalSection(&Handle);
 	}
 
+	bool WindowsCriticalSection::TryLock()
+	{
+		return TryEnterCriticalSection(&Handle);
+	}
+
 	void WindowsCriticalSection::Lock()
 	{
 		EnterCriticalSection(&Handle);
