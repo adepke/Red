@@ -20,6 +20,9 @@
 	#define OS_IOS 0
 #endif
 
+// Ignore OS Redefinition
+#pragma warning (disable : C4005)
+
 // Determine the platform
 #if   defined(__ANDROID__)
 	#define OS_ANDROID 1
