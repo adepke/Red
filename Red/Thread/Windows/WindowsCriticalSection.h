@@ -17,5 +17,21 @@ namespace Red
 		void Unlock();
 	};
 
+	// Private inheritance to prevent calls to Lock() and Unlock()
+	class WindowsRAIICriticalSection : private WindowsCriticalSection
+	{
+	public:
+		WindowsRAIICriticalSection()
+		{
+			WindowsCriticalSection::Lock();
+		}
+
+		~WindowsRAIICriticalSection()
+		{
+			WindowsCriticalSection::Unlock();
+		}
+	};
+
 	typedef WindowsCriticalSection CriticalSection;
+	typedef WindowsRAIICriticalSection RAIICriticalSection;
 }  // namespace Red
