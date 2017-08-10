@@ -66,4 +66,8 @@ public:
 	{
 		return IsBound;
 	}
+
+private:
+	ISocket(const ISocket& Target);
+	ISocket& operator=(const ISocket& Target);
 };
