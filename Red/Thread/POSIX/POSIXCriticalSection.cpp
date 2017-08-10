@@ -16,6 +16,11 @@ namespace Red
 		pthread_mutex_destroy(&Handle);
 	}
 
+	bool POSIXCriticalSection::TryLock()
+	{
+		return (pthread_mutex_trylock(&Handle) == 0);
+	}
+
 	void POSIXCriticalSection::Lock()
 	{
 		pthread_mutex_lock(&Handle);

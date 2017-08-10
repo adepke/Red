@@ -13,6 +13,7 @@ namespace Red
 		POSIXCriticalSection();
 		~POSIXCriticalSection();
 
+		bool TryLock();
 		void Lock();
 		void Unlock();
 
