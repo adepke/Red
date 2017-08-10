@@ -7,3 +7,4 @@
 #endif
 
 // CriticalSection is a typedef to the platform specific implementation of a critical section.
+// RAIICriticalSection is a typedef to the platform specific implementation of a RAII-based critical section.
