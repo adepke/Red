@@ -18,7 +18,9 @@ enum SocketProtocol
 struct SocketDescription
 {
 public:
-	SocketType Type;
-	SocketProtocol Protocol;
-	bool ThreadBlocking;
+	SocketType Type = ST_Unknown;
+	SocketProtocol Protocol = SP_Unknown;
+	bool ThreadBlocking = true;
+	bool ReuseAddress = true;
+	unsigned int LingerTimeMs = 0;
 };
