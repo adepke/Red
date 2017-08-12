@@ -36,4 +36,7 @@ public:
 
 	virtual IP4EndPoint GetAddress() override;
 	virtual IP4Address GetPeerAddress() override;
+
+protected:
+	virtual bool Configure() override;
 };

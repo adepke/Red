@@ -10,36 +10,7 @@ bool BSDSocket::Initialize(const SocketDescription& InDescription)
 		return false;
 	}
 
-	int Value = 1;
-	if ((InDescription.Protocol == SP_TCP) && (setsockopt(SocketHandle, IPPROTO_TCP, TCP_NODELAY, (char*)&Value, sizeof(Value)) != 0))
-	{
-		Shutdown();
-
-		return false;
-	}
-
-	if (setsockopt(SocketHandle, SOL_SOCKET, SO_DONTLINGER, (char*)&Value, sizeof(Value)) != 0)
-	{
-		Shutdown();
-
-		return false;
-	}
-
-	if (setsockopt(SocketHandle, SOL_SOCKET, SO_KEEPALIVE, (char*)&Value, sizeof(Value)) != 0)
-	{
-		Shutdown();
-
-		return false;
-	}
-
-	if ((InDescription.Type == ST_Server) && (setsockopt(SocketHandle, SOL_SOCKET, SO_REUSEADDR, (char*)&Value, sizeof(Value)) != 0))
-	{
-		Shutdown();
-
-		return false;
-	}
-
-	return true;
+	return Configure();
 }
 
 bool BSDSocket::Shutdown()
@@ -127,6 +98,10 @@ ISocket* BSDSocket::Accept(IP4Address& ClientAddress)
 
 			// Do not Initialize(), as that will allocate a separate socket.
 			ClientSocket->SocketHandle = ClientHandle;
+			ClientSocket->Description = Description;
+			ClientSocket->Description.Type = ST_Client;
+
+			ClientSocket->Configure();
 
 			ClientAddress = ntohl(SocketAddress.sin_addr.s_addr);
 
@@ -177,7 +152,15 @@ bool BSDSocket::Receive(IP4Address& Source, unsigned char* Data, unsigned int Ma
 	return BytesReceived >= 0;
 }
 
+bool BSDSocket::SetSendBufferSize(unsigned int Size)
+{
+	return (setsockopt(SocketHandle, SOL_SOCKET, SO_SNDBUF, (char*)&Size, sizeof(Size)) == 0);
+}
 
+bool BSDSocket::SetReceiveBufferSize(unsigned int Size)
+{
+	return (setsockopt(SocketHandle, SOL_SOCKET, SO_RCVBUF, (char*)&Size, sizeof(Size)) == 0);
+}
 
 IP4EndPoint BSDSocket::GetAddress()
 {
@@ -203,4 +186,60 @@ IP4Address BSDSocket::GetPeerAddress()
 	}
 
 	return IP4Address();
+}
+
+bool BSDSocket::Configure()
+{
+	int Value = 0;
+
+	Value = 1;
+	if ((Description.Protocol == SP_TCP) && (setsockopt(SocketHandle, IPPROTO_TCP, TCP_NODELAY, (char*)&Value, sizeof(Value)) != 0))
+	{
+		Shutdown();
+
+		return false;
+	}
+
+	Value = 1;
+	if (setsockopt(SocketHandle, SOL_SOCKET, SO_KEEPALIVE, (char*)&Value, sizeof(Value)) != 0)
+	{
+		Shutdown();
+
+		return false;
+	}
+
+	Value = Description.ReuseAddress ? 1 : 0;
+	if ((Description.Type == ST_Server) && (setsockopt(SocketHandle, SOL_SOCKET, SO_REUSEADDR, (char*)&Value, sizeof(Value)) != 0))
+	{
+		Shutdown();
+
+		return false;
+	}
+
+	Value = 1;
+	if (Description.LingerTimeMs > 0)
+	{
+		linger Linger;
+		Linger.l_onoff = true;
+		Linger.l_linger = Description.LingerTimeMs;
+
+		if (setsockopt(SocketHandle, SOL_SOCKET, SO_LINGER, (char*)&Linger, sizeof(Linger)) != 0)
+		{
+			Shutdown();
+
+			return false;
+		}
+	}
+
+	else
+	{
+		if (setsockopt(SocketHandle, SOL_SOCKET, SO_DONTLINGER, (char*)&Value, sizeof(Value)) != 0)
+		{
+			Shutdown();
+
+			return false;
+		}
+	}
+
+	return true;
 }

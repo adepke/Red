@@ -16,7 +16,6 @@ void BSDSocketSubsystem::Shutdown()
 {
 	for (ISocket* Socket : ManagedSockets)
 	{
-		Socket->Close();
 		Socket->Shutdown();
 	}
 
