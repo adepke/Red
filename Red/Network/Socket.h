@@ -50,6 +50,10 @@ public:
 		return Description;
 	}
 
+protected:
+	// Client/Server: Updates the socket against the description. Used in Accept() to initialize sockets without constructing new sockets.
+	virtual bool Configure() = 0;
+
 private:
 	ISocket(const ISocket& Target);
 	ISocket& operator=(const ISocket& Target);
