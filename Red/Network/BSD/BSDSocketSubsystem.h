@@ -20,6 +20,4 @@ public:
 	virtual ISocket* CreateSocket(const SocketDescription& InDescription) override;
 
 	virtual std::string GetHostName() const override;
-
-	virtual int AutoBindSocket(ISocket* Socket, int DesiredPort, int FailPortIncrement, int MaxAttempts) override;
 };

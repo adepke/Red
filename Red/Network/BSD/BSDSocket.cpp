@@ -13,28 +13,28 @@ bool BSDSocket::Initialize(const SocketDescription& InDescription)
 	int Value = 1;
 	if ((InDescription.Protocol == SP_TCP) && (setsockopt(SocketHandle, IPPROTO_TCP, TCP_NODELAY, (char*)&Value, sizeof(Value)) != 0))
 	{
-		Close();
+		Shutdown();
 
 		return false;
 	}
 
 	if (setsockopt(SocketHandle, SOL_SOCKET, SO_DONTLINGER, (char*)&Value, sizeof(Value)) != 0)
 	{
-		Close();
+		Shutdown();
 
 		return false;
 	}
 
 	if (setsockopt(SocketHandle, SOL_SOCKET, SO_KEEPALIVE, (char*)&Value, sizeof(Value)) != 0)
 	{
-		Close();
+		Shutdown();
 
 		return false;
 	}
 
 	if ((InDescription.Type == ST_Server) && (setsockopt(SocketHandle, SOL_SOCKET, SO_REUSEADDR, (char*)&Value, sizeof(Value)) != 0))
 	{
-		Close();
+		Shutdown();
 
 		return false;
 	}
@@ -42,12 +42,18 @@ bool BSDSocket::Initialize(const SocketDescription& InDescription)
 	return true;
 }
 
-void BSDSocket::Shutdown()
+bool BSDSocket::Shutdown()
 {
+	bool Result = false;
+
 	if (SocketHandle != INVALID_SOCKET)
 	{
-		//shutdown(SocketHandle, );
+		shutdown(SocketHandle, 2);  // SHUT_RDWR
+		Result = (closesocket(SocketHandle) == 0);
+		SocketHandle = INVALID_SOCKET;
 	}
+
+	return Result;
 }
 
 bool BSDSocket::Connect(const IP4EndPoint& EndPoint)
@@ -61,8 +67,6 @@ bool BSDSocket::Connect(const IP4EndPoint& EndPoint)
 
 		if (connect(SocketHandle, (sockaddr*)&SocketAddress, sizeof(SocketAddress)) == 0)
 		{
-			ConnectionEndPoint = EndPoint;
-
 			unsigned long Value = Description.ThreadBlocking ? 0 : 1;
 			ioctlsocket(SocketHandle, FIONBIO, &Value);
 
@@ -73,39 +77,21 @@ bool BSDSocket::Connect(const IP4EndPoint& EndPoint)
 	return false;
 }
 
-bool BSDSocket::Close()
-{
-	if (SocketHandle != INVALID_SOCKET)
-	{
-		int Error = closesocket(SocketHandle);
-		SocketHandle = INVALID_SOCKET;
-
-		return Error == 0;
-	}
-
-	return false;
-}
-
-bool BSDSocket::Bind(const IP4EndPoint& LocalEndPoint)
+bool BSDSocket::Bind(unsigned short Port)
 {
 	if (SocketHandle != INVALID_SOCKET)
 	{
 		sockaddr_in SocketAddress;
 		ZeroMemory(&SocketAddress, sizeof(SocketAddress));
 		SocketAddress.sin_family = AF_INET;
-		//SocketAddress.sin_addr.s_addr = htonl(LocalEndPoint.Address.Address);
-		SocketAddress.sin_addr.s_addr = 0x00000000;
-		SocketAddress.sin_port = htons(LocalEndPoint.Port);
+		SocketAddress.sin_addr.s_addr = INADDR_ANY;  // Automatically determine the private IP.
+		SocketAddress.sin_port = htons(Port);
 
 		if (bind(SocketHandle, (sockaddr*)&SocketAddress, sizeof(SocketAddress)) == 0)
 		{
-			IsBound = true;
-
 			return true;
 		}
 	}
-
-	IsBound = false;
 
 	return false;
 }
@@ -126,51 +112,42 @@ bool BSDSocket::Listen(int MaxBacklog)
 	return false;
 }
 
-bool BSDSocket::HasPendingConnection()
+ISocket* BSDSocket::Accept(IP4Address& ClientAddress)
 {
-	// Maybe use select() to poll the sockets if thread blocking is enabled?
-
-	return false;
-}
-
-bool BSDSocket::AcceptConnection(IP4EndPoint* ClientEndPoint)
-{
-	SOCKET Client;
+	SOCKET ClientHandle;
 	sockaddr_in SocketAddress;
 	int SizeSmall = sizeof(SocketAddress);
 
-	Client = accept(SocketHandle, (sockaddr*)&SocketAddress, &SizeSmall);
-	if (Client != INVALID_SOCKET)
+	ClientHandle = accept(SocketHandle, (sockaddr*)&SocketAddress, &SizeSmall);
+	if (ClientHandle != INVALID_SOCKET)
 	{
-		if (getpeername(Client, (sockaddr*)&SocketAddress, &SizeSmall) == 0)
+		if (getpeername(ClientHandle, (sockaddr*)&SocketAddress, &SizeSmall) == 0)
 		{
-			IP4Address ClientAddress(ntohl(SocketAddress.sin_addr.s_addr));
-			if (ClientEndPoint)
-			{
-				ClientEndPoint->Address = ClientAddress;
-				ClientEndPoint->Port = ntohs(SocketAddress.sin_port);
+			BSDSocket* ClientSocket = new BSDSocket();
 
-				ConnectedClients.push_back(*ClientEndPoint);
-			}
+			// Do not Initialize(), as that will allocate a separate socket.
+			ClientSocket->SocketHandle = ClientHandle;
 
-			else
-			{
-				IP4EndPoint CEndPoint(ClientAddress, ntohs(SocketAddress.sin_port));
+			ClientAddress = ntohl(SocketAddress.sin_addr.s_addr);
 
-				ConnectedClients.push_back(CEndPoint);
-			}
-
-			return true;
+			return ClientSocket;
 		}
 	}
 
-	// Manually kill the client.
-	closesocket(Client);
+	// Manually kill the created socket.
+	closesocket(ClientHandle);
 
-	return false;
+	return nullptr;
 }
 
-bool BSDSocket::Send(const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length, unsigned int& BytesSent)
+bool BSDSocket::Send(const unsigned char* Data, unsigned int Length, int& BytesSent)
+{
+	BytesSent = send(SocketHandle, (const char*)Data, Length, 0);
+
+	return BytesSent >= 0;
+}
+
+bool BSDSocket::Send(const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length, int& BytesSent)
 {
 	sockaddr_in SocketAddress;
 	SocketAddress.sin_family = AF_INET;
@@ -182,35 +159,48 @@ bool BSDSocket::Send(const IP4EndPoint& Destination, const unsigned char* Data, 
 	return BytesSent >= 0;
 }
 
-bool BSDSocket::Broadcast(const unsigned char* Data, unsigned int Length, unsigned int& BytesSent)
-{
-	bool Result = true;
-	sockaddr_in SocketAddress;
-	int BytesThisIteration = 0;
-
-	for (int Iter = 0; Iter < ConnectedClients.size(); ++Iter)
-	{
-		SocketAddress.sin_family = AF_INET;
-		SocketAddress.sin_addr.s_addr = htonl(ConnectedClients[Iter].Address.Address);
-		SocketAddress.sin_port = htons(ConnectedClients[Iter].Port);
-
-		BytesThisIteration = sendto(SocketHandle, (const char*)Data, Length, 0, (sockaddr*)&SocketAddress, sizeof(SocketAddress));
-
-		if (BytesThisIteration < 0)
-		{
-			Result = false;
-			continue;
-		}
-
-		BytesSent += BytesThisIteration;
-	}
-
-	return Result;
-}
-
-bool BSDSocket::Receive(unsigned char* Data, unsigned int MaxReceivingBytes, unsigned int& BytesReceived)
+bool BSDSocket::Receive(unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived)
 {
 	BytesReceived = recv(SocketHandle, (char*)Data, MaxReceivingBytes, 0);
 
 	return BytesReceived >= 0;
+}
+
+bool BSDSocket::Receive(IP4Address& Source, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived)
+{
+	sockaddr_in ClientAddress;
+	int Size = sizeof(ClientAddress);
+	BytesReceived = recvfrom(SocketHandle, (char*)Data, MaxReceivingBytes, 0, (sockaddr*)&ClientAddress, &Size);
+
+	Source.Address = ntohl(ClientAddress.sin_addr.s_addr);
+
+	return BytesReceived >= 0;
+}
+
+
+
+IP4EndPoint BSDSocket::GetAddress()
+{
+	sockaddr_in Address;
+	int Size = sizeof(Address);
+
+	if (getsockname(SocketHandle, (sockaddr*)&Address, &Size) == 0)
+	{
+		return IP4EndPoint(ntohl(Address.sin_addr.s_addr), ntohs(Address.sin_port));
+	}
+
+	return IP4EndPoint();
+}
+
+IP4Address BSDSocket::GetPeerAddress()
+{
+	sockaddr_in Address;
+	int Size = sizeof(Address);
+
+	if (getpeername(SocketHandle, (sockaddr*)&Address, &Size) == 0)
+	{
+		return IP4Address(ntohl(Address.sin_addr.s_addr));
+	}
+
+	return IP4Address();
 }
