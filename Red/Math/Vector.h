@@ -974,24 +974,24 @@ namespace Red
 			);
 	}
 
-	void Lerp(Vector2* Result, const Vector2& Source, const Vector2& Target, float Value)
+	void Lerp(Vector2* Result, const Vector2& Source, const Vector2& Target, float Alpha)
 	{
 		Vector2 DeltaVec(Target - Source);
 
-		*Result = Source + (DeltaVec * Value);
+		*Result = Source + (DeltaVec * Alpha);
 	}
 
-	void Lerp(Vector3* Result, const Vector3& Source, const Vector3& Target, float Value)
+	void Lerp(Vector3* Result, const Vector3& Source, const Vector3& Target, float Alpha)
 	{
 		Vector3 DeltaVec(Target - Source);
 
-		*Result = Source + (DeltaVec * Value);
+		*Result = Source + (DeltaVec * Alpha);
 	}
 
-	void Lerp(Vector4* Result, const Vector4& Source, const Vector4& Target, float Value)
+	void Lerp(Vector4* Result, const Vector4& Source, const Vector4& Target, float Alpha)
 	{
 		Vector4 DeltaVec(Target - Source);
 
-		*Result = Source + (DeltaVec * Value);
+		*Result = Source + (DeltaVec * Alpha);
 	}
 }  // namespace Red
