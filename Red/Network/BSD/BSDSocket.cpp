@@ -4,7 +4,7 @@ bool BSDSocket::Initialize(const SocketDescription& InDescription)
 {
 	Description = InDescription;
 
-	SocketHandle = socket(PF_INET, SOCK_STREAM, InDescription.Protocol == SP_TCP ? IPPROTO_TCP : IPPROTO_UDP);
+	SocketHandle = socket(PF_INET, InDescription.Protocol == SP_TCP ? SOCK_STREAM : SOCK_DGRAM, InDescription.Protocol == SP_TCP ? IPPROTO_TCP : IPPROTO_UDP);
 	if (SocketHandle == INVALID_SOCKET)
 	{
 		return false;
@@ -201,7 +201,7 @@ bool BSDSocket::Configure()
 	}
 
 	Value = 1;
-	if (setsockopt(SocketHandle, SOL_SOCKET, SO_KEEPALIVE, (char*)&Value, sizeof(Value)) != 0)
+	if ((Description.Protocol == SP_TCP) && (setsockopt(SocketHandle, SOL_SOCKET, SO_KEEPALIVE, (char*)&Value, sizeof(Value)) != 0))
 	{
 		Shutdown();
 
@@ -216,28 +216,31 @@ bool BSDSocket::Configure()
 		return false;
 	}
 
-	Value = 1;
-	if (Description.LingerTimeMs > 0)
+	if (Description.Protocol == SP_TCP)
 	{
-		linger Linger;
-		Linger.l_onoff = true;
-		Linger.l_linger = Description.LingerTimeMs;
-
-		if (setsockopt(SocketHandle, SOL_SOCKET, SO_LINGER, (char*)&Linger, sizeof(Linger)) != 0)
+		Value = 1;
+		if (Description.LingerTimeMs > 0)
 		{
-			Shutdown();
+			linger Linger;
+			Linger.l_onoff = true;
+			Linger.l_linger = Description.LingerTimeMs;
 
-			return false;
+			if (setsockopt(SocketHandle, SOL_SOCKET, SO_LINGER, (char*)&Linger, sizeof(Linger)) != 0)
+			{
+				Shutdown();
+
+				return false;
+			}
 		}
-	}
 
-	else
-	{
-		if (setsockopt(SocketHandle, SOL_SOCKET, SO_DONTLINGER, (char*)&Value, sizeof(Value)) != 0)
+		else
 		{
-			Shutdown();
+			if (setsockopt(SocketHandle, SOL_SOCKET, SO_DONTLINGER, (char*)&Value, sizeof(Value)) != 0)
+			{
+				Shutdown();
 
-			return false;
+				return false;
+			}
 		}
 	}
 

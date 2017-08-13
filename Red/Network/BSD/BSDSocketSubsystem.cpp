@@ -26,9 +26,15 @@ ISocket* BSDSocketSubsystem::CreateSocket(const SocketDescription& InDescription
 {
 	ISocket* Socket = new BSDSocket();
 
-	Socket->Initialize(InDescription);
+	if (Socket->Initialize(InDescription))
+	{
+		ManagedSockets.push_back(Socket);
 
-	ManagedSockets.push_back(Socket);
+		return Socket;
+	}
+
+	delete Socket;
+	Socket = nullptr;
 
 	return Socket;
 }
