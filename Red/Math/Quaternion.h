@@ -37,31 +37,28 @@ namespace Red
 		~Quaternion() {}
 
 		Quaternion& operator=(const Quaternion& Target);
-		Quaternion& operator=(float Scalar);
 
 		Quaternion operator+(const Quaternion& Target) const;
-		Quaternion operator+(float Scalar) const;
 		Quaternion operator-() const;
 		Quaternion operator-(const Quaternion& Target) const;
-		Quaternion operator-(float Scalar) const;
 		Quaternion operator*(const Quaternion& Target) const;
 		Quaternion operator*(float Scalar) const;
-		Quaternion operator/(const Quaternion& Target) const;
+		Vector3    operator*(const Vector3& Target) const;
 		Quaternion operator/(float Scalar) const;
 
 		Quaternion& operator+=(const Quaternion& Target);
-		Quaternion& operator+=(float Scalar);
 		Quaternion& operator-=(const Quaternion& Target);
-		Quaternion& operator-=(float Scalar);
 		Quaternion& operator*=(const Quaternion& Target);
 		Quaternion& operator*=(float Scalar);
-		Quaternion& operator/=(const Quaternion& Target);
 		Quaternion& operator/=(float Scalar);
 
 		bool operator==(const Quaternion& Target) const;
-		bool operator==(VEC_MEMBER Scalar) const;
 		bool operator!=(const Quaternion& Target) const;
-		bool operator!=(VEC_MEMBER Scalar) const;
+
+		void ToAxisAngle(Vector3& Axis, float& Angle) const;
+
+		Vector3 RotateVector(const Vector3& Target) const;
+		Vector3 UnrotateVector(const Vector3& Target) const;
 
 		void ZeroOut() { X = 0; Y = 0; Z = 0; W = 0; }
 		bool IsZero() const { return((X == 0) && (Y == 0) && (Z == 0) && (W == 0)); }
@@ -85,39 +82,19 @@ namespace Red
 		return *this;
 	}
 
-	Quaternion& Quaternion::operator=(float Scalar)
-	{
-		X = Scalar;
-		Y = Scalar;
-		Z = Scalar;
-		W = Scalar;
-
-		return *this;
-	}
-
 	Quaternion Quaternion::operator+(const Quaternion& Target) const
 	{
 		return Quaternion(X + Target.X, Y + Target.Y, Z + Target.Z, W + Target.W);
 	}
 
-	Quaternion Quaternion::operator+(float Scalar) const
-	{
-		return Quaternion(X + Scalar, Y + Scalar, Z + Scalar, W + Scalar);
-	}
-
 	Quaternion Quaternion::operator-() const
 	{
-		return Quaternion(-X, -Y, -Z, -W);
+		return Quaternion(-X, -Y, -Z, W);
 	}
 
 	Quaternion Quaternion::operator-(const Quaternion& Target) const
 	{
 		return Quaternion(X - Target.X, Y - Target.Y, Z - Target.Z, W - Target.W);
-	}
-
-	Quaternion Quaternion::operator-(float Scalar) const
-	{
-		return Quaternion(X - Scalar, Y - Scalar, Z - Scalar, W - Scalar);
 	}
 
 	Quaternion Quaternion::operator*(const Quaternion& Target) const
@@ -135,16 +112,16 @@ namespace Red
 		return Quaternion(X * Scalar, Y * Scalar, Z * Scalar, W * Scalar);
 	}
 
-	Quaternion Quaternion::operator/(const Quaternion& Target) const
+	Vector3 Quaternion::operator*(const Vector3& Target) const
 	{
-		//return ((*this) * (operator-(Target)));
-
-		return ZeroQuaternion;
+		return RotateVector(Target);
 	}
 
 	Quaternion Quaternion::operator/(float Scalar) const
 	{
-		return Quaternion(X / Scalar, Y / Scalar, Z / Scalar, W / Scalar);
+		float ScalarInv = 1.0f / Scalar;
+
+		return Quaternion(X * ScalarInv, Y * ScalarInv, Z * ScalarInv, W * ScalarInv);
 	}
 
 	Quaternion& Quaternion::operator+=(const Quaternion& Target)
@@ -154,23 +131,9 @@ namespace Red
 		return *this;
 	}
 
-	Quaternion& Quaternion::operator+=(float Scalar)
-	{
-		*this = *this + Scalar;
-
-		return *this;
-	}
-
 	Quaternion& Quaternion::operator-=(const Quaternion& Target)
 	{
 		*this = *this - Target;
-
-		return *this;
-	}
-
-	Quaternion& Quaternion::operator-=(float Scalar)
-	{
-		*this = *this - Scalar;
 
 		return *this;
 	}
@@ -189,13 +152,6 @@ namespace Red
 		return *this;
 	}
 
-	Quaternion& Quaternion::operator/=(const Quaternion& Target)
-	{
-		*this = *this / Target;
-
-		return *this;
-	}
-
 	Quaternion& Quaternion::operator/=(float Scalar)
 	{
 		*this = *this / Scalar;
@@ -208,19 +164,49 @@ namespace Red
 		return ((X == Target.X) && (Y == Target.Y) && (Z == Target.Z) && (W == Target.W));
 	}
 
-	bool Quaternion::operator==(VEC_MEMBER Scalar) const
-	{
-		return ((X == Scalar) && (Y == Scalar) && (Z == Scalar) && (W == Scalar));
-	}
-
 	bool Quaternion::operator!=(const Quaternion& Target) const
 	{
 		return !(operator==(Target));
 	}
 
-	bool Quaternion::operator!=(VEC_MEMBER Scalar) const
+	void Quaternion::ToAxisAngle(Vector3& Axis, float& Angle) const
 	{
-		return !(operator==(Scalar));
+		const float SafeW = SquareRoot(Max(1.0f - (W * W), 0.0f));
+		if (SafeW >= 0.0001f)
+		{
+			Axis = Vector3(X / SafeW, Y / SafeW, Z / SafeW);
+		}
+
+		else
+		{
+			Axis = Vector3(1.0f, 0.0f, 0.0f);
+		}
+
+		Angle = 2.0f * std::acos(W);
+	}
+
+	Vector3 Quaternion::RotateVector(const Vector3& Target) const
+	{
+		const Vector3 Q(X, Y, Z);
+		Vector3 T;
+		Vector3 U;
+		Cross(&T, Q, Target);
+		T *= 2.0f;
+		Cross(&U, Q, T);
+
+		return Vector3(Target + (T * W) + U);
+	}
+
+	Vector3 Quaternion::UnrotateVector(const Vector3& Target) const
+	{
+		const Vector3 Q(-X, -Y, -Z);
+		Vector3 T;
+		Vector3 U;
+		Cross(&T, Q, Target);
+		T *= 2.0f;
+		Cross(&U, Q, T);
+
+		return Vector3(Target + (T * W) + U);
 	}
 
 	void Quaternion::Normalize()
@@ -234,5 +220,53 @@ namespace Red
 		X /= Magnitude_;
 		Y /= Magnitude_;
 		Z /= Magnitude_;
+		W /= Magnitude_;
 	}
+
+	// Quaternion Operations
+
+	float Dot(const Quaternion& TargetA, const Quaternion& TargetB)
+	{
+		return (TargetA.X * TargetB.X + TargetA.Y * TargetB.Y + TargetA.Z * TargetB.Z + TargetA.W * TargetB.W);
+	}
+
+	// Unnormalized Linear Interpolation
+	void Lerp(Quaternion& Result, const Quaternion& TargetA, const Quaternion& TargetB, float Alpha)
+	{
+		Result = Quaternion((TargetB * Alpha) + (TargetA * ((Dot(TargetA, TargetB) >= 0.0f ? 1.0f : 0.0f) * (1.0f - Alpha))));
+	}
+
+	// Unnormalized Spherical Interpolation
+	void Slerp(Quaternion& Result, const Quaternion& TargetA, const Quaternion& TargetB, float Alpha)
+	{
+		const float Magnitude_ = TargetA.X * TargetB.X + TargetA.Y * TargetB.Y + TargetA.Z * TargetB.Z + TargetA.W * TargetB.W;
+		const float Mag = Magnitude_ >= 0 ? Magnitude_ : -Magnitude_;
+
+		float Scale0, Scale1;
+
+		if (Mag < 0.9999f)
+		{
+			const float Omega = std::acos(Mag);
+			const float InvSin = 1.0f / std::sin(Omega);
+			Scale0 = std::sin((1.0f - Alpha) * Omega) * InvSin;
+			Scale1 = std::sin(Alpha * Omega) * InvSin;
+		}
+
+		else
+		{
+			// Revert to linear interpolation
+			Scale0 = 1.0f - Alpha;
+			Scale1 = Alpha;
+		}
+
+		Scale1 = Magnitude_ >= 0.0f ? Scale1 : -Scale1;
+
+		Result = Quaternion(
+			Scale0 * TargetA.X + Scale1 * TargetB.X,
+			Scale0 * TargetA.Y + Scale1 * TargetB.Y,
+			Scale0 * TargetA.Z + Scale1 * TargetB.Z,
+			Scale0 * TargetA.W + Scale1 * TargetB.W
+		);
+	}
+
 }  // namespace Red
