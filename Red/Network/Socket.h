@@ -26,9 +26,9 @@ public:
 	virtual bool Listen(int MaxBacklog) = 0;
 
 	// Server: Accepts the first pending client in queue. The returned socket representing the connection to the client is heap-allocated. ClientAddress stores the connection's address.
-	virtual ISocket* Accept(IP4Address& ClientAddress) = 0;
+	virtual ISocket* Accept(IP4EndPoint& ClientAddress) = 0;
 
-	// Client/Server: Transmit a buffre to the connected socket.
+	// Client/Server: Transmit a buffer to the connected socket.
 	virtual bool Send(const unsigned char* Data, unsigned int Length, int& BytesSent) = 0;
 	// Client/Server: Transmit a buffer to a specific client or server.
 	virtual bool Send(const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length, int& BytesSent) = 0;
@@ -43,7 +43,7 @@ public:
 	// Server: Return the public endpoint the socket is bound to.
 	virtual IP4EndPoint GetAddress() = 0;
 	// Client/Server: Return the address the socket is connected to.
-	virtual IP4Address GetPeerAddress() = 0;
+	virtual IP4EndPoint GetPeerAddress() = 0;
 
 	SocketDescription GetDescription() const
 	{

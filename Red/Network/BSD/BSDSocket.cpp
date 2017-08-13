@@ -83,7 +83,7 @@ bool BSDSocket::Listen(int MaxBacklog)
 	return false;
 }
 
-ISocket* BSDSocket::Accept(IP4Address& ClientAddress)
+ISocket* BSDSocket::Accept(IP4EndPoint& ClientAddress)
 {
 	SOCKET ClientHandle;
 	sockaddr_in SocketAddress;
@@ -103,7 +103,7 @@ ISocket* BSDSocket::Accept(IP4Address& ClientAddress)
 
 			ClientSocket->Configure();
 
-			ClientAddress = ntohl(SocketAddress.sin_addr.s_addr);
+			ClientAddress = IP4EndPoint(ntohl(SocketAddress.sin_addr.s_addr), ntohs(SocketAddress.sin_port));
 
 			return ClientSocket;
 		}
@@ -175,17 +175,17 @@ IP4EndPoint BSDSocket::GetAddress()
 	return IP4EndPoint();
 }
 
-IP4Address BSDSocket::GetPeerAddress()
+IP4EndPoint BSDSocket::GetPeerAddress()
 {
 	sockaddr_in Address;
 	int Size = sizeof(Address);
 
 	if (getpeername(SocketHandle, (sockaddr*)&Address, &Size) == 0)
 	{
-		return IP4Address(ntohl(Address.sin_addr.s_addr));
+		return IP4EndPoint(ntohl(Address.sin_addr.s_addr), ntohs(Address.sin_port));
 	}
 
-	return IP4Address();
+	return IP4EndPoint();
 }
 
 bool BSDSocket::Configure()

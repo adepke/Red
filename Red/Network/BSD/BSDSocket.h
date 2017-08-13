@@ -23,7 +23,7 @@ public:
 
 	virtual bool Listen(int MaxBacklog) override;
 
-	virtual ISocket* Accept(IP4Address& ClientAddress) override;
+	virtual ISocket* Accept(IP4EndPoint& ClientAddress) override;
 
 	virtual bool Send(const unsigned char* Data, unsigned int Length, int& BytesSent) override;
 	virtual bool Send(const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length, int& BytesSent) override;
@@ -35,7 +35,7 @@ public:
 	virtual bool SetReceiveBufferSize(unsigned int Size) override;
 
 	virtual IP4EndPoint GetAddress() override;
-	virtual IP4Address GetPeerAddress() override;
+	virtual IP4EndPoint GetPeerAddress() override;
 
 protected:
 	virtual bool Configure() override;
