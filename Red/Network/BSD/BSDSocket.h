@@ -15,21 +15,28 @@ public:
 	virtual ~BSDSocket() {}
 
 	virtual bool Initialize(const SocketDescription& InDescription) override;
-	virtual void Shutdown() override;
+	virtual bool Shutdown() override;
 
 	virtual bool Connect(const IP4EndPoint& EndPoint) override;
-	virtual bool Close() override;
 
-	virtual bool Bind(const IP4EndPoint& LocalEndPoint) override;
+	virtual bool Bind(unsigned short Port) override;
 
 	virtual bool Listen(int MaxBacklog) override;
 
-	virtual bool HasPendingConnection() override;
+	virtual ISocket* Accept(IP4EndPoint& ClientAddress) override;
 
-	virtual bool AcceptConnection(IP4EndPoint* ClientEndPoint) override;
+	virtual bool Send(const unsigned char* Data, unsigned int Length, int& BytesSent) override;
+	virtual bool Send(const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length, int& BytesSent) override;
 
-	virtual bool Send(const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length, unsigned int& BytesSent) override;
-	virtual bool Broadcast(const unsigned char* Data, unsigned int Length, unsigned int& BytesSent) override;
+	virtual bool Receive(unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) override;
+	virtual bool Receive(IP4Address& Source, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) override;
 
-	virtual bool Receive(unsigned char* Data, unsigned int MaxReceivingBytes, unsigned int& BytesReceived) override;
+	virtual bool SetSendBufferSize(unsigned int Size) override;
+	virtual bool SetReceiveBufferSize(unsigned int Size) override;
+
+	virtual IP4EndPoint GetAddress() override;
+	virtual IP4EndPoint GetPeerAddress() override;
+
+protected:
+	virtual bool Configure() override;
 };

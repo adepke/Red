@@ -11,61 +11,48 @@ class ISocket
 protected:
 	SocketDescription Description;
 
-	// Client
-	IP4EndPoint ConnectionEndPoint;
-	// Server
-	std::vector<IP4EndPoint> ConnectedClients;
-
-	// Server: If the socket is bound to a local address and port.
-	bool IsBound;
-
 public:
 	ISocket() {}
 	virtual ~ISocket() {}
 
 	virtual bool Initialize(const SocketDescription& InDescription) = 0;
-	virtual void Shutdown() = 0;
+	virtual bool Shutdown() = 0;
 
 	virtual bool Connect(const IP4EndPoint& EndPoint) = 0;
 
-	// Client/Server: Terminate all connections and stop listening.
-	virtual bool Close() = 0;
-
-	// Server: Bind to a local address and port number for listening.
-	virtual bool Bind(const IP4EndPoint& LocalEndPoint) = 0;
+	// Server: Port forward through UPnP. Bind address is machine's private IP.
+	virtual bool Bind(unsigned short Port) = 0;
 
 	virtual bool Listen(int MaxBacklog) = 0;
 
-	virtual bool HasPendingConnection() = 0;
+	// Server: Accepts the first pending client in queue. The returned socket representing the connection to the client is heap-allocated. ClientAddress stores the connection's address.
+	virtual ISocket* Accept(IP4EndPoint& ClientAddress) = 0;
 
-	virtual bool AcceptConnection(IP4EndPoint* ClientEndPoint) = 0;
-
+	// Client/Server: Transmit a buffer to the connected socket.
+	virtual bool Send(const unsigned char* Data, unsigned int Length, int& BytesSent) = 0;
 	// Client/Server: Transmit a buffer to a specific client or server.
-	virtual bool Send(const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length, unsigned int& BytesSent) = 0;
-	// Server: Transmit a buffer to all connected clients.
-	virtual bool Broadcast(const unsigned char* Data, unsigned int Length, unsigned int& BytesSent) = 0;
+	virtual bool Send(const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length, int& BytesSent) = 0;
 	// Client/Server: Copy the socket's internal receiving buffer into Data.
-	virtual bool Receive(unsigned char* Data, unsigned int MaxReceivingBytes, unsigned int& BytesReceived) = 0;
+	virtual bool Receive(unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) = 0;
+	// Client/Server: Copy the socket's internal receiving buffer into Data. Output the data's source address to Source.
+	virtual bool Receive(IP4Address& Source, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) = 0;
+
+	virtual bool SetSendBufferSize(unsigned int Size) = 0;
+	virtual bool SetReceiveBufferSize(unsigned int Size) = 0;
+
+	// Server: Return the public endpoint the socket is bound to.
+	virtual IP4EndPoint GetAddress() = 0;
+	// Client/Server: Return the address the socket is connected to.
+	virtual IP4EndPoint GetPeerAddress() = 0;
 
 	SocketDescription GetDescription() const
 	{
 		return Description;
 	}
 
-	IP4EndPoint GetConnectionEndPoint() const
-	{
-		return ConnectionEndPoint;
-	}
-
-	std::vector<IP4EndPoint> GetConnectedClients() const
-	{
-		return ConnectedClients;
-	}
-
-	bool GetIsBound() const
-	{
-		return IsBound;
-	}
+protected:
+	// Client/Server: Updates the socket against the description. Used in Accept() to initialize sockets without constructing new sockets.
+	virtual bool Configure() = 0;
 
 private:
 	ISocket(const ISocket& Target);
