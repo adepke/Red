@@ -29,7 +29,7 @@
 	#define OS_ANDROID 1
 #elif defined(__bsdi__) || defined(BSD)
 	#define OS_BSD 1
-#elif defined(__linux__) || defined(linux) || defined(__linux)
+#elif defined(__linux__) || defined(linux) || defined(__linux) || defined(__gnu_linux__)
 	#define OS_LINUX 1
 #elif defined(macintosh) || defined(Macintosh) || (defined(__APPLE__) && defined(__MACH__))
 	#define OS_MACINTOSH 1
