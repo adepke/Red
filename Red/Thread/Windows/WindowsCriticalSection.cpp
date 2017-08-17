@@ -17,7 +17,7 @@ namespace Red
 
 	bool WindowsCriticalSection::TryLock()
 	{
-		return TryEnterCriticalSection(&Handle);
+		return !!TryEnterCriticalSection(&Handle);
 	}
 
 	void WindowsCriticalSection::Lock()
