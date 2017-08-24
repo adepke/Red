@@ -19,8 +19,11 @@
 #if !defined(OS_IOS)
 	#define OS_IOS 0
 #endif
+#if !defined(PLATFORM_BIGENDIAN)
+	#define PLATFORM_BIGENDIAN 0
+#endif
 
-// Ignore OS Redefinition
+// Ignore Redefinition
 #pragma warning (push)
 #pragma warning (disable : 4005)
 
@@ -37,6 +40,17 @@
 	#define OS_WINDOWS 1
 #elif defined(__APPLE__) && !defined(__MACH__)
 	#define OS_IOS 1
+#endif
+
+#if (OS_WINDOWS || OS_MACINTOSH || OS_IOS)
+	#define PLATFORM_BIGENDIAN 0
+#else
+#include <endian.h>
+#if (__BYTE_ORDER == __LITTLE_ENDIAN)
+	#define PLATFORM_BIGENDIAN 0
+#else
+	#define PLATFORM_BIGENDIAN 1
+#endif
 #endif
 
 #pragma warning (pop)

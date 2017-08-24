@@ -2,48 +2,51 @@
 
 #include <WS2tcpip.h>
 
-bool BSDSocketSubsystem::Initialize()
+namespace Red
 {
-	if (WSAStartup(0x0202, &SubsystemData) == SOCKET_ERROR)
+	bool BSDSocketSubsystem::Initialize()
 	{
-		return false;
+		if (WSAStartup(0x0202, &SubsystemData) == SOCKET_ERROR)
+		{
+			return false;
+		}
+
+		return true;
 	}
 
-	return true;
-}
-
-void BSDSocketSubsystem::Shutdown()
-{
-	for (ISocket* Socket : ManagedSockets)
+	void BSDSocketSubsystem::Shutdown()
 	{
-		Socket->Shutdown();
+		for (ISocket* Socket : ManagedSockets)
+		{
+			Socket->Shutdown();
+		}
+
+		WSACleanup();
 	}
 
-	WSACleanup();
-}
-
-ISocket* BSDSocketSubsystem::CreateSocket(const SocketDescription& InDescription)
-{
-	ISocket* Socket = new BSDSocket();
-
-	if (Socket->Initialize(InDescription))
+	ISocket* BSDSocketSubsystem::CreateSocket(const SocketDescription& InDescription)
 	{
-		ManagedSockets.push_back(Socket);
+		ISocket* Socket = new BSDSocket();
+
+		if (Socket->Initialize(InDescription))
+		{
+			ManagedSockets.push_back(Socket);
+
+			return Socket;
+		}
+
+		delete Socket;
+		Socket = nullptr;
 
 		return Socket;
 	}
 
-	delete Socket;
-	Socket = nullptr;
+	std::string BSDSocketSubsystem::GetHostName() const
+	{
+		char NameBuffer[256];
 
-	return Socket;
-}
+		gethostname(NameBuffer, 256);
 
-std::string BSDSocketSubsystem::GetHostName() const
-{
-	char NameBuffer[256];
-
-	gethostname(NameBuffer, 256);
-
-	return std::string(NameBuffer);
-}
+		return std::string(NameBuffer);
+	}
+}  // namespace Red

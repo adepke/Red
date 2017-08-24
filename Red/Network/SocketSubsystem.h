@@ -1,23 +1,19 @@
 #pragma once
 
-#include "Socket.h"
+#include "../Core/Platform.h"
 
-#include <string>
+#if   OS_WINDOWS
+	#include "BSD/BSDSocketSubsystem.h"
+#elif OS_MACINTOSH
+	#include "BSD/BSDSocketSubsystem.h"
+#elif OS_LINUX
+	#include "BSD/BSDSocketSubsystem.h"
+#elif OS_BSD
+	#include "BSD/BSDSocketSubsystem.h"
+#elif OS_ANDROID
+	#include "BSD/BSDSocketSubsystem.h"
+#elif OS_IOS
+	#include "BSD/BSDSocketSubsystem.h"
+#endif
 
-// Generic Socket Subsystem Interface
-class ISocketSubsystem
-{
-protected:
-	std::vector<ISocket*> ManagedSockets;
-
-public:
-	ISocketSubsystem() {}
-	virtual ~ISocketSubsystem() {}
-
-	virtual bool Initialize() = 0;
-	virtual void Shutdown() = 0;
-
-	virtual ISocket* CreateSocket(const SocketDescription& InDescription) = 0;
-
-	virtual std::string GetHostName() const = 0;
-};
+// SocketSubsystem is a typedef to a platform specific implementation.

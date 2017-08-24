@@ -1,23 +1,26 @@
 #pragma once
 
-#include "../SocketSubsystem.h"
+#include "../SocketSubsystemBase.h"
 
 #include "BSDSocket.h"
 
-class BSDSocketSubsystem : public ISocketSubsystem
+namespace Red
 {
-protected:
-	WSAData SubsystemData;
+	class BSDSocketSubsystem : public ISocketSubsystem
+	{
+	protected:
+		WSAData SubsystemData;
 
-public:
-	BSDSocketSubsystem() {}
-	virtual ~BSDSocketSubsystem() {}
+	public:
+		BSDSocketSubsystem() {}
+		virtual ~BSDSocketSubsystem() {}
 
-	virtual bool Initialize() override;
-	virtual void Shutdown() override;
+		virtual bool Initialize() override;
+		virtual void Shutdown() override;
 
-	// Used for creating local sockets, not ghost sockets.
-	virtual ISocket* CreateSocket(const SocketDescription& InDescription) override;
+		// Used for creating local sockets, not ghost sockets.
+		virtual ISocket* CreateSocket(const SocketDescription& InDescription) override;
 
-	virtual std::string GetHostName() const override;
-};
+		virtual std::string GetHostName() const override;
+	};
+}  // namespace Red

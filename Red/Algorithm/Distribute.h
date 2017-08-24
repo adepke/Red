@@ -8,7 +8,7 @@
 namespace Red
 {
 	template <typename Type>
-	void Distribute(Type* Destination, Type Total, uint32 ChunkCount, bool IncludeRemainder = true)
+	void Distribute(Type* Destination, Type Total, unsigned int ChunkCount, bool IncludeRemainder = true)
 	{
 		if (Destination)
 		{
@@ -25,7 +25,7 @@ namespace Red
 	}
 
 	template <typename Type>
-	void Distribute(std::vector<Type>* Destination, Type Total, uint32 ChunkCount, bool IncludeRemainder = true)
+	void Distribute(std::vector<Type>* Destination, Type Total, unsigned int ChunkCount, bool IncludeRemainder = true)
 	{
 		if (Destination)
 		{

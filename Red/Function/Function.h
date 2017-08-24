@@ -4,6 +4,8 @@
 
 #include "../Core/Definitions.h"
 
+#include <cstdint>
+
 namespace Red
 {
 	// Function: Houses Lambda and Function Pointer Types.
@@ -16,7 +18,7 @@ namespace Red
 	{
 	private:
 		// Stores Object Type.
-		enum FunctionType : byte
+		enum FunctionType : uint8_t
 		{
 			FT_Unset,
 			FT_Lambda,

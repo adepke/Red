@@ -1,6 +1,7 @@
 #pragma once
 
-#include "WindowUtils.h"
+#include "WindowDescription.h"
+#include "WindowState.h"
 
 namespace Red
 {

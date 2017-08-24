@@ -2,18 +2,20 @@
 
 #include "../Core/Definitions.h"
 
+#include <cstdint>
+
 // Least significant bit is 0
 
 namespace Red
 {
 	template <typename Type>
-	byte BitRead(const Type& Target, const uint32 Bit)
+	uint8_t BitRead(const Type& Target, const unsigned int Bit)
 	{
 		return (Target & (1 << Bit));
 	}
 
 	template <typename Type>
-	void BitWrite(Type& Target, const uint32 Bit, const byte Value)
+	void BitWrite(Type& Target, const unsigned int Bit, const uint8_t Value)
 	{
 		if (Value)
 		{
@@ -27,7 +29,7 @@ namespace Red
 	}
 
 	template <typename Type>
-	void BitFlip(Type& Target, const uint32 Bit)
+	void BitFlip(Type& Target, const unsigned int Bit)
 	{
 		Base ^ (1 << Bit);
 	}

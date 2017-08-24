@@ -59,22 +59,22 @@ namespace Red
 	}
 
 	// Meta Power (Baked Expression)
-	template <int32 Base, int16 Exponent>
+	template <int Base, short int Exponent>
 	struct Power_MT
 	{
-		enum : int64 { Value = (Base * Power_MT<Base, Exponent - 1>::Value) };
+		enum : long int { Value = (Base * Power_MT<Base, Exponent - 1>::Value) };
 	};
 
-	template <int32 Base>
+	template <int Base>
 	struct Power_MT<Base, 1>
 	{
-		enum : int64 { Value = Base };
+		enum : long int { Value = Base };
 	};
 
-	template <int32 Base>
+	template <int Base>
 	struct Power_MT<Base, 0>
 	{
-		enum : int64 { Value = 1 };
+		enum : long int { Value = 1 };
 	};
 
 	// Square Root [CMath Built-in]
@@ -110,21 +110,21 @@ namespace Red
 	}
 
 	// Factorial [Recursive Algorithm]
-	constexpr uint64 Factorial(uint32 Factor) noexcept
+	constexpr unsigned long int Factorial(unsigned int Factor) noexcept
 	{
 		return (Factor == 1 ? 1 : Factor * Factorial(Factor - 1));
 	}
 
 	// Meta Factorial (Baked Expression)
-	template <uint32 Factor>
+	template <unsigned int Factor>
 	struct Factorial_MT
 	{
-		enum : uint64 { Value = (Factor * Factorial_MT<Factor - 1>::Value) };
+		enum : unsigned long int { Value = (Factor * Factorial_MT<Factor - 1>::Value) };
 	};
 
 	template <>
 	struct Factorial_MT<0>
 	{
-		enum : uint64 { Value = 1 };
+		enum : unsigned long int { Value = 1 };
 	};
 }  // namespace Red
