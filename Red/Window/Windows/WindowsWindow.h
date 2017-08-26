@@ -194,6 +194,8 @@ namespace Red
 
 				SendMessage(Handle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
 
+				CurrentState.Fullscreen = true;
+
 				return true;
 			}
 		}
