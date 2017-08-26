@@ -84,13 +84,18 @@ namespace Red
 
 		CurrentState.Location = Description.Location;
 		CurrentState.Size = Description.Size;
-		CurrentState.Fullscreen = Description.Fullscreen;
+		CurrentState.Fullscreen = false;
 
 		delete[] AppTitle;
 
 		if (Description.AutoShow)
 		{
 			Show();
+		}
+
+		if (Description.Fullscreen)
+		{
+			SetFullscreen(true);
 		}
 
 		return true;
