@@ -1,8 +1,23 @@
 language: cpp
+
 compiler:
 - clang
 - gcc
+
 os:
 - windows
+
+before_install:
+- echo "Preinstall..."
+
+script:
+- echo "Script Started"
+
+after_script:
+- echo "Script Ended"
+
+after_failure:
+- echo "Failure"
+
 notifications:
   email: false
