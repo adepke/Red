@@ -12,6 +12,7 @@ before_install:
 
 script:
 - echo "Script Started"
+- cd Build
 - make
 
 after_script:
