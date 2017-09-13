@@ -12,6 +12,7 @@ before_install:
 
 script:
 - echo "Script Started"
+- make
 
 after_script:
 - echo "Script Ended"
