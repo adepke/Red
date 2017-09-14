@@ -8,18 +8,18 @@ POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
 
 %.o : %.c
 %.o : %.c $(DEPDIR)/%.d
-        $(COMPILE.c) $(OUTPUT_OPTION) $<
-        $(POSTCOMPILE)
+	$(COMPILE.c) $(OUTPUT_OPTION) $<
+	$(POSTCOMPILE)
 
 %.o : %.cc
 %.o : %.cc $(DEPDIR)/%.d
-        $(COMPILE.cc) $(OUTPUT_OPTION) $<
-        $(POSTCOMPILE)
+	$(COMPILE.cc) $(OUTPUT_OPTION) $<
+	$(POSTCOMPILE)
 
 %.o : %.cxx
 %.o : %.cxx $(DEPDIR)/%.d
-        $(COMPILE.cc) $(OUTPUT_OPTION) $<
-        $(POSTCOMPILE)
+	$(COMPILE.cc) $(OUTPUT_OPTION) $<
+	$(POSTCOMPILE)
 
 $(DEPDIR)/%.d: ;
 .PRECIOUS: $(DEPDIR)/%.d
