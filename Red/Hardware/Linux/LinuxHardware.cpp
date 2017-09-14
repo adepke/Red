@@ -1,6 +1,6 @@
 #include "LinuxHardware.h"
 
-#include <memory>
+#include <cstring>  // std::memcpy()
 #include <unistd.h>
 #include <cpuid.h>
 #include <thread>
