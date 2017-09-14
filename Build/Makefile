@@ -1,7 +1,7 @@
 TARGET_EXEC ?= a.out
 
-BUILD_DIR ?= /Build
-SRC_DIRS ?= /Red
+BUILD_DIR ?= ../Build
+SRC_DIRS ?= ../Red
 
 SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
