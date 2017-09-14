@@ -1,5 +1,6 @@
 #include "LinuxHardware.h"
 
+#include <memory>
 #include <unistd.h>
 #include <cpuid.h>
 #include <thread>
