@@ -23,7 +23,7 @@ namespace Red
 
 	std::string LinuxSystemHardware::GetCPUVendor()
 	{
-		int Data[4] = { 0 };
+		unsigned int Data[4] = { 0 };
 		char Vendor[13] = { 0 };
 
 		if (__get_cpuid(0, &Data[0], &Data[1], &Data[2], &Data[3]) != 0)
@@ -46,7 +46,7 @@ namespace Red
 
 	std::string LinuxSystemHardware::GetCPUBrand()
 	{
-		int Data[4] = { 0 };
+		unsigned int Data[4] = { 0 };
 		char Brand[49] = { 0 };
 
 		if (__get_cpuid(0x80000002, &Data[0], &Data[1], &Data[2], &Data[3]) != 0)
