@@ -29,9 +29,9 @@ namespace Red
 		if (__get_cpuid(0, &Data[0], &Data[1], &Data[2], &Data[3]) != 0)
 		{
 			// CPU vendor is stored in EBX EDX ECX (ASCII)
-			memcpy(Vendor + 0, &Data[1], 4);  // EBX
-			memcpy(Vendor + 4, &Data[3], 4);  // ECX
-			memcpy(Vendor + 8, &Data[2], 4);  // EDX
+			std::memcpy(Vendor + 0, &Data[1], 4);  // EBX
+			std::memcpy(Vendor + 4, &Data[3], 4);  // ECX
+			std::memcpy(Vendor + 8, &Data[2], 4);  // EDX
 		}
 
 		else
@@ -51,10 +51,10 @@ namespace Red
 
 		if (__get_cpuid(0x80000002, &Data[0], &Data[1], &Data[2], &Data[3]) != 0)
 		{
-			memcpy(Brand + 0, &Data[0], 4);
-			memcpy(Brand + 4, &Data[1], 4);
-			memcpy(Brand + 8, &Data[2], 4);
-			memcpy(Brand + 12, &Data[3], 4);
+			std::memcpy(Brand + 0, &Data[0], 4);
+			std::memcpy(Brand + 4, &Data[1], 4);
+			std::memcpy(Brand + 8, &Data[2], 4);
+			std::memcpy(Brand + 12, &Data[3], 4);
 		}
 
 		else
@@ -64,10 +64,10 @@ namespace Red
 
 		if (__get_cpuid(0x80000003, &Data[0], &Data[1], &Data[2], &Data[3]) != 0)
 		{
-			memcpy(Brand + 16, &Data[0], 4);
-			memcpy(Brand + 20, &Data[1], 4);
-			memcpy(Brand + 24, &Data[2], 4);
-			memcpy(Brand + 28, &Data[3], 4);
+			std::memcpy(Brand + 16, &Data[0], 4);
+			std::memcpy(Brand + 20, &Data[1], 4);
+			std::memcpy(Brand + 24, &Data[2], 4);
+			std::memcpy(Brand + 28, &Data[3], 4);
 		}
 
 		else
@@ -77,10 +77,10 @@ namespace Red
 
 		if (__get_cpuid(0x80000004, &Data[0], &Data[1], &Data[2], &Data[3]) != 0)
 		{
-			memcpy(Brand + 32, &Data[0], 4);
-			memcpy(Brand + 36, &Data[1], 4);
-			memcpy(Brand + 40, &Data[2], 4);
-			memcpy(Brand + 44, &Data[3], 4);
+			std::memcpy(Brand + 32, &Data[0], 4);
+			std::memcpy(Brand + 36, &Data[1], 4);
+			std::memcpy(Brand + 40, &Data[2], 4);
+			std::memcpy(Brand + 44, &Data[3], 4);
 		}
 
 		else
