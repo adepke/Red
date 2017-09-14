@@ -26,4 +26,5 @@ $(DEPDIR)/%.d: ;
 
 include $(wildcard $(patsubst %,$(DEPDIR)/%.d,$(basename $(SRCS))))
 
+.PHONY all clean
 all: *.cpp
