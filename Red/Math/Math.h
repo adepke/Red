@@ -27,6 +27,8 @@ namespace Red
 
 	const Vector4 Vector4::ZeroVector(0.0, 0.0, 0.0, 0.0);
 
+	//const Matrix<4, 4> Matrix<4, 4>::Matrix4x4();
+
 	const Quaternion Quaternion::ZeroQuaternion(0.0, 0.0, 0.0, 0.0);
 	const Quaternion Quaternion::IdentityQuaternion(0.0, 0.0, 0.0, 1.0);
 }  // namespace Red
