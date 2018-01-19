@@ -23,6 +23,8 @@ namespace Red
 
 		void ZeroOut();
 		bool IsZero() const;
+
+		bool MakeIdentity();
 	};
 
 	template <int Rows, int Columns>
@@ -101,4 +103,26 @@ namespace Red
 
 		return true;
 	}
+
+	template <int Rows, int Columns>
+	bool Matrix<Rows, Columns>::MakeIdentity()
+	{
+		assert(Data);
+
+		// Early out if this is not a square matrix.
+		if (Rows != Columns)
+		{
+			return false;
+		}
+
+		ZeroOut();
+
+		for (int Iter = 0; Iter < Rows; ++Iter)
+		{
+			Data[Iter][Iter] = 1.0f;
+		}
+
+		return true;
+	}
+
 }  // namespace Red
