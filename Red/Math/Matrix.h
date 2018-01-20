@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef ASSERTIONS
+#include <assert.h>
+#endif
+
 namespace Red
 {
 	template <int Rows, int Columns>
@@ -80,7 +84,9 @@ namespace Red
 	template <int Rows, int Columns>
 	void Matrix<Rows, Columns>::ZeroOut()
 	{
+#ifdef ASSERTIONS
 		assert(Data);
+#endif
 
 		for (int Row = 0; Row < Rows; ++Row)
 		{
@@ -94,7 +100,9 @@ namespace Red
 	template <int Rows, int Columns>
 	bool Matrix<Rows, Columns>::IsZero() const
 	{
+#ifdef ASSERTIONS
 		assert(Data);
+#endif
 
 		for (int Row = 0; Row < Rows; ++Row)
 		{
@@ -131,7 +139,9 @@ namespace Red
 	template <int Rows, int Columns>
 	bool Matrix<Rows, Columns>::MakeIdentity()
 	{
+#ifdef ASSERTIONS
 		assert(Data);
+#endif
 
 		// Early out if this is not a square matrix.
 		if (Rows != Columns)
@@ -152,7 +162,9 @@ namespace Red
 	template <>
 	float Matrix<2, 2>::Determinant() const
 	{
+#ifdef ASSERTIONS
 		assert(Data);
+#endif
 		
 		return ((Data[0][0] * Data[1][1]) - (Data[0][1] * Data[1][0]));
 	}
@@ -160,8 +172,10 @@ namespace Red
 	template <int Rows, int Columns>
 	float Matrix<Rows, Columns>::Determinant() const
 	{
+#ifdef ASSERTIONS
 		assert(Data);
 		assert(IsSquare());
+#endif
 
 		
 	}
