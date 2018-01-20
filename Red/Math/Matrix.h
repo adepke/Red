@@ -169,14 +169,37 @@ namespace Red
 		return ((Data[0][0] * Data[1][1]) - (Data[0][1] * Data[1][0]));
 	}
 
-	template <int Rows, int Columns>
-	float Matrix<Rows, Columns>::Determinant() const
+	template <>
+	float Matrix<3, 3>::Determinant() const
 	{
 #ifdef ASSERTIONS
 		assert(Data);
-		assert(IsSquare());
 #endif
 
-		
+		float Result = 0.f;
+
+		Matrix<2, 2> SubMatrices[3];
+
+		// Construct sub matrices.
+		for (int Iter = 0; Iter < 3; ++Iter)
+		{
+			for (int Row = 0; Row < 2; ++Row)
+			{
+				for (int Col = 0; Col < 2; ++Col)
+				{
+					// @todo: Design an algorithm for properly mapping the current working set elements to the sub matrix's elements.
+
+					SubMatrices[Iter].Data[Row][Col] = this->Data[Row + 1][Col + 1];
+				}
+			}
+		}
+
+		// Add sub matrices together.
+		for (int Iter = 0; Iter < 3; ++Iter)
+		{
+			Result += (this->Data[0][Iter] * SubMatrices[Iter].Determinant() * (Iter % 2 == 0 ? -1 : 1));
+		}
+
+		return Result;
 	}
 }  // namespace Red
