@@ -5,7 +5,7 @@ namespace Red
 	template <int Rows, int Columns>
 	class Matrix
 	{
-	protected:
+	public:
 		float** Data;
 
 	public:
@@ -24,7 +24,13 @@ namespace Red
 		void ZeroOut();
 		bool IsZero() const;
 
+		bool IsSquare() const;
+		bool IsRow() const;
+		bool IsColumn() const;
+
 		bool MakeIdentity();
+
+		float Determinant() const;
 	};
 
 	template <int Rows, int Columns>
@@ -105,6 +111,24 @@ namespace Red
 	}
 
 	template <int Rows, int Columns>
+	bool Matrix<Rows, Columns>::IsSquare() const
+	{
+		return (Rows == Columns);
+	}
+
+	template <int Rows, int Columns>
+	bool Matrix<Rows, Columns>::IsRow() const
+	{
+		return (Rows > 1 && Columns == 1);
+	}
+
+	template <int Rows, int Columns>
+	bool Matrix<Rows, Columns>::IsColumn() const
+	{
+		return (Rows == 1 && Columns > 1);
+	}
+
+	template <int Rows, int Columns>
 	bool Matrix<Rows, Columns>::MakeIdentity()
 	{
 		assert(Data);
@@ -125,4 +149,20 @@ namespace Red
 		return true;
 	}
 
+	template <>
+	float Matrix<2, 2>::Determinant() const
+	{
+		assert(Data);
+		
+		return ((Data[0][0] * Data[1][1]) - (Data[0][1] * Data[1][0]));
+	}
+
+	template <int Rows, int Columns>
+	float Matrix<Rows, Columns>::Determinant() const
+	{
+		assert(Data);
+		assert(IsSquare());
+
+		
+	}
 }  // namespace Red

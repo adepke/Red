@@ -2,6 +2,8 @@
 
 #include "MathCore.h"
 
+#include "Vector.h"
+
 #ifdef ASSERTIONS
 #include <assert.h>
 #endif
