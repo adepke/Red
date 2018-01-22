@@ -122,22 +122,22 @@ namespace Red
 		return ((Data[0][0] * Data[1][1]) - (Data[0][1] * Data[1][0]));
 	}
 
-	template <>
-	float Matrix<3, 3>::Determinant() const
+	template <int Rows, int Columns>
+	float Matrix<Rows, Columns>::Determinant() const
 	{
 		float Result = 0.f;
 
-		Matrix<2, 2> SubMatrices[3];
+		Matrix<Rows - 1, Rows - 1> SubMatrices[Rows];
 
 		// Construct sub matrices.
-		for (int Iter = 0; Iter < 3; ++Iter)
+		for (int Iter = 0; Iter < Rows; ++Iter)
 		{
-			for (int Row = 0; Row < 3; ++Row)
+			for (int Row = 0; Row < Rows; ++Row)
 			{
 				// Whether or not to adjust column.
 				bool PassedSpacer = false;
 
-				for (int Col = 0; Col < 3; ++Col)
+				for (int Col = 0; Col < Rows; ++Col)
 				{
 					// Always skip the first row.
 					if (Row == 0)
@@ -170,7 +170,7 @@ namespace Red
 		}
 
 		// Add sub matrices together.
-		for (int Iter = 0; Iter < 3; ++Iter)
+		for (int Iter = 0; Iter < Rows; ++Iter)
 		{
 			Result += (this->Data[0][Iter] * SubMatrices[Iter].Determinant() * (Iter % 2 != 0 ? -1 : 1));
 		}
