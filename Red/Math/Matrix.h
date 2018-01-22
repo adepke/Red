@@ -10,21 +10,18 @@ namespace Red
 	class Matrix
 	{
 	public:
-		float** Data;
+		float Data[Rows][Columns];
 
 	public:
 		static const Matrix<4, 4> Matrix4x4;
 
 	public:
-		Matrix(bool ManualAllocation = false);
-		Matrix(const Matrix& Target) {}
+		Matrix();
+		Matrix(const Matrix& Target);
 
 		~Matrix();
 
 	public:
-		void Empty();
-		bool IsEmpty() const;
-
 		void ZeroOut();
 		bool IsZero() const;
 
@@ -38,56 +35,24 @@ namespace Red
 	};
 
 	template <int Rows, int Columns>
-	Matrix<Rows, Columns>::Matrix(bool ManualAllocation = false)
+	Matrix<Rows, Columns>::Matrix()
 	{
-		if (!ManualAllocation)
-		{
-			Data = new float*[Rows];
+	}
 
-			for (int Iter = 0; Iter < Rows; ++Iter)
-			{
-				Data[Iter] = new float[Columns];
-			}
-
-			ZeroOut();
-		}
+	template <int Rows, int Columns>
+	Matrix<Rows, Columns>::Matrix(const Matrix<Rows, Columns>& Target)
+	{
+		// @todo: Add copy constructor.
 	}
 
 	template <int Rows, int Columns>
 	Matrix<Rows, Columns>::~Matrix()
 	{
-		Empty();
-	}
-
-	template <int Rows, int Columns>
-	void Matrix<Rows, Columns>::Empty()
-	{
-		if (Data)
-		{
-			for (int Iter = 0; Iter < Rows; ++Iter)
-			{
-				delete[] Data[Iter];
-			}
-
-			delete[] Data;
-
-			Data = nullptr;
-		}
-	}
-
-	template <int Rows, int Columns>
-	bool Matrix<Rows, Columns>::IsEmpty() const
-	{
-		return !Data;
 	}
 
 	template <int Rows, int Columns>
 	void Matrix<Rows, Columns>::ZeroOut()
 	{
-#ifdef ASSERTIONS
-		assert(Data);
-#endif
-
 		for (int Row = 0; Row < Rows; ++Row)
 		{
 			for (int Column = 0; Column < Columns; ++Column)
@@ -100,10 +65,6 @@ namespace Red
 	template <int Rows, int Columns>
 	bool Matrix<Rows, Columns>::IsZero() const
 	{
-#ifdef ASSERTIONS
-		assert(Data);
-#endif
-
 		for (int Row = 0; Row < Rows; ++Row)
 		{
 			for (int Column = 0; Column < Columns; ++Column)
@@ -139,10 +100,6 @@ namespace Red
 	template <int Rows, int Columns>
 	bool Matrix<Rows, Columns>::MakeIdentity()
 	{
-#ifdef ASSERTIONS
-		assert(Data);
-#endif
-
 		// Early out if this is not a square matrix.
 		if (Rows != Columns)
 		{
@@ -162,20 +119,12 @@ namespace Red
 	template <>
 	float Matrix<2, 2>::Determinant() const
 	{
-#ifdef ASSERTIONS
-		assert(Data);
-#endif
-		
 		return ((Data[0][0] * Data[1][1]) - (Data[0][1] * Data[1][0]));
 	}
 
 	template <>
 	float Matrix<3, 3>::Determinant() const
 	{
-#ifdef ASSERTIONS
-		assert(Data);
-#endif
-
 		float Result = 0.f;
 
 		Matrix<2, 2> SubMatrices[3];
@@ -183,13 +132,39 @@ namespace Red
 		// Construct sub matrices.
 		for (int Iter = 0; Iter < 3; ++Iter)
 		{
-			for (int Row = 0; Row < 2; ++Row)
-			{
-				for (int Col = 0; Col < 2; ++Col)
-				{
-					// @todo: Design an algorithm for properly mapping the current working set elements to the sub matrix's elements.
+			// Whether or not to adjust column.
+			bool PassedSpacer = 0;
 
-					SubMatrices[Iter].Data[Row][Col] = this->Data[Row + 1][Col + 1];
+			for (int Row = 0; Row < 3; ++Row)
+			{
+				for (int Col = 0; Col < 3; ++Col)
+				{
+					// Always skip the first row.
+					if (Row == 0)
+					{
+						continue;
+					}
+
+					// Hit the spacer column, don't copy data.
+					else if (Col == Iter)
+					{
+						PassedSpacer = true;
+
+						continue;
+					}
+					
+					else
+					{
+						if (PassedSpacer)
+						{
+							SubMatrices[Iter].Data[Row - 1][Col - 1] = this->Data[Row][Col];
+						}
+
+						else
+						{
+							SubMatrices[Iter].Data[Row - 1][Col] = this->Data[Row][Col];
+						}
+					}
 				}
 			}
 		}

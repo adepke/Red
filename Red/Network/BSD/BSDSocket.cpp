@@ -1,5 +1,7 @@
 #include "BSDSocket.h"
 
+#pragma comment(lib, "Ws2_32.lib")
+
 namespace Red
 {
 	bool BSDSocket::Initialize(const SocketDescription& InDescription)
