@@ -132,11 +132,11 @@ namespace Red
 		// Construct sub matrices.
 		for (int Iter = 0; Iter < 3; ++Iter)
 		{
-			// Whether or not to adjust column.
-			bool PassedSpacer = 0;
-
 			for (int Row = 0; Row < 3; ++Row)
 			{
+				// Whether or not to adjust column.
+				bool PassedSpacer = false;
+
 				for (int Col = 0; Col < 3; ++Col)
 				{
 					// Always skip the first row.
