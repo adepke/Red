@@ -172,7 +172,7 @@ namespace Red
 		// Add sub matrices together.
 		for (int Iter = 0; Iter < 3; ++Iter)
 		{
-			Result += (this->Data[0][Iter] * SubMatrices[Iter].Determinant() * (Iter % 2 == 0 ? -1 : 1));
+			Result += (this->Data[0][Iter] * SubMatrices[Iter].Determinant() * (Iter % 2 != 0 ? -1 : 1));
 		}
 
 		return Result;
