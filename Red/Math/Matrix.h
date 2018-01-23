@@ -20,8 +20,9 @@ namespace Red
 		Matrix(const Matrix& Target);
 
 		~Matrix();
-
-	public:
+		
+		Matrix<Rows, Columns>& operator=(const Matrix<Rows, Columns>& Target);
+		
 		void ZeroOut();
 		bool IsZero() const;
 
@@ -54,6 +55,18 @@ namespace Red
 	template <int Rows, int Columns>
 	Matrix<Rows, Columns>::~Matrix()
 	{
+	}
+	
+	template <int Rows, int Columns>
+	Matrix<Rows, Columns>& Matrix<Rows, Columns>::operator=(const Matrix<Rows, Columns>& Target)
+	{
+		for (int Row = 0; Row < Rows; ++Row)
+		{
+			for (int Column = 0; Column < Columns; ++Column)
+			{
+				Data[Row][Column] = Target.Data[Row][Column];
+			}
+		}
 	}
 
 	template <int Rows, int Columns>
