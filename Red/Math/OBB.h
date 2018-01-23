@@ -71,7 +71,7 @@ namespace Red
 		OBB operator--(int);
 	};
 
-	OBB& OBB::operator=(const OBB& Target)
+	REDINLINE OBB& OBB::operator=(const OBB& Target)
 	{
 		Location = Target.Location;
 		HalfSize = Target.HalfSize;
@@ -79,91 +79,91 @@ namespace Red
 		return *this;
 	}
 
-	OBB& OBB::operator=(const Vector3& TargetLocation)
+	REDINLINE OBB& OBB::operator=(const Vector3& TargetLocation)
 	{
 		Location = TargetLocation;
 
 		return *this;
 	}
 
-	OBB OBB::operator+(const OBB& Target) const
+	REDINLINE OBB OBB::operator+(const OBB& Target) const
 	{
 		return OBB(Location + Target.Location, HalfSize + Target.HalfSize);
 	}
 
-	OBB OBB::operator+(const Vector3& TargetLocation) const
+	REDINLINE OBB OBB::operator+(const Vector3& TargetLocation) const
 	{
 		return OBB(Location + TargetLocation, HalfSize);
 	}
 
-	OBB OBB::operator-(const OBB& Target) const
+	REDINLINE OBB OBB::operator-(const OBB& Target) const
 	{
 		return OBB(Location - Target.Location, HalfSize - Target.HalfSize);
 	}
 
-	OBB OBB::operator-(const Vector3& TargetLocation) const
+	REDINLINE OBB OBB::operator-(const Vector3& TargetLocation) const
 	{
 		return OBB(Location - TargetLocation, HalfSize);
 	}
 
-	OBB& OBB::operator+=(const OBB& Target)
+	REDINLINE OBB& OBB::operator+=(const OBB& Target)
 	{
 		*this = *this + Target;
 
 		return *this;
 	}
 
-	OBB& OBB::operator+=(const Vector3& TargetLocation)
+	REDINLINE OBB& OBB::operator+=(const Vector3& TargetLocation)
 	{
 		*this = *this + TargetLocation;
 
 		return *this;
 	}
 
-	OBB& OBB::operator-=(const OBB& Target)
+	REDINLINE OBB& OBB::operator-=(const OBB& Target)
 	{
 		*this = *this - Target;
 
 		return *this;
 	}
 
-	OBB& OBB::operator-=(const Vector3& TargetLocation)
+	REDINLINE OBB& OBB::operator-=(const Vector3& TargetLocation)
 	{
 		*this = *this - TargetLocation;
 
 		return *this;
 	}
 
-	OBB& OBB::operator++()
+	REDINLINE OBB& OBB::operator++()
 	{
 		++HalfSize;
 
 		return *this;
 	}
 
-	OBB& OBB::operator--()
+	REDINLINE OBB& OBB::operator--()
 	{
 		--HalfSize;
 
 		return *this;
 	}
 
-	bool OBB::operator==(const OBB& Target) const
+	REDINLINE bool OBB::operator==(const OBB& Target) const
 	{
 		return ((Location == Target.Location) && (HalfSize == Target.HalfSize));
 	}
 
-	bool OBB::operator==(const Vector3& TargetLocation) const
+	REDINLINE bool OBB::operator==(const Vector3& TargetLocation) const
 	{
 		return (Location == TargetLocation);
 	}
 
-	bool OBB::operator!=(const OBB& Target) const
+	REDINLINE bool OBB::operator!=(const OBB& Target) const
 	{
 		return !(operator==(Target));
 	}
 
-	bool OBB::operator!=(const Vector3& TargetLocation) const
+	REDINLINE bool OBB::operator!=(const Vector3& TargetLocation) const
 	{
 		return !(operator==(TargetLocation));
 	}
