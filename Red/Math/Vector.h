@@ -1,11 +1,15 @@
 #pragma once
 
-#include "../Core/Definitions.h"
-
 #include "MathCore.h"
 
 #ifdef ASSERTIONS
 #include <assert.h>
+#endif
+
+#ifdef FORCEDINLINES
+#define REDINLINE __forceinline
+#else
+#define REDINLINE inline
 #endif
 
 #ifdef VEC_DOUBLE
@@ -94,7 +98,7 @@ namespace Red
 		Vector2 operator--(int);
 	};
 
-	Vector2& Vector2::operator=(const Vector2& Target)
+	REDINLINE Vector2& Vector2::operator=(const Vector2& Target)
 	{
 		X = Target.X;
 		Y = Target.Y;
@@ -102,7 +106,7 @@ namespace Red
 		return *this;
 	}
 
-	Vector2& Vector2::operator=(VEC_MEMBER Scalar)
+	REDINLINE Vector2& Vector2::operator=(VEC_MEMBER Scalar)
 	{
 		X = Scalar;
 		Y = Scalar;
@@ -110,108 +114,108 @@ namespace Red
 		return *this;
 	}
 
-	Vector2 Vector2::operator+(const Vector2& Target) const
+	REDINLINE Vector2 Vector2::operator+(const Vector2& Target) const
 	{
 		return Vector2(X + Target.X, Y + Target.Y);
 	}
 
-	Vector2 Vector2::operator+(VEC_MEMBER Scalar) const
+	REDINLINE Vector2 Vector2::operator+(VEC_MEMBER Scalar) const
 	{
 		return Vector2(X + Scalar, Y + Scalar);
 	}
 
-	Vector2 Vector2::operator-() const
+	REDINLINE Vector2 Vector2::operator-() const
 	{
 		return Vector2(-X, -Y);
 	}
 
-	Vector2 Vector2::operator-(const Vector2& Target) const
+	REDINLINE Vector2 Vector2::operator-(const Vector2& Target) const
 	{
 		return Vector2(X - Target.X, Y - Target.Y);
 	}
 
-	Vector2 Vector2::operator-(VEC_MEMBER Scalar) const
+	REDINLINE Vector2 Vector2::operator-(VEC_MEMBER Scalar) const
 	{
 		return Vector2(X - Scalar, Y - Scalar);
 	}
 
-	Vector2 Vector2::operator*(const Vector2& Target) const
+	REDINLINE Vector2 Vector2::operator*(const Vector2& Target) const
 	{
 		return Vector2(X * Target.X, Y * Target.Y);
 	}
 
-	Vector2 Vector2::operator*(VEC_MEMBER Scalar) const
+	REDINLINE Vector2 Vector2::operator*(VEC_MEMBER Scalar) const
 	{
 		return Vector2(X * Scalar, Y * Scalar);
 	}
 
-	Vector2 Vector2::operator/(const Vector2& Target) const
+	REDINLINE Vector2 Vector2::operator/(const Vector2& Target) const
 	{
 		return Vector2(X / Target.X, Y / Target.Y);
 	}
 
-	Vector2 Vector2::operator/(VEC_MEMBER Scalar) const
+	REDINLINE Vector2 Vector2::operator/(VEC_MEMBER Scalar) const
 	{
 		return Vector2(X / Scalar, Y / Scalar);
 	}
 
-	Vector2& Vector2::operator+=(const Vector2& Target)
+	REDINLINE Vector2& Vector2::operator+=(const Vector2& Target)
 	{
 		*this = *this + Target;
 
 		return *this;
 	}
 
-	Vector2& Vector2::operator+=(VEC_MEMBER Scalar)
+	REDINLINE Vector2& Vector2::operator+=(VEC_MEMBER Scalar)
 	{
 		*this = *this + Scalar;
 
 		return *this;
 	}
 
-	Vector2& Vector2::operator-=(const Vector2& Target)
+	REDINLINE Vector2& Vector2::operator-=(const Vector2& Target)
 	{
 		*this = *this - Target;
 
 		return *this;
 	}
 
-	Vector2& Vector2::operator-=(VEC_MEMBER Scalar)
+	REDINLINE Vector2& Vector2::operator-=(VEC_MEMBER Scalar)
 	{
 		*this = *this - Scalar;
 
 		return *this;
 	}
 
-	Vector2& Vector2::operator*=(const Vector2& Target)
+	REDINLINE Vector2& Vector2::operator*=(const Vector2& Target)
 	{
 		*this = *this * Target;
 
 		return *this;
 	}
 
-	Vector2& Vector2::operator*=(VEC_MEMBER Scalar)
+	REDINLINE Vector2& Vector2::operator*=(VEC_MEMBER Scalar)
 	{
 		*this = *this * Scalar;
 
 		return *this;
 	}
 
-	Vector2& Vector2::operator/=(const Vector2& Target)
+	REDINLINE Vector2& Vector2::operator/=(const Vector2& Target)
 	{
 		*this = *this / Target;
 
 		return *this;
 	}
 
-	Vector2& Vector2::operator/=(VEC_MEMBER Scalar)
+	REDINLINE Vector2& Vector2::operator/=(VEC_MEMBER Scalar)
 	{
 		*this = *this / Scalar;
 
 		return *this;
 	}
 
-	Vector2& Vector2::operator++()
+	REDINLINE Vector2& Vector2::operator++()
 	{
 		X += 1;
 		Y += 1;
@@ -219,7 +223,7 @@ namespace Red
 		return *this;
 	}
 
-	Vector2& Vector2::operator--()
+	REDINLINE Vector2& Vector2::operator--()
 	{
 		X -= 1;
 		Y -= 1;
@@ -227,67 +231,67 @@ namespace Red
 		return *this;
 	}
 
-	bool Vector2::operator==(const Vector2& Target) const
+	REDINLINE bool Vector2::operator==(const Vector2& Target) const
 	{
 		return ((X == Target.X) && (Y == Target.Y));
 	}
 
-	bool Vector2::operator==(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector2::operator==(VEC_MEMBER Scalar) const
 	{
 		return ((X == Scalar) && (Y == Scalar));
 	}
 
-	bool Vector2::operator!=(const Vector2& Target) const
+	REDINLINE bool Vector2::operator!=(const Vector2& Target) const
 	{
 		return !(operator==(Target));
 	}
 
-	bool Vector2::operator!=(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector2::operator!=(VEC_MEMBER Scalar) const
 	{
 		return !(operator==(Scalar));
 	}
 
-	bool Vector2::operator<(const Vector2& Target) const
+	REDINLINE bool Vector2::operator<(const Vector2& Target) const
 	{
 		return ((X < Target.X) && (Y < Target.Y));
 	}
 
-	bool Vector2::operator<(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector2::operator<(VEC_MEMBER Scalar) const
 	{
 		return ((X < Scalar) && (Y < Scalar));
 	}
 
-	bool Vector2::operator>(const Vector2& Target) const
+	REDINLINE bool Vector2::operator>(const Vector2& Target) const
 	{
 		return ((X > Target.X) && (Y > Target.Y));
 	}
 
-	bool Vector2::operator>(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector2::operator>(VEC_MEMBER Scalar) const
 	{
 		return ((X > Scalar) && (Y > Scalar));
 	}
 
-	bool Vector2::operator<=(const Vector2& Target) const
+	REDINLINE bool Vector2::operator<=(const Vector2& Target) const
 	{
 		return ((X <= Target.X) && (Y <= Target.Y));
 	}
 
-	bool Vector2::operator<=(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector2::operator<=(VEC_MEMBER Scalar) const
 	{
 		return ((X <= Scalar) && (Y <= Scalar));
 	}
 
-	bool Vector2::operator>=(const Vector2& Target) const
+	REDINLINE bool Vector2::operator>=(const Vector2& Target) const
 	{
 		return ((X >= Target.X) && (Y >= Target.Y));
 	}
 
-	bool Vector2::operator>=(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector2::operator>=(VEC_MEMBER Scalar) const
 	{
 		return ((X >= Scalar) && (Y >= Scalar));
 	}
 
-	void Vector2::Normalize()
+	REDINLINE void Vector2::Normalize()
 	{
 		VEC_MEMBER Magnitude_ = Magnitude();
 
@@ -379,7 +383,7 @@ namespace Red
 		Vector3 operator--(int);
 	};
 
-	Vector3& Vector3::operator=(const Vector3& Target)
+	REDINLINE Vector3& Vector3::operator=(const Vector3& Target)
 	{
 		X = Target.X;
 		Y = Target.Y;
@@ -388,7 +392,7 @@ namespace Red
 		return *this;
 	}
 
-	Vector3& Vector3::operator=(VEC_MEMBER Scalar)
+	REDINLINE Vector3& Vector3::operator=(VEC_MEMBER Scalar)
 	{
 		X = Scalar;
 		Y = Scalar;
@@ -397,108 +401,108 @@ namespace Red
 		return *this;
 	}
 
-	Vector3 Vector3::operator+(const Vector3& Target) const
+	REDINLINE Vector3 Vector3::operator+(const Vector3& Target) const
 	{
 		return Vector3(X + Target.X, Y + Target.Y, Z + Target.Z);
 	}
 
-	Vector3 Vector3::operator+(VEC_MEMBER Scalar) const
+	REDINLINE Vector3 Vector3::operator+(VEC_MEMBER Scalar) const
 	{
 		return Vector3(X + Scalar, Y + Scalar, Z + Scalar);
 	}
 
-	Vector3 Vector3::operator-() const
+	REDINLINE Vector3 Vector3::operator-() const
 	{
 		return Vector3(-X, -Y, -Z);
 	}
 
-	Vector3 Vector3::operator-(const Vector3& Target) const
+	REDINLINE Vector3 Vector3::operator-(const Vector3& Target) const
 	{
 		return Vector3(X - Target.X, Y - Target.Y, Z - Target.Z);
 	}
 
-	Vector3 Vector3::operator-(VEC_MEMBER Scalar) const
+	REDINLINE Vector3 Vector3::operator-(VEC_MEMBER Scalar) const
 	{
 		return Vector3(X - Scalar, Y - Scalar, Z - Scalar);
 	}
 
-	Vector3 Vector3::operator*(const Vector3& Target) const
+	REDINLINE Vector3 Vector3::operator*(const Vector3& Target) const
 	{
 		return Vector3(X * Target.X, Y * Target.Y, Z * Target.Z);
 	}
 
-	Vector3 Vector3::operator*(VEC_MEMBER Scalar) const
+	REDINLINE Vector3 Vector3::operator*(VEC_MEMBER Scalar) const
 	{
 		return Vector3(X * Scalar, Y * Scalar, Z * Scalar);
 	}
 
-	Vector3 Vector3::operator/(const Vector3& Target) const
+	REDINLINE Vector3 Vector3::operator/(const Vector3& Target) const
 	{
 		return Vector3(X / Target.X, Y / Target.Y, Z / Target.Z);
 	}
 
-	Vector3 Vector3::operator/(VEC_MEMBER Scalar) const
+	REDINLINE Vector3 Vector3::operator/(VEC_MEMBER Scalar) const
 	{
 		return Vector3(X / Scalar, Y / Scalar, Z / Scalar);
 	}
 
-	Vector3& Vector3::operator+=(const Vector3& Target)
+	REDINLINE Vector3& Vector3::operator+=(const Vector3& Target)
 	{
 		*this = *this + Target;
 
 		return *this;
 	}
 
-	Vector3& Vector3::operator+=(VEC_MEMBER Scalar)
+	REDINLINE Vector3& Vector3::operator+=(VEC_MEMBER Scalar)
 	{
 		*this = *this + Scalar;
 
 		return *this;
 	}
 
-	Vector3& Vector3::operator-=(const Vector3& Target)
+	REDINLINE Vector3& Vector3::operator-=(const Vector3& Target)
 	{
 		*this = *this - Target;
 
 		return *this;
 	}
 
-	Vector3& Vector3::operator-=(VEC_MEMBER Scalar)
+	REDINLINE Vector3& Vector3::operator-=(VEC_MEMBER Scalar)
 	{
 		*this = *this - Scalar;
 
 		return *this;
 	}
 
-	Vector3& Vector3::operator*=(const Vector3& Target)
+	REDINLINE Vector3& Vector3::operator*=(const Vector3& Target)
 	{
 		*this = *this * Target;
 
 		return *this;
 	}
 
-	Vector3& Vector3::operator*=(VEC_MEMBER Scalar)
+	REDINLINE Vector3& Vector3::operator*=(VEC_MEMBER Scalar)
 	{
 		*this = *this * Scalar;
 
 		return *this;
 	}
 
-	Vector3& Vector3::operator/=(const Vector3& Target)
+	REDINLINE Vector3& Vector3::operator/=(const Vector3& Target)
 	{
 		*this = *this / Target;
 
 		return *this;
 	}
 
-	Vector3& Vector3::operator/=(VEC_MEMBER Scalar)
+	REDINLINE Vector3& Vector3::operator/=(VEC_MEMBER Scalar)
 	{
 		*this = *this / Scalar;
 
 		return *this;
 	}
 
-	Vector3& Vector3::operator++()
+	REDINLINE Vector3& Vector3::operator++()
 	{
 		X += 1;
 		Y += 1;
@@ -507,7 +511,7 @@ namespace Red
 		return *this;
 	}
 
-	Vector3& Vector3::operator--()
+	REDINLINE Vector3& Vector3::operator--()
 	{
 		X -= 1;
 		Y -= 1;
@@ -516,67 +520,67 @@ namespace Red
 		return *this;
 	}
 
-	bool Vector3::operator==(const Vector3& Target) const
+	REDINLINE bool Vector3::operator==(const Vector3& Target) const
 	{
 		return ((X == Target.X) && (Y == Target.Y) && (Z == Target.Z));
 	}
 
-	bool Vector3::operator==(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector3::operator==(VEC_MEMBER Scalar) const
 	{
 		return ((X == Scalar) && (Y == Scalar) && (Z == Scalar));
 	}
 
-	bool Vector3::operator!=(const Vector3& Target) const
+	REDINLINE bool Vector3::operator!=(const Vector3& Target) const
 	{
 		return !(operator==(Target));
 	}
 
-	bool Vector3::operator!=(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector3::operator!=(VEC_MEMBER Scalar) const
 	{
 		return !(operator==(Scalar));
 	}
 
-	bool Vector3::operator<(const Vector3& Target) const
+	REDINLINE bool Vector3::operator<(const Vector3& Target) const
 	{
 		return ((X < Target.X) && (Y < Target.Y) && (Z < Target.Z));
 	}
 
-	bool Vector3::operator<(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector3::operator<(VEC_MEMBER Scalar) const
 	{
 		return ((X < Scalar) && (Y < Scalar) && (Z < Scalar));
 	}
 
-	bool Vector3::operator>(const Vector3& Target) const
+	REDINLINE bool Vector3::operator>(const Vector3& Target) const
 	{
 		return ((X > Target.X) && (Y > Target.Y) && (Z > Target.Z));
 	}
 
-	bool Vector3::operator>(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector3::operator>(VEC_MEMBER Scalar) const
 	{
 		return ((X > Scalar) && (Y > Scalar) && (Z > Scalar));
 	}
 
-	bool Vector3::operator<=(const Vector3& Target) const
+	REDINLINE bool Vector3::operator<=(const Vector3& Target) const
 	{
 		return ((X <= Target.X) && (Y <= Target.Y) && (Z <= Target.Z));
 	}
 
-	bool Vector3::operator<=(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector3::operator<=(VEC_MEMBER Scalar) const
 	{
 		return ((X <= Scalar) && (Y <= Scalar) && (Z <= Scalar));
 	}
 
-	bool Vector3::operator>=(const Vector3& Target) const
+	REDINLINE bool Vector3::operator>=(const Vector3& Target) const
 	{
 		return ((X >= Target.X) && (Y >= Target.Y) && (Z >= Target.Z));
 	}
 
-	bool Vector3::operator>=(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector3::operator>=(VEC_MEMBER Scalar) const
 	{
 		return ((X >= Scalar) && (Y >= Scalar) && (Z >= Scalar));
 	}
 
-	void Vector3::Normalize()
+	REDINLINE void Vector3::Normalize()
 	{
 		VEC_MEMBER Magnitude_ = Magnitude();
 
@@ -669,7 +673,7 @@ namespace Red
 		Vector4 operator--(int);
 	};
 
-	Vector4& Vector4::operator=(const Vector4& Target)
+	REDINLINE Vector4& Vector4::operator=(const Vector4& Target)
 	{
 		X = Target.X;
 		Y = Target.Y;
@@ -679,7 +683,7 @@ namespace Red
 		return *this;
 	}
 
-	Vector4& Vector4::operator=(VEC_MEMBER Scalar)
+	REDINLINE Vector4& Vector4::operator=(VEC_MEMBER Scalar)
 	{
 		X = Scalar;
 		Y = Scalar;
@@ -689,108 +693,108 @@ namespace Red
 		return *this;
 	}
 
-	Vector4 Vector4::operator+(const Vector4& Target) const
+	REDINLINE Vector4 Vector4::operator+(const Vector4& Target) const
 	{
 		return Vector4(X + Target.X, Y + Target.Y, Z + Target.Z, W + Target.W);
 	}
 
-	Vector4 Vector4::operator+(VEC_MEMBER Scalar) const
+	REDINLINE Vector4 Vector4::operator+(VEC_MEMBER Scalar) const
 	{
 		return Vector4(X + Scalar, Y + Scalar, Z + Scalar, W + Scalar);
 	}
 
-	Vector4 Vector4::operator-() const
+	REDINLINE Vector4 Vector4::operator-() const
 	{
 		return Vector4(-X, -Y, -Z, -W);
 	}
 
-	Vector4 Vector4::operator-(const Vector4& Target) const
+	REDINLINE Vector4 Vector4::operator-(const Vector4& Target) const
 	{
 		return Vector4(X - Target.X, Y - Target.Y, Z - Target.Z, W - Target.W);
 	}
 
-	Vector4 Vector4::operator-(VEC_MEMBER Scalar) const
+	REDINLINE Vector4 Vector4::operator-(VEC_MEMBER Scalar) const
 	{
 		return Vector4(X - Scalar, Y - Scalar, Z - Scalar, W - Scalar);
 	}
 
-	Vector4 Vector4::operator*(const Vector4& Target) const
+	REDINLINE Vector4 Vector4::operator*(const Vector4& Target) const
 	{
 		return Vector4(X * Target.X, Y * Target.Y, Z * Target.Z, W * Target.W);
 	}
 
-	Vector4 Vector4::operator*(VEC_MEMBER Scalar) const
+	REDINLINE Vector4 Vector4::operator*(VEC_MEMBER Scalar) const
 	{
 		return Vector4(X * Scalar, Y * Scalar, Z * Scalar, W * Scalar);
 	}
 
-	Vector4 Vector4::operator/(const Vector4& Target) const
+	REDINLINE Vector4 Vector4::operator/(const Vector4& Target) const
 	{
 		return Vector4(X / Target.X, Y / Target.Y, Z / Target.Z, W / Target.W);
 	}
 
-	Vector4 Vector4::operator/(VEC_MEMBER Scalar) const
+	REDINLINE Vector4 Vector4::operator/(VEC_MEMBER Scalar) const
 	{
 		return Vector4(X / Scalar, Y / Scalar, Z / Scalar, W / Scalar);
 	}
 
-	Vector4& Vector4::operator+=(const Vector4& Target)
+	REDINLINE Vector4& Vector4::operator+=(const Vector4& Target)
 	{
 		*this = *this + Target;
 
 		return *this;
 	}
 
-	Vector4& Vector4::operator+=(VEC_MEMBER Scalar)
+	REDINLINE Vector4& Vector4::operator+=(VEC_MEMBER Scalar)
 	{
 		*this = *this + Scalar;
 
 		return *this;
 	}
 
-	Vector4& Vector4::operator-=(const Vector4& Target)
+	REDINLINE Vector4& Vector4::operator-=(const Vector4& Target)
 	{
 		*this = *this - Target;
 
 		return *this;
 	}
 
-	Vector4& Vector4::operator-=(VEC_MEMBER Scalar)
+	REDINLINE Vector4& Vector4::operator-=(VEC_MEMBER Scalar)
 	{
 		*this = *this - Scalar;
 
 		return *this;
 	}
 
-	Vector4& Vector4::operator*=(const Vector4& Target)
+	REDINLINE Vector4& Vector4::operator*=(const Vector4& Target)
 	{
 		*this = *this * Target;
 
 		return *this;
 	}
 
-	Vector4& Vector4::operator*=(VEC_MEMBER Scalar)
+	REDINLINE Vector4& Vector4::operator*=(VEC_MEMBER Scalar)
 	{
 		*this = *this * Scalar;
 
 		return *this;
 	}
 
-	Vector4& Vector4::operator/=(const Vector4& Target)
+	REDINLINE Vector4& Vector4::operator/=(const Vector4& Target)
 	{
 		*this = *this / Target;
 
 		return *this;
 	}
 
-	Vector4& Vector4::operator/=(VEC_MEMBER Scalar)
+	REDINLINE Vector4& Vector4::operator/=(VEC_MEMBER Scalar)
 	{
 		*this = *this / Scalar;
 
 		return *this;
 	}
 
-	Vector4& Vector4::operator++()
+	REDINLINE Vector4& Vector4::operator++()
 	{
 		X += 1;
 		Y += 1;
@@ -800,7 +804,7 @@ namespace Red
 		return *this;
 	}
 
-	Vector4& Vector4::operator--()
+	REDINLINE Vector4& Vector4::operator--()
 	{
 		X -= 1;
 		Y -= 1;
@@ -810,67 +814,67 @@ namespace Red
 		return *this;
 	}
 
-	bool Vector4::operator==(const Vector4& Target) const
+	REDINLINE bool Vector4::operator==(const Vector4& Target) const
 	{
 		return ((X == Target.X) && (Y == Target.Y) && (Z == Target.Z) && (W == Target.W));
 	}
 
-	bool Vector4::operator==(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector4::operator==(VEC_MEMBER Scalar) const
 	{
 		return ((X == Scalar) && (Y == Scalar) && (Z == Scalar) && (W == Scalar));
 	}
 
-	bool Vector4::operator!=(const Vector4& Target) const
+	REDINLINE bool Vector4::operator!=(const Vector4& Target) const
 	{
 		return !(operator==(Target));
 	}
 
-	bool Vector4::operator!=(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector4::operator!=(VEC_MEMBER Scalar) const
 	{
 		return !(operator==(Scalar));
 	}
 
-	bool Vector4::operator<(const Vector4& Target) const
+	REDINLINE bool Vector4::operator<(const Vector4& Target) const
 	{
 		return ((X < Target.X) && (Y < Target.Y) && (Z < Target.Z) && (W < Target.W));
 	}
 
-	bool Vector4::operator<(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector4::operator<(VEC_MEMBER Scalar) const
 	{
 		return ((X < Scalar) && (Y < Scalar) && (Z < Scalar) && (W < Scalar));
 	}
 
-	bool Vector4::operator>(const Vector4& Target) const
+	REDINLINE bool Vector4::operator>(const Vector4& Target) const
 	{
 		return ((X > Target.X) && (Y > Target.Y) && (Z > Target.Z) && (W > Target.W));
 	}
 
-	bool Vector4::operator>(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector4::operator>(VEC_MEMBER Scalar) const
 	{
 		return ((X > Scalar) && (Y > Scalar) && (Z > Scalar) && (W > Scalar));
 	}
 
-	bool Vector4::operator<=(const Vector4& Target) const
+	REDINLINE bool Vector4::operator<=(const Vector4& Target) const
 	{
 		return ((X <= Target.X) && (Y <= Target.Y) && (Z <= Target.Z) && (W <= Target.W));
 	}
 
-	bool Vector4::operator<=(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector4::operator<=(VEC_MEMBER Scalar) const
 	{
 		return ((X <= Scalar) && (Y <= Scalar) && (Z <= Scalar) && (W <= Scalar));
 	}
 
-	bool Vector4::operator>=(const Vector4& Target) const
+	REDINLINE bool Vector4::operator>=(const Vector4& Target) const
 	{
 		return ((X >= Target.X) && (Y >= Target.Y) && (Z >= Target.Z) && (W >= Target.W));
 	}
 
-	bool Vector4::operator>=(VEC_MEMBER Scalar) const
+	REDINLINE bool Vector4::operator>=(VEC_MEMBER Scalar) const
 	{
 		return ((X >= Scalar) && (Y >= Scalar) && (Z >= Scalar) && (W >= Scalar));
 	}
 
-	void Vector4::Normalize()
+	REDINLINE void Vector4::Normalize()
 	{
 		VEC_MEMBER Magnitude_ = Magnitude();
 
@@ -886,22 +890,22 @@ namespace Red
 
 	// Vector Operations
 
-	VEC_MEMBER Dot(const Vector2& TargetA, const Vector2& TargetB)
+	REDINLINE VEC_MEMBER Dot(const Vector2& TargetA, const Vector2& TargetB)
 	{
 		return VEC_MEMBER(TargetA.X * TargetB.X + TargetA.Y * TargetB.Y);
 	}
 
-	VEC_MEMBER Dot(const Vector3& TargetA, const Vector3& TargetB)
+	REDINLINE VEC_MEMBER Dot(const Vector3& TargetA, const Vector3& TargetB)
 	{
 		return VEC_MEMBER(TargetA.X * TargetB.X + TargetA.Y * TargetB.Y + TargetA.Z * TargetB.Z);
 	}
 
-	VEC_MEMBER Dot(const Vector4& TargetA, const Vector4& TargetB)
+	REDINLINE VEC_MEMBER Dot(const Vector4& TargetA, const Vector4& TargetB)
 	{
 		return VEC_MEMBER(TargetA.X * TargetB.X + TargetA.Y * TargetB.Y + TargetA.Z * TargetB.Z + TargetA.W * TargetB.W);
 	}
 
-	void Cross(Vector3* Result, const Vector3& TargetA, const Vector3& TargetB)
+	REDINLINE void Cross(Vector3* Result, const Vector3& TargetA, const Vector3& TargetB)
 	{
 		*Result = Vector3(
 			TargetA.Y * TargetB.Z - TargetA.Z * TargetB.Y,
@@ -910,7 +914,7 @@ namespace Red
 		);
 	}
 
-	void Cross(Vector4* Result, const Vector4& TargetA, const Vector4& TargetB)
+	REDINLINE void Cross(Vector4* Result, const Vector4& TargetA, const Vector4& TargetB)
 	{
 		*Result = Vector4(
 			TargetA.Y * TargetB.Z - TargetA.Z * TargetB.Y,
@@ -920,7 +924,7 @@ namespace Red
 		);
 	}
 
-	void Clamp(Vector2* Result, const Vector2& Target, VEC_MEMBER MinX, VEC_MEMBER MinY, VEC_MEMBER MaxX, VEC_MEMBER MaxY)
+	REDINLINE void Clamp(Vector2* Result, const Vector2& Target, VEC_MEMBER MinX, VEC_MEMBER MinY, VEC_MEMBER MaxX, VEC_MEMBER MaxY)
 	{
 		*Result = (
 			((Target.X > MinX) ? ((Target.X < MaxX) ? Target.X : MaxX) : MinX),
@@ -928,7 +932,7 @@ namespace Red
 			);
 	}
 
-	void Clamp(Vector2* Result, const Vector2& Target, const Vector2& Min, const Vector2& Max)
+	REDINLINE void Clamp(Vector2* Result, const Vector2& Target, const Vector2& Min, const Vector2& Max)
 	{
 		*Result = (
 			((Target.X > Min.X) ? ((Target.X < Max.X) ? Target.X : Max.X) : Min.X),
@@ -936,7 +940,7 @@ namespace Red
 			);
 	}
 
-	void Clamp(Vector3* Result, const Vector3& Target, VEC_MEMBER MinX, VEC_MEMBER MinY, VEC_MEMBER MinZ, VEC_MEMBER MaxX, VEC_MEMBER MaxY, VEC_MEMBER MaxZ)
+	REDINLINE void Clamp(Vector3* Result, const Vector3& Target, VEC_MEMBER MinX, VEC_MEMBER MinY, VEC_MEMBER MinZ, VEC_MEMBER MaxX, VEC_MEMBER MaxY, VEC_MEMBER MaxZ)
 	{
 		*Result = (
 			((Target.X > MinX) ? ((Target.X < MaxX) ? Target.X : MaxX) : MinX),
@@ -945,7 +949,7 @@ namespace Red
 			);
 	}
 
-	void Clamp(Vector3* Result, const Vector3& Target, const Vector3& Min, const Vector3& Max)
+	REDINLINE void Clamp(Vector3* Result, const Vector3& Target, const Vector3& Min, const Vector3& Max)
 	{
 		*Result = (
 			((Target.X > Min.X) ? ((Target.X < Max.X) ? Target.X : Max.X) : Min.X),
@@ -954,7 +958,7 @@ namespace Red
 			);
 	}
 
-	void Clamp(Vector4* Result, const Vector4& Target, VEC_MEMBER MinX, VEC_MEMBER MinY, VEC_MEMBER MinZ, VEC_MEMBER MinW, VEC_MEMBER MaxX, VEC_MEMBER MaxY, VEC_MEMBER MaxZ, VEC_MEMBER MaxW)
+	REDINLINE void Clamp(Vector4* Result, const Vector4& Target, VEC_MEMBER MinX, VEC_MEMBER MinY, VEC_MEMBER MinZ, VEC_MEMBER MinW, VEC_MEMBER MaxX, VEC_MEMBER MaxY, VEC_MEMBER MaxZ, VEC_MEMBER MaxW)
 	{
 		*Result = (
 			((Target.X > MinX) ? ((Target.X < MaxX) ? Target.X : MaxX) : MinX),
@@ -964,7 +968,7 @@ namespace Red
 			);
 	}
 
-	void Clamp(Vector4* Result, const Vector4& Target, const Vector4& Min, const Vector4& Max)
+	REDINLINE void Clamp(Vector4* Result, const Vector4& Target, const Vector4& Min, const Vector4& Max)
 	{
 		*Result = (
 			((Target.X > Min.X) ? ((Target.X < Max.X) ? Target.X : Max.X) : Min.X),
@@ -974,21 +978,21 @@ namespace Red
 			);
 	}
 
-	void Lerp(Vector2* Result, const Vector2& Source, const Vector2& Target, float Alpha)
+	REDINLINE void Lerp(Vector2* Result, const Vector2& Source, const Vector2& Target, float Alpha)
 	{
 		Vector2 DeltaVec(Target - Source);
 
 		*Result = Source + (DeltaVec * Alpha);
 	}
 
-	void Lerp(Vector3* Result, const Vector3& Source, const Vector3& Target, float Alpha)
+	REDINLINE void Lerp(Vector3* Result, const Vector3& Source, const Vector3& Target, float Alpha)
 	{
 		Vector3 DeltaVec(Target - Source);
 
 		*Result = Source + (DeltaVec * Alpha);
 	}
 
-	void Lerp(Vector4* Result, const Vector4& Source, const Vector4& Target, float Alpha)
+	REDINLINE void Lerp(Vector4* Result, const Vector4& Source, const Vector4& Target, float Alpha)
 	{
 		Vector4 DeltaVec(Target - Source);
 

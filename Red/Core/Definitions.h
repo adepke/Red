@@ -3,6 +3,9 @@
 // Uses Compile Time And Runtime Assertions When Possible
 #define ASSERTIONS
 
+// To Force all Inlines or Let the Compiler Decide
+//#define FORCEDINLINES
+
 // Vectors Allocate Double Memory To Increase Accuracy
 //#define VEC_DOUBLE
 

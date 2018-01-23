@@ -8,17 +8,16 @@
 #include <assert.h>
 #endif
 
+#ifdef FORCEDINLINES
+#define REDINLINE __forceinline
+#else
+#define REDINLINE inline
+#endif
+
 #define QUA_ALIGN(n) __declspec(align(n))
 
 namespace Red
 {
-	// Forward Declaration of Vector2
-	class Vector2;
-	// Forward Declaration of Vector3
-	class Vector3;
-	// Forward Declaration of Vector4
-	class Vector4;
-
 	// 16-Byte Aligned Quaternion Containing X, Y, Z, and W
 	QUA_ALIGN(16) class Quaternion
 	{
@@ -74,7 +73,7 @@ namespace Red
 		bool IsNormalizedFast() const { float Magnitude_ = MagnitudeSquared(); return ((Magnitude_ >= 0.999f) && (Magnitude_ <= 1.001f)); }
 	};
 
-	Quaternion& Quaternion::operator=(const Quaternion& Target)
+	REDINLINE Quaternion& Quaternion::operator=(const Quaternion& Target)
 	{
 		X = Target.X;
 		Y = Target.Y;
@@ -84,22 +83,22 @@ namespace Red
 		return *this;
 	}
 
-	Quaternion Quaternion::operator+(const Quaternion& Target) const
+	REDINLINE Quaternion Quaternion::operator+(const Quaternion& Target) const
 	{
 		return Quaternion(X + Target.X, Y + Target.Y, Z + Target.Z, W + Target.W);
 	}
 
-	Quaternion Quaternion::operator-() const
+	REDINLINE Quaternion Quaternion::operator-() const
 	{
 		return Quaternion(-X, -Y, -Z, W);
 	}
 
-	Quaternion Quaternion::operator-(const Quaternion& Target) const
+	REDINLINE Quaternion Quaternion::operator-(const Quaternion& Target) const
 	{
 		return Quaternion(X - Target.X, Y - Target.Y, Z - Target.Z, W - Target.W);
 	}
 
-	Quaternion Quaternion::operator*(const Quaternion& Target) const
+	REDINLINE Quaternion Quaternion::operator*(const Quaternion& Target) const
 	{
 		return Quaternion(
 			(W * Target.X + X * Target.W + Y * Target.Z - Z * Target.Y),
@@ -109,69 +108,69 @@ namespace Red
 		);
 	}
 
-	Quaternion Quaternion::operator*(float Scalar) const
+	REDINLINE Quaternion Quaternion::operator*(float Scalar) const
 	{
 		return Quaternion(X * Scalar, Y * Scalar, Z * Scalar, W * Scalar);
 	}
 
-	Vector3 Quaternion::operator*(const Vector3& Target) const
+	REDINLINE Vector3 Quaternion::operator*(const Vector3& Target) const
 	{
 		return RotateVector(Target);
 	}
 
-	Quaternion Quaternion::operator/(float Scalar) const
+	REDINLINE Quaternion Quaternion::operator/(float Scalar) const
 	{
 		float ScalarInv = 1.0f / Scalar;
 
 		return Quaternion(X * ScalarInv, Y * ScalarInv, Z * ScalarInv, W * ScalarInv);
 	}
 
-	Quaternion& Quaternion::operator+=(const Quaternion& Target)
+	REDINLINE Quaternion& Quaternion::operator+=(const Quaternion& Target)
 	{
 		*this = *this + Target;
 
 		return *this;
 	}
 
-	Quaternion& Quaternion::operator-=(const Quaternion& Target)
+	REDINLINE Quaternion& Quaternion::operator-=(const Quaternion& Target)
 	{
 		*this = *this - Target;
 
 		return *this;
 	}
 
-	Quaternion& Quaternion::operator*=(const Quaternion& Target)
+	REDINLINE Quaternion& Quaternion::operator*=(const Quaternion& Target)
 	{
 		*this = *this * Target;
 
 		return *this;
 	}
 
-	Quaternion& Quaternion::operator*=(float Scalar)
+	REDINLINE Quaternion& Quaternion::operator*=(float Scalar)
 	{
 		*this = *this * Scalar;
 
 		return *this;
 	}
 
-	Quaternion& Quaternion::operator/=(float Scalar)
+	REDINLINE Quaternion& Quaternion::operator/=(float Scalar)
 	{
 		*this = *this / Scalar;
 
 		return *this;
 	}
 
-	bool Quaternion::operator==(const Quaternion& Target) const
+	REDINLINE bool Quaternion::operator==(const Quaternion& Target) const
 	{
 		return ((X == Target.X) && (Y == Target.Y) && (Z == Target.Z) && (W == Target.W));
 	}
 
-	bool Quaternion::operator!=(const Quaternion& Target) const
+	REDINLINE bool Quaternion::operator!=(const Quaternion& Target) const
 	{
 		return !(operator==(Target));
 	}
 
-	void Quaternion::ToAxisAngle(Vector3& Axis, float& Angle) const
+	REDINLINE void Quaternion::ToAxisAngle(Vector3& Axis, float& Angle) const
 	{
 		const float SafeW = SquareRoot(Max(1.0f - (W * W), 0.0f));
 		if (SafeW >= 0.0001f)
@@ -187,7 +186,7 @@ namespace Red
 		Angle = 2.0f * std::acos(W);
 	}
 
-	Vector3 Quaternion::RotateVector(const Vector3& Target) const
+	REDINLINE Vector3 Quaternion::RotateVector(const Vector3& Target) const
 	{
 		const Vector3 Q(X, Y, Z);
 		Vector3 T;
@@ -199,7 +198,7 @@ namespace Red
 		return Vector3(Target + (T * W) + U);
 	}
 
-	Vector3 Quaternion::UnrotateVector(const Vector3& Target) const
+	REDINLINE Vector3 Quaternion::UnrotateVector(const Vector3& Target) const
 	{
 		const Vector3 Q(-X, -Y, -Z);
 		Vector3 T;
@@ -211,7 +210,7 @@ namespace Red
 		return Vector3(Target + (T * W) + U);
 	}
 
-	void Quaternion::Normalize()
+	REDINLINE void Quaternion::Normalize()
 	{
 		float Magnitude_ = Magnitude();
 
@@ -227,19 +226,19 @@ namespace Red
 
 	// Quaternion Operations
 
-	float Dot(const Quaternion& TargetA, const Quaternion& TargetB)
+	REDINLINE float Dot(const Quaternion& TargetA, const Quaternion& TargetB)
 	{
 		return (TargetA.X * TargetB.X + TargetA.Y * TargetB.Y + TargetA.Z * TargetB.Z + TargetA.W * TargetB.W);
 	}
 
 	// Unnormalized Linear Interpolation
-	void Lerp(Quaternion& Result, const Quaternion& TargetA, const Quaternion& TargetB, float Alpha)
+	REDINLINE void Lerp(Quaternion& Result, const Quaternion& TargetA, const Quaternion& TargetB, float Alpha)
 	{
 		Result = Quaternion((TargetB * Alpha) + (TargetA * ((Dot(TargetA, TargetB) >= 0.0f ? 1.0f : 0.0f) * (1.0f - Alpha))));
 	}
 
 	// Unnormalized Spherical Interpolation
-	void Slerp(Quaternion& Result, const Quaternion& TargetA, const Quaternion& TargetB, float Alpha)
+	REDINLINE void Slerp(Quaternion& Result, const Quaternion& TargetA, const Quaternion& TargetB, float Alpha)
 	{
 		const float Magnitude_ = TargetA.X * TargetB.X + TargetA.Y * TargetB.Y + TargetA.Z * TargetB.Z + TargetA.W * TargetB.W;
 		const float Mag = Magnitude_ >= 0 ? Magnitude_ : -Magnitude_;
