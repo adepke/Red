@@ -42,7 +42,13 @@ namespace Red
 	template <int Rows, int Columns>
 	Matrix<Rows, Columns>::Matrix(const Matrix<Rows, Columns>& Target)
 	{
-		// @todo: Add copy constructor.
+		for (int Row = 0; Row < Rows; ++Row)
+		{
+			for (int Column = 0; Column < Columns; ++Column)
+			{
+				Data[Row][Column] = Target.Data[Row][Column];
+			}
+		}
 	}
 
 	template <int Rows, int Columns>
