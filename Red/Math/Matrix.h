@@ -4,6 +4,8 @@
 #include <assert.h>
 #endif
 
+#include "Vector.h"
+
 namespace Red
 {
 	template <int Rows, int Columns>

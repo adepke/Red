@@ -37,7 +37,7 @@ namespace Red
 		}
 	};
 
-	LineSegment& LineSegment::operator=(const LineSegment& Target)
+	REDINLINE LineSegment& LineSegment::operator=(const LineSegment& Target)
 	{
 		Origin = Target.Origin;
 		Destination = Target.Destination;
@@ -45,36 +45,36 @@ namespace Red
 		return *this;
 	}
 
-	LineSegment LineSegment::operator+(const LineSegment& Target) const
+	REDINLINE LineSegment LineSegment::operator+(const LineSegment& Target) const
 	{
 		return LineSegment(Origin + Target.Origin, Destination + Target.Destination);
 	}
 
-	LineSegment LineSegment::operator-(const LineSegment& Target) const
+	REDINLINE LineSegment LineSegment::operator-(const LineSegment& Target) const
 	{
 		return LineSegment(Origin - Target.Origin, Destination - Target.Destination);
 	}
 
-	LineSegment& LineSegment::operator+=(const LineSegment& Target)
+	REDINLINE LineSegment& LineSegment::operator+=(const LineSegment& Target)
 	{
 		*this = *this + Target;
 
 		return *this;
 	}
 
-	LineSegment& LineSegment::operator-=(const LineSegment& Target)
+	REDINLINE LineSegment& LineSegment::operator-=(const LineSegment& Target)
 	{
 		*this = *this - Target;
 
 		return *this;
 	}
 
-	bool LineSegment::operator==(const LineSegment& Target) const
+	REDINLINE bool LineSegment::operator==(const LineSegment& Target) const
 	{
 		return ((Origin == Target.Origin) && (Destination == Target.Destination));
 	}
 
-	bool LineSegment::operator!=(const LineSegment& Target) const
+	REDINLINE bool LineSegment::operator!=(const LineSegment& Target) const
 	{
 		return !(operator==(Target));
 	}

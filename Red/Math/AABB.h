@@ -71,7 +71,7 @@ namespace Red
 		AABB operator--(int);
 	};
 
-	AABB& AABB::operator=(const AABB& Target)
+	REDINLINE AABB& AABB::operator=(const AABB& Target)
 	{
 		Location = Target.Location;
 		HalfSize = Target.HalfSize;
@@ -79,91 +79,91 @@ namespace Red
 		return *this;
 	}
 
-	AABB& AABB::operator=(const Vector3& TargetLocation)
+	REDINLINE AABB& AABB::operator=(const Vector3& TargetLocation)
 	{
 		Location = TargetLocation;
 
 		return *this;
 	}
 
-	AABB AABB::operator+(const AABB& Target) const
+	REDINLINE AABB AABB::operator+(const AABB& Target) const
 	{
 		return AABB(Location + Target.Location, HalfSize + Target.HalfSize);
 	}
 
-	AABB AABB::operator+(const Vector3& TargetLocation) const
+	REDINLINE AABB AABB::operator+(const Vector3& TargetLocation) const
 	{
 		return AABB(Location + TargetLocation, HalfSize);
 	}
 
-	AABB AABB::operator-(const AABB& Target) const
+	REDINLINE AABB AABB::operator-(const AABB& Target) const
 	{
 		return AABB(Location - Target.Location, HalfSize - Target.HalfSize);
 	}
 
-	AABB AABB::operator-(const Vector3& TargetLocation) const
+	REDINLINE AABB AABB::operator-(const Vector3& TargetLocation) const
 	{
 		return AABB(Location - TargetLocation, HalfSize);
 	}
 
-	AABB& AABB::operator+=(const AABB& Target)
+	REDINLINE AABB& AABB::operator+=(const AABB& Target)
 	{
 		*this = *this + Target;
 
 		return *this;
 	}
 
-	AABB& AABB::operator+=(const Vector3& TargetLocation)
+	REDINLINE AABB& AABB::operator+=(const Vector3& TargetLocation)
 	{
 		*this = *this + TargetLocation;
 
 		return *this;
 	}
 
-	AABB& AABB::operator-=(const AABB& Target)
+	REDINLINE AABB& AABB::operator-=(const AABB& Target)
 	{
 		*this = *this - Target;
 
 		return *this;
 	}
 
-	AABB& AABB::operator-=(const Vector3& TargetLocation)
+	REDINLINE AABB& AABB::operator-=(const Vector3& TargetLocation)
 	{
 		*this = *this - TargetLocation;
 
 		return *this;
 	}
 
-	AABB& AABB::operator++()
+	REDINLINE AABB& AABB::operator++()
 	{
 		++HalfSize;
 
 		return *this;
 	}
 
-	AABB& AABB::operator--()
+	REDINLINE AABB& AABB::operator--()
 	{
 		--HalfSize;
 
 		return *this;
 	}
 
-	bool AABB::operator==(const AABB& Target) const
+	REDINLINE bool AABB::operator==(const AABB& Target) const
 	{
 		return ((Location == Target.Location) && (HalfSize == Target.HalfSize));
 	}
 
-	bool AABB::operator==(const Vector3& TargetLocation) const
+	REDINLINE bool AABB::operator==(const Vector3& TargetLocation) const
 	{
 		return (Location == TargetLocation);
 	}
 
-	bool AABB::operator!=(const AABB& Target) const
+	REDINLINE bool AABB::operator!=(const AABB& Target) const
 	{
 		return !(operator==(Target));
 	}
 
-	bool AABB::operator!=(const Vector3& TargetLocation) const
+	REDINLINE bool AABB::operator!=(const Vector3& TargetLocation) const
 	{
 		return !(operator==(TargetLocation));
 	}
