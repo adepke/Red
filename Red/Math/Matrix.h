@@ -313,7 +313,7 @@ namespace Red
 		{
 			for (int Column = 0; Column < TargetBColumns; ++Column)
 			{
-				static float ElementSum = 0.f;
+				float ElementSum = 0.f;
 
 				// Dot Product of Target A's Row and Target B's Column
 				for (int Iter = 0; Iter < TargetARows; ++Iter)
