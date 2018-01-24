@@ -58,7 +58,7 @@ namespace Red
 		bool operator!=(const Ray& Target) const;
 		bool operator!=(const Vector3& TargetOrigin) const;
 
-		void ZeroOut() { Origin = Vector3::ZeroVector; }
+		void ZeroOut() { Origin = Vector3(0.f, 0.f, 0.f); }
 
 		void Normalize() { Direction.Normalize(); }
 		bool IsNormalized() const { VEC_MEMBER Magnitude_ = Direction.Magnitude(); return ((Magnitude_ >= VEC_MEMBER(0.999999)) && (Magnitude_ <= VEC_MEMBER(1.000001))); }

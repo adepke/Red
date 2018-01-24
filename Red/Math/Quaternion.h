@@ -25,10 +25,6 @@ namespace Red
 		float X, Y, Z, W;
 
 	public:
-		static const Quaternion ZeroQuaternion;      // ( 0, 0, 0, 0 )
-		static const Quaternion IdentityQuaternion;  // ( 0, 0, 0, 1 )
-
-	public:
 		Quaternion() {}
 		Quaternion(const Quaternion& Target) : X(Target.X), Y(Target.Y), Z(Target.Z), W(Target.W) {}
 		Quaternion(const Vector4& XYZW) : X(XYZW.X), Y(XYZW.Y), Z(XYZW.Z), W(XYZW.W) {}

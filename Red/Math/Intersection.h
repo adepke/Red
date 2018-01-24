@@ -90,8 +90,8 @@ namespace Red
 		{
 			if (ComplexResult)
 			{
-				ComplexResult->Location = Vector3::ZeroVector;
-				ComplexResult->Normal = Vector3::ZeroVector;
+				ComplexResult->Location = Vector3(0.f, 0.f, 0.f);
+				ComplexResult->Normal = Vector3(0.f, 0.f, 0.f);
 				ComplexResult->TValue = -1.0f;
 			}
 
@@ -103,7 +103,7 @@ namespace Red
 			float T((TMin >= 0.0f) ? TMin : TMax);
 
 			ComplexResult->Location = (TargetRay.Origin + (TargetRay.Direction * T));
-			ComplexResult->Normal = Vector3::ZeroVector;
+			ComplexResult->Normal = Vector3(0.f, 0.f, 0.f);
 			ComplexResult->TValue = T;
 		}
 

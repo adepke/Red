@@ -15,18 +15,3 @@
 #include "Intersection.h"
 
 #include "BinaryOps.h"
-
-namespace Red
-{
-	const Vector2 Vector2::ZeroVector(0.0, 0.0);
-
-	const Vector3 Vector3::ZeroVector(0.0, 0.0, 0.0);
-	const Vector3 Vector3::ForwardVector(1.0, 0.0, 0.0);
-	const Vector3 Vector3::RightVector(0.0, 1.0, 0.0);
-	const Vector3 Vector3::UpVector(0.0, 0.0, 1.0);
-
-	const Vector4 Vector4::ZeroVector(0.0, 0.0, 0.0, 0.0);
-
-	const Quaternion Quaternion::ZeroQuaternion(0.0, 0.0, 0.0, 0.0);
-	const Quaternion Quaternion::IdentityQuaternion(0.0, 0.0, 0.0, 1.0);
-}  // namespace Red
