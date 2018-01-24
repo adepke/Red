@@ -237,7 +237,7 @@ namespace Red
 	}
 
 	template <>
-	float Matrix<2, 2>::Determinant() const
+	REDINLINE float Matrix<2, 2>::Determinant() const
 	{
 		return ((Data[0][0] * Data[1][1]) - (Data[0][1] * Data[1][0]));
 	}
