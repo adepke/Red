@@ -27,10 +27,6 @@ namespace Red
 
 	const Vector4 Vector4::ZeroVector(0.0, 0.0, 0.0, 0.0);
 
-	// @todo: Type is not recognized, fix this!
-	template <int Rows, int Columns>
-	const Matrix<4, 4> Matrix<Rows, Columns>::Matrix4x4;
-
 	const Quaternion Quaternion::ZeroQuaternion(0.0, 0.0, 0.0, 0.0);
 	const Quaternion Quaternion::IdentityQuaternion(0.0, 0.0, 0.0, 1.0);
 }  // namespace Red

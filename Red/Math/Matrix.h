@@ -8,22 +8,31 @@
 
 namespace Red
 {
-	template <int Rows, int Columns>
+	template <int Rows = 4, int Columns = 4>
 	class Matrix
 	{
 	public:
 		float Data[Rows][Columns];
 
 	public:
-		static const Matrix<4, 4> Matrix4x4;
-
-	public:
 		Matrix();
 		Matrix(const Matrix& Target);
 
 		~Matrix();
+		
+		Matrix<Rows, Columns>& operator=(const Matrix<Rows, Columns>& Target);
 
-	public:
+		Matrix<Rows, Columns> operator+(const Matrix<Rows, Columns>& Target) const;
+		Matrix<Rows, Columns> operator-(const Matrix<Rows, Columns>& Target) const;
+		Matrix<Rows, Columns> operator*(float Scalar) const;
+
+		Matrix<Rows, Columns>& operator+=(const Matrix<Rows, Columns>& Target);
+		Matrix<Rows, Columns>& operator-=(const Matrix<Rows, Columns>& Target);
+		Matrix<Rows, Columns>& operator*=(float Scalar);
+
+		bool operator==(const Matrix<Rows, Columns>& Target) const;
+		bool operator!=(const Matrix<Rows, Columns>& Target) const;
+		
 		void ZeroOut();
 		bool IsZero() const;
 
@@ -31,7 +40,7 @@ namespace Red
 		bool IsRow() const;
 		bool IsColumn() const;
 
-		bool MakeIdentity();
+		void MakeIdentity();
 
 		float Determinant() const;
 	};
@@ -56,6 +65,115 @@ namespace Red
 	template <int Rows, int Columns>
 	Matrix<Rows, Columns>::~Matrix()
 	{
+	}
+	
+	template <int Rows, int Columns>
+	Matrix<Rows, Columns>& Matrix<Rows, Columns>::operator=(const Matrix<Rows, Columns>& Target)
+	{
+		for (int Row = 0; Row < Rows; ++Row)
+		{
+			for (int Column = 0; Column < Columns; ++Column)
+			{
+				Data[Row][Column] = Target.Data[Row][Column];
+			}
+		}
+
+		return *this;
+	}
+
+	template <int Rows, int Columns>
+	Matrix<Rows, Columns> Matrix<Rows, Columns>::operator+(const Matrix<Rows, Columns>& Target) const
+	{
+		Matrix<Rows, Columns> Result;
+
+		for (int Row = 0; Row < Rows; ++Row)
+		{
+			for (int Column = 0; Column < Columns; ++Column)
+			{
+				Result.Data[Row][Column] = Data[Row][Column] + Target.Data[Row][Column];
+			}
+		}
+
+		return Result;
+	}
+
+	template <int Rows, int Columns>
+	Matrix<Rows, Columns> Matrix<Rows, Columns>::operator-(const Matrix<Rows, Columns>& Target) const
+	{
+		Matrix<Rows, Columns> Result;
+
+		for (int Row = 0; Row < Rows; ++Row)
+		{
+			for (int Column = 0; Column < Columns; ++Column)
+			{
+				Result.Data[Row][Column] = Data[Row][Column] - Target.Data[Row][Column];
+			}
+		}
+
+		return Result;
+	}
+
+	template <int Rows, int Columns>
+	Matrix<Rows, Columns> Matrix<Rows, Columns>::operator*(float Scalar) const
+	{
+		Matrix<Rows, Columns> Result;
+
+		for (int Row = 0; Row < Rows; ++Row)
+		{
+			for (int Column = 0; Column < Columns; ++Column)
+			{
+				Result.Data[Row][Column] = Data[Row][Column] * Scalar;
+			}
+		}
+
+		return Result;
+	}
+
+	template <int Rows, int Columns>
+	Matrix<Rows, Columns>& Matrix<Rows, Columns>::operator+=(const Matrix<Rows, Columns>& Target)
+	{
+		*this = *this + Target;
+
+		return *this;
+	}
+
+	template <int Rows, int Columns>
+	Matrix<Rows, Columns>& Matrix<Rows, Columns>::operator-=(const Matrix<Rows, Columns>& Target)
+	{
+		*this = *this - Target;
+
+		return *this;
+	}
+
+	template <int Rows, int Columns>
+	Matrix<Rows, Columns>& Matrix<Rows, Columns>::operator*=(float Scalar)
+	{
+		*this = *this * Scalar;
+
+		return *this;
+	}
+
+	template <int Rows, int Columns>
+	bool Matrix<Rows, Columns>::operator==(const Matrix<Rows, Columns>& Target) const
+	{
+		for (int Row = 0; Row < Rows; ++Row)
+		{
+			for (int Column = 0; Column < Columns; ++Column)
+			{
+				if (Data[Row][Column] != Target.Data[Row][Column])
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	template <int Rows, int Columns>
+	bool Matrix<Rows, Columns>::operator!=(const Matrix<Rows, Columns>& Target) const
+	{
+		return !(operator==(Target));
 	}
 
 	template <int Rows, int Columns>
@@ -106,13 +224,9 @@ namespace Red
 	}
 
 	template <int Rows, int Columns>
-	bool Matrix<Rows, Columns>::MakeIdentity()
+	void Matrix<Rows, Columns>::MakeIdentity()
 	{
-		// Early out if this is not a square matrix.
-		if (Rows != Columns)
-		{
-			return false;
-		}
+		static_assert(Rows == Columns, "Dimension Error: Non Square Matrix");
 
 		ZeroOut();
 
@@ -120,8 +234,6 @@ namespace Red
 		{
 			Data[Iter][Iter] = 1.0f;
 		}
-
-		return true;
 	}
 
 	template <>
@@ -133,6 +245,8 @@ namespace Red
 	template <int Rows, int Columns>
 	float Matrix<Rows, Columns>::Determinant() const
 	{
+		static_assert(Rows == Columns, "Dimension Error: Non Square Matrix");
+
 		float Result = 0.f;
 
 		Matrix<Rows - 1, Rows - 1> SubMatrices[Rows];
@@ -184,5 +298,43 @@ namespace Red
 		}
 
 		return Result;
+	}
+
+	// Matrix Operations
+
+	template <int TargetARows, int TargetAColumns, int TargetBRows, int TargetBColumns>
+	Matrix<TargetARows, TargetBColumns> operator*(const Matrix<TargetARows, TargetAColumns>& TargetA, const Matrix<TargetBRows, TargetBColumns>& TargetB)
+	{
+		static_assert(TargetAColumns == TargetBRows, "Dimension Error: Incompatible Operation");
+
+		Matrix<TargetARows, TargetBColumns> Result;
+
+		for (int Row = 0; Row < TargetARows; ++Row)
+		{
+			for (int Column = 0; Column < TargetBColumns; ++Column)
+			{
+				float ElementSum = 0.f;
+
+				// Dot Product of Target A's Row and Target B's Column
+				for (int Iter = 0; Iter < TargetARows; ++Iter)
+				{
+					ElementSum += TargetA.Data[Row][Iter] * TargetB.Data[Iter][Column];
+				}
+
+				Result.Data[Row][Column] = ElementSum;
+			}
+		}
+
+		return Result;
+	}
+
+	template <int TargetARows, int TargetAColumns, int TargetBRows, int TargetBColumns>
+	Matrix<TargetARows, TargetBColumns> operator*=(Matrix<TargetARows, TargetAColumns>& TargetA, const Matrix<TargetBRows, TargetBColumns>& TargetB)
+	{
+		static_assert(TargetAColumns == TargetBRows && TargetAColumns == TargetBColumns, "Dimension Error: Incompatible Operation");
+
+		TargetA = TargetA * TargetB;
+
+		return TargetA;
 	}
 }  // namespace Red
