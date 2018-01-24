@@ -29,9 +29,6 @@ namespace Red
 		VEC_MEMBER X, Y;
 
 	public:
-		static const Vector2 ZeroVector;  // ( 0, 0 )
-
-	public:
 		Vector2() {}
 		Vector2(const Vector2& Target) : X(Target.X), Y(Target.Y) {}
 		explicit Vector2(VEC_MEMBER X, VEC_MEMBER Y) : X(X), Y(Y) {}
@@ -308,12 +305,6 @@ namespace Red
 	{
 	public:
 		VEC_MEMBER X, Y, Z;
-
-	public:
-		static const Vector3 ZeroVector;     // ( 0, 0, 0 )
-		static const Vector3 ForwardVector;  // ( 1, 0, 0 )
-		static const Vector3 RightVector;    // ( 0, 1, 0 )
-		static const Vector3 UpVector;       // ( 0, 0, 1 )
 
 	public:
 		Vector3() {}
@@ -598,9 +589,6 @@ namespace Red
 	{
 	public:
 		VEC_MEMBER X, Y, Z, W;
-
-	public:
-		static const Vector4 ZeroVector;  // ( 0, 0, 0, 0 )
 
 	public:
 		Vector4() {}

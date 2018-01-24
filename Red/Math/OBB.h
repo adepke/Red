@@ -38,7 +38,7 @@ namespace Red
 		bool operator!=(const Vector3& TargetLocation) const;
 
 		// Resets OBB To Defaults
-		void Reset() { Location = Vector3::ZeroVector; HalfSize = Vector3(0.5, 0.5, 0.5); }
+		void Reset() { Location = Vector3(0.f, 0.f, 0.f); HalfSize = Vector3(0.5, 0.5, 0.5); }
 
 		Vector3 Minimum() const
 		{

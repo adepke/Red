@@ -16,27 +16,27 @@ namespace Red
 		float TValue;
 	};
 
-	bool Intersect(const OBB& TargetOBBA, const OBB& TargetOBBB)
+	REDINLINE bool Intersect(const OBB& TargetOBBA, const OBB& TargetOBBB)
 	{
 		return false;
 	}
 
-	bool Intersect(const OBB& TargetOBB, const Vector3& TargetPoint)
+	REDINLINE bool Intersect(const OBB& TargetOBB, const Vector3& TargetPoint)
 	{
 		return false;
 	}
 
-	bool Intersect(const OBB& TargetOBB, const Ray& TargetRay)
+	REDINLINE bool Intersect(const OBB& TargetOBB, const Ray& TargetRay)
 	{
 		return false;
 	}
 
-	bool Intersect(const OBB& TargetOBB, const LineSegment& TargetLineSeg)
+	REDINLINE bool Intersect(const OBB& TargetOBB, const LineSegment& TargetLineSeg)
 	{
 		return false;
 	}
 
-	bool Intersect(const AABB& TargetAABBA, const AABB& TargetAABBB)
+	REDINLINE bool Intersect(const AABB& TargetAABBA, const AABB& TargetAABBB)
 	{
 		// SIMD Optimized
 
@@ -47,7 +47,7 @@ namespace Red
 		return (TestX && TestY && TestZ);
 	}
 
-	bool Intersect(const AABB& TargetAABB, const Vector3& TargetPoint)
+	REDINLINE bool Intersect(const AABB& TargetAABB, const Vector3& TargetPoint)
 	{
 		// Slightly Faster Than SIMD Optimization (<1ms Delta Per 100,000 Calls)
 
@@ -61,7 +61,7 @@ namespace Red
 			);
 	}
 
-	bool Intersect(const AABB& TargetAABB, const Ray& TargetRay, HitResult* ComplexResult = nullptr)
+	REDINLINE bool Intersect(const AABB& TargetAABB, const Ray& TargetRay, HitResult* ComplexResult = nullptr)
 	{
 #ifdef PRECOMPUTED_RAY
 		float DirectionFracX(TargetRay.DirectionInv.X);
@@ -90,8 +90,8 @@ namespace Red
 		{
 			if (ComplexResult)
 			{
-				ComplexResult->Location = Vector3::ZeroVector;
-				ComplexResult->Normal = Vector3::ZeroVector;
+				ComplexResult->Location = Vector3(0.f, 0.f, 0.f);
+				ComplexResult->Normal = Vector3(0.f, 0.f, 0.f);
 				ComplexResult->TValue = -1.0f;
 			}
 
@@ -103,14 +103,14 @@ namespace Red
 			float T((TMin >= 0.0f) ? TMin : TMax);
 
 			ComplexResult->Location = (TargetRay.Origin + (TargetRay.Direction * T));
-			ComplexResult->Normal = Vector3::ZeroVector;
+			ComplexResult->Normal = Vector3(0.f, 0.f, 0.f);
 			ComplexResult->TValue = T;
 		}
 
 		return true;
 	}
 
-	bool Intersect(const AABB& TargetAABB, const LineSegment& TargetLineSeg)
+	REDINLINE bool Intersect(const AABB& TargetAABB, const LineSegment& TargetLineSeg)
 	{
 		return false;
 	}

@@ -2,6 +2,12 @@
 
 #include <cmath>
 
+#ifdef FORCEDINLINES
+#define REDINLINE __forceinline
+#else
+#define REDINLINE inline
+#endif
+
 namespace Red
 {
 	template <typename Type>
@@ -78,33 +84,33 @@ namespace Red
 	};
 
 	// Square Root [CMath Built-in]
-	float SquareRoot(float Target)
+	REDINLINE float SquareRoot(float Target)
 	{
 		return std::sqrtf(Target);
 	}
 
-	double SquareRoot(double Target)
+	REDINLINE double SquareRoot(double Target)
 	{
 		return std::sqrt(Target);
 	}
 
-	long double SquareRoot(long double Target)
+	REDINLINE long double SquareRoot(long double Target)
 	{
 		return std::sqrtl(Target);
 	}
 
 	// Modulus [CMath Built-in]
-	float Modulus(float TargetA, float TargetB) noexcept
+	REDINLINE float Modulus(float TargetA, float TargetB) noexcept
 	{
 		return std::fmodf(TargetA, TargetB);
 	}
 
-	double Modulus(double TargetA, double TargetB) noexcept
+	REDINLINE double Modulus(double TargetA, double TargetB) noexcept
 	{
 		return std::fmod(TargetA, TargetB);
 	}
 
-	long double Modulus(long double TargetA, long double TargetB) noexcept
+	REDINLINE long double Modulus(long double TargetA, long double TargetB) noexcept
 	{
 		return std::fmodl(TargetA, TargetB);
 	}
