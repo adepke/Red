@@ -50,8 +50,8 @@ namespace Red
 
 		// Use Cocktail Shaker Sort
 
-		int StartIndex = 1;
-		int EndIndex = Rows - 1;
+		int StartIndex = 0;
+		int EndIndex = Rows - 2;
 
 		while (StartIndex <= EndIndex)
 		{
@@ -60,7 +60,7 @@ namespace Red
 
 			for (int Iter = StartIndex; Iter < EndIndex; ++Iter)
 			{
-				if (Internal::RowZeroCount(Target, Iter) > Internal::RowZeroCount(Target, Iter + 1))
+				if (Internal::RowZeroCount(Result, Iter) > Internal::RowZeroCount(Result, Iter + 1))
 				{
 					Internal::SwapRow(Result, Iter, Iter + 1);
 
@@ -73,7 +73,7 @@ namespace Red
 
 			for (int Iter = EndIndex; Iter > StartIndex; --Iter)
 			{
-				if (Internal::RowZeroCount(Target, Iter) > Internal::RowZeroCount(Target, Iter + 1))
+				if (Internal::RowZeroCount(Result, Iter) > Internal::RowZeroCount(Result, Iter + 1))
 				{
 					Internal::SwapRow(Result, Iter, Iter + 1);
 
