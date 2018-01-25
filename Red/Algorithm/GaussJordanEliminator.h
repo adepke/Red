@@ -89,7 +89,7 @@ namespace Red
 
 		// Use Cocktail Shaker Sort
 
-		int StartIndex = 0;
+		int StartIndex = -1;
 		int EndIndex = Rows - 1;
 
 		while (StartIndex <= EndIndex)
