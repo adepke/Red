@@ -51,7 +51,7 @@ namespace Red
 		// Use Cocktail Shaker Sort
 
 		int StartIndex = 0;
-		int EndIndex = Rows - 2;
+		int EndIndex = Rows - 1;
 
 		while (StartIndex <= EndIndex)
 		{
