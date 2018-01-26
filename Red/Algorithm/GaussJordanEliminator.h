@@ -224,7 +224,7 @@ namespace Red
 			if (Result.Data[BaseRow - 1][PivotColumn] != 0.f)
 			{
 				// Reduce Rows in Pivot Column Ahead of Base Row.
-				for (int SubRow = BaseRow - 1; SubRow > 0; --SubRow)
+				for (int SubRow = BaseRow - 1; SubRow > -1; --SubRow)
 				{
 					float Additive[Columns];
 
