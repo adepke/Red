@@ -196,9 +196,66 @@ namespace Red
 	template <int Rows, int Columns>
 	Matrix<Rows, Columns> ReducedRowEchelon(const Matrix<Rows, Columns>& Target)
 	{
-		Matrix<Rows, Columns> Result;
+		Matrix<Rows, Columns> Result(RowEchelon(Target));
 
-		Result = RowEchelon(Target);
+		// Modified Gaussian Pivot Algorithm to Pivot Upwards.
+
+		for (int BaseRow = 1; BaseRow < Rows; ++BaseRow)
+		{
+			int PivotColumn = -1;
+
+			for (int Column = 0; Column < Columns; ++Column)
+			{
+				if (Result.Data[BaseRow][Column] != 0.f)
+				{
+					PivotColumn = Column;
+
+					break;
+				}
+			}
+
+			// If the Matrix is Finished.
+			if (PivotColumn == -1)
+			{
+				break;
+			}
+
+			// Check if There's Any Rows to Reduce Above the Base Row.
+			if (Result.Data[BaseRow - 1][PivotColumn] != 0.f)
+			{
+				// Reduce Rows in Pivot Column Ahead of Base Row.
+				for (int SubRow = BaseRow - 1; SubRow > 0; --SubRow)
+				{
+					float Additive[Columns];
+
+					Internal::MultiplyRowCopy(Result, Additive, BaseRow, Result.Data[SubRow][PivotColumn]);
+
+					if (Additive[PivotColumn] > 0.f)
+					{
+						if (Result.Data[SubRow][PivotColumn] > 0.f)
+						{
+							for (int Iter = 0; Iter < Columns; ++Iter)
+							{
+								Additive[Iter] *= -1.0f;
+							}
+						}
+					}
+
+					else
+					{
+						if (Result.Data[SubRow][PivotColumn] < 0.f)
+						{
+							for (int Iter = 0; Iter < Columns; ++Iter)
+							{
+								Additive[Iter] *= -1.0f;
+							}
+						}
+					}
+
+					Internal::AddArrayToRow(Result, Additive, SubRow);
+				}
+			}
+		}
 
 		return Result;
 	}
