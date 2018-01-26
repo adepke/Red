@@ -124,68 +124,65 @@ namespace Red
 			StartIndex = NewStartIndex + 1;
 		}
 
-		for (int Row = 0; Row < Rows; ++Row)
+		for (int BaseRow = 0; BaseRow < Rows; ++BaseRow)
 		{
-			// Get the Next Pivot Column.
-			int PivotColumn = Internal::RowZeroCount(Result, Row);
+			int PivotColumn = -1;
 
-			// If this Row is All Zeros, Move on.
-			if (PivotColumn == Columns)
+			for (int Column = 0; Column < Columns; ++Column)
+			{
+				if (Result.Data[BaseRow][Column] != 0.f)
+				{
+					if (Result.Data[BaseRow][Column] != 1.f)
+					{
+						Internal::DivideRow(Result, BaseRow, Result.Data[BaseRow][Column]);
+					}
+
+					PivotColumn = Column;
+
+					break;
+				}
+			}
+
+			// If the Matrix is Finished.
+			if (PivotColumn == -1)
 			{
 				break;
 			}
 
-			// If we are on the Last Row of the Matrix.
-			if (Row == Rows)
+			// Check if There's Any Rows to Reduce Below the Base Row.
+			if (Result.Data[BaseRow + 1][PivotColumn] != 0.f)
 			{
-				if (Result.Data[Row][PivotColumn] != 1.0f)
+				// Reduce Rows in Pivot Column Following Base Row.
+				for (int SubRow = BaseRow + 1; SubRow < Rows; ++SubRow)
 				{
-					// Make the Pivot 1.
-					Internal::DivideRow(Result, Row, Result.Data[Row][PivotColumn]);
-				}
+					float Additive[Columns];
 
-				break;
-			}
+					Internal::MultiplyRowCopy(Result, Additive, BaseRow, Result.Data[SubRow][PivotColumn]);
 
-			// Check to See if this is an Isolated Row.
-			if (Result.Data[Row + 1][PivotColumn] != 0.f)
-			{
-				if (Result.Data[Row][PivotColumn] != 1.0f)
-				{
-					// Make the Pivot 1.
-					Internal::DivideRow(Result, Row, Result.Data[Row][PivotColumn]);
-				}
-
-				// The Additive Row.
-				float ResultRow[Columns];
-
-				Internal::MultiplyRowCopy(Result, ResultRow, Row, Result.Data[Row + 1][PivotColumn]);
-
-				// Make Sure The Pivot is the Opposite Polarity as the Leading Row's.
-				if (ResultRow[PivotColumn] > 0.f)
-				{
-					if (Result.Data[Row + 1][PivotColumn] > 0.f)
+					if (Additive[PivotColumn] > 0.f)
 					{
-						for (int Iter = 0; Iter < Columns; ++Iter)
+						if (Result.Data[SubRow][PivotColumn] > 0.f)
 						{
-							ResultRow[Iter] *= 1.0f;
+							for (int Iter = 0; Iter < Columns; ++Iter)
+							{
+								Additive[Iter] *= -1.0f;
+							}
 						}
 					}
-				}
 
-				else
-				{
-					if (Result.Data[Row + 1][PivotColumn] < 0.f)
+					else
 					{
-						for (int Iter = 0; Iter < Columns; ++Iter)
+						if (Result.Data[SubRow][PivotColumn] < 0.f)
 						{
-							ResultRow[Iter] *= 1.0f;
+							for (int Iter = 0; Iter < Columns; ++Iter)
+							{
+								Additive[Iter] *= -1.0f;
+							}
 						}
 					}
-				}
 
-				// Add the Additive Row and the Leading Row Together to Cancel Out the Pivot's Lead, Leaving an Isolated Row.
-				Internal::AddArrayToRow(Result, ResultRow, Row);
+					Internal::AddArrayToRow(Result, Additive, SubRow);
+				}
 			}
 		}
 
