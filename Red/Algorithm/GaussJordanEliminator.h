@@ -7,6 +7,45 @@ namespace Red
 	namespace Internal
 	{
 		template <int Rows, int Columns>
+		void CocktailShakerSort(Matrix<Rows, Columns>& Target)
+		{
+			int StartIndex = 0;
+			int EndIndex = Rows - 1;
+
+			while (StartIndex <= EndIndex)
+			{
+				int NewStartIndex = EndIndex;
+				int NewEndIndex = StartIndex;
+
+				for (int Iter = StartIndex; Iter < EndIndex; ++Iter)
+				{
+					if (Internal::RowZeroCount(Target, Iter) > Internal::RowZeroCount(Target, Iter + 1))
+					{
+						Internal::SwapRow(Target, Iter, Iter + 1);
+
+						NewEndIndex = Iter;
+					}
+				}
+
+				// Elements after NewEndIndex are in the correct position, subtract 1 from the max index range.
+				EndIndex = NewEndIndex - 1;
+
+				for (int Iter = EndIndex; Iter > StartIndex; --Iter)
+				{
+					if (Internal::RowZeroCount(Target, Iter) > Internal::RowZeroCount(Target, Iter + 1))
+					{
+						Internal::SwapRow(Target, Iter, Iter + 1);
+
+						NewStartIndex = Iter;
+					}
+				}
+
+				// Elements before NewStartIndex are in the correct position, add 1 to the minimum index range.
+				StartIndex = NewStartIndex + 1;
+			}
+		}
+		
+		template <int Rows, int Columns>
 		int RowZeroCount(const Matrix<Rows, Columns>& Target, int Row)
 		{
 			int Result = 0;
@@ -87,42 +126,7 @@ namespace Red
 	{
 		Matrix<Rows, Columns> Result(Target);
 
-		// Use Cocktail Shaker Sort
-
-		int StartIndex = 0;
-		int EndIndex = Rows - 1;
-
-		while (StartIndex <= EndIndex)
-		{
-			int NewStartIndex = EndIndex;
-			int NewEndIndex = StartIndex;
-
-			for (int Iter = StartIndex; Iter < EndIndex; ++Iter)
-			{
-				if (Internal::RowZeroCount(Result, Iter) > Internal::RowZeroCount(Result, Iter + 1))
-				{
-					Internal::SwapRow(Result, Iter, Iter + 1);
-
-					NewEndIndex = Iter;
-				}
-			}
-
-			// Elements after NewEndIndex are in the correct position, subtract 1 from the max index range.
-			EndIndex = NewEndIndex - 1;
-
-			for (int Iter = EndIndex; Iter > StartIndex; --Iter)
-			{
-				if (Internal::RowZeroCount(Result, Iter) > Internal::RowZeroCount(Result, Iter + 1))
-				{
-					Internal::SwapRow(Result, Iter, Iter + 1);
-
-					NewStartIndex = Iter;
-				}
-			}
-
-			// Elements before NewStartIndex are in the correct position, add 1 to the minimum index range.
-			StartIndex = NewStartIndex + 1;
-		}
+		Internal::CocktailShakerSort(Result);
 
 		for (int BaseRow = 0; BaseRow < Rows; ++BaseRow)
 		{
