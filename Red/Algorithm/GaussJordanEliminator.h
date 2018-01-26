@@ -85,7 +85,7 @@ namespace Red
 	template <int Rows, int Columns>
 	Matrix<Rows, Columns> RowEchelon(const Matrix<Rows, Columns>& Target)
 	{
-		Matrix<Rows, Columns> Result = Target;
+		Matrix<Rows, Columns> Result(Target);
 
 		// Use Cocktail Shaker Sort
 
