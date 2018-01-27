@@ -86,7 +86,7 @@ namespace Red
 	}
 
 	template <int Rows, int Columns>
-	bool Invertible(const Matrix<Rows, Columns>& Target)
+	bool IsInvertible(const Matrix<Rows, Columns>& Target)
 	{
 		Matrix<Rows, Columns> ZeroMatrix;
 
