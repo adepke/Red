@@ -126,6 +126,11 @@ namespace Red
 	{
 		Matrix<Rows, Columns> Result(Target);
 
+		if (Rows == 1)
+		{
+			return Result;
+		}
+
 		Internal::CocktailShakerSort(Result);
 
 		for (int BaseRow = 0; BaseRow < Rows; ++BaseRow)
