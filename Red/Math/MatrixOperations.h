@@ -99,4 +99,20 @@ namespace Red
 
 		return true;
 	}
+
+	template <int Rows, int Columns>
+	Matrix<Columns, Rows> Transpose(const Matrix<Rows, Columns>& Target)
+	{
+		Matrix<Columns, Rows> Result;
+
+		for (int Row = 0; Row < Rows; ++Row)
+		{
+			for (int Column = 0; Column < Columns; ++Column)
+			{
+				Result.Data[Column][Row] = Target.Data[Row][Column];
+			}
+		}
+
+		return Result;
+	}
 }  // namespace Red
