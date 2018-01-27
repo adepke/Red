@@ -7,6 +7,7 @@
 #include "Vector.h"
 #include "Quaternion.h"
 #include "Matrix.h"
+#include "MatrixOperations.h"
 #include "Ray.h"
 #include "LineSegment.h"
 #include "OBB.h"

@@ -42,36 +42,61 @@ namespace Red
 	}
 
 	template <int Rows, int Columns>
-	Matrix<Rows, Columns> Inverse() const
+	Matrix<Rows, Columns> Inverse(const Matrix<Rows, Columns>& Target)
 	{
+		Matrix<Rows, Columns> Result;
+		Matrix<Rows, Columns> Identity;
 		Matrix<Rows, Columns * 2> MatrixInterface;
+
+		Identity.MakeIdentity();
+		MatrixInterface.ZeroOut();
 
 		for (int Row = 0; Row < Rows; ++Row)
 		{
 			// Construct LHS
 			for (int Column = 0; Column < Columns; ++Column)
 			{
-				MatrixInterface.Data[Row][Column] = Data[Row][Column];
+				MatrixInterface.Data[Row][Column] = Target.Data[Row][Column];
 			}
 
 			// Construct RHS
-			for (int Column = Columns; Column < Columns * 2; ++Column)
-			{
-				MatrixInterface.Data[Row][Column] = static_cast<float>(
-					(Row % 2 == 0) ?
-					(Column % 2) : (Column % 2 == 0 ? 1 : 0)
-					);
-			}
+			MatrixInterface.Data[Row][Columns + Row] = 1.f;
 		}
 
 		MatrixInterface = ReducedRowEchelon(MatrixInterface);
 
-		// Deconstruct LHS
+		// Deconstruct MatrixInterface
 		for (int Row = 0; Row < Rows; ++Row)
 		{
-
+			for (int Column = 0; Column < Columns; ++Column)
+			{
+				Result.Data[Row][Column] = MatrixInterface.Data[Row][Columns + Column];
+			}
 		}
 
-		return *this;
+		// Check Inverse
+		if ((Target * Result != Identity) || (Result * Target != Identity))
+		{
+			Identity.ZeroOut();
+
+			return Identity;
+		}
+
+		return Result;
+	}
+
+	template <int Rows, int Columns>
+	bool Invertible(const Matrix<Rows, Columns>& Target)
+	{
+		Matrix<Rows, Columns> ZeroMatrix;
+
+		ZeroMatrix.ZeroOut();
+
+		if (Inverse(Target) == ZeroMatrix)
+		{
+			return false;
+		}
+
+		return true;
 	}
 }  // namespace Red
