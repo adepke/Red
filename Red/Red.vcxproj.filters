@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Algorithm">
+      <UniqueIdentifier>{8e928d0c-faca-4056-acf5-c973105fb688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{21d8c6e0-3546-4ab5-9c46-1e44278f7719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Function">
+      <UniqueIdentifier>{c4f93ae2-7496-45f8-a404-ba959d145c51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{ea108494-d510-4d57-8037-f8c06adee55c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{e9dee258-7061-4dff-9f60-985cbe635f6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\BSD">
+      <UniqueIdentifier>{88ee1925-1763-4fa9-a75a-38aba4ba2526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{44f4f9e0-4074-41c4-9578-c20ac13eac89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread\Windows">
+      <UniqueIdentifier>{a3bc05ce-2028-43dd-b852-f5d643b43df1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread\POSIX">
+      <UniqueIdentifier>{98cf6830-c75c-422e-94ab-cd7d69093912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware">
+      <UniqueIdentifier>{50cb9ddd-df28-4e16-80e8-e8d1487dc331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Windows">
+      <UniqueIdentifier>{40787e19-c4d2-4787-90a3-7024341ddd0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Linux">
+      <UniqueIdentifier>{e602370e-c8b8-4941-ac92-22fe8efa7861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{33f33f64-f2cf-4ab8-a668-dff01f8b4cdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window\Windows">
+      <UniqueIdentifier>{5fccbb01-2d1c-4cbd-a8fe-23bf26547e64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{6b1dc812-1544-4754-95cf-b844195ebc08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Testing">
+      <UniqueIdentifier>{0c5fd120-e52f-4983-83e4-3b8ea1f8f650}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Algorithm\Algorithm.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithm\Distribute.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Definitions.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Function\Function.h">
+      <Filter>Function</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\AABB.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Intersection.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\LineSegment.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Math.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MathCore.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\OBB.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Quaternion.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Ray.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\IPv4.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Socket.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\SocketDefs.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\SocketSubsystem.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\BSD\BSDSocket.h">
+      <Filter>Network\BSD</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\BSD\BSDSocketSubsystem.h">
+      <Filter>Network\BSD</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\BinaryOps.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\CriticalSection.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\Windows\WindowsCriticalSection.h">
+      <Filter>Thread\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Platform.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\POSIX\POSIXCriticalSection.h">
+      <Filter>Thread\POSIX</Filter>
+    </ClInclude>
+    <ClInclude Include="Hardware\Hardware.h">
+      <Filter>Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\SocketBase.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\SocketSubsystemBase.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Network.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Hardware\Windows\WindowsHardware.h">
+      <Filter>Hardware\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Hardware\Linux\LinuxHardware.h">
+      <Filter>Hardware\Linux</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\Window.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\WindowBase.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\Windows\WindowsWindow.h">
+      <Filter>Window\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\Windows\WindowsWindowDescription.h">
+      <Filter>Window\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\Windows\WindowsWindowState.h">
+      <Filter>Window\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\WindowDescription.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\WindowState.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Shell.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\System.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithm\GaussJordanEliminator.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MatrixOperations.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Network\BSD\BSDSocket.cpp">
+      <Filter>Network\BSD</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\BSD\BSDSocketSubsystem.cpp">
+      <Filter>Network\BSD</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\Windows\WindowsCriticalSection.cpp">
+      <Filter>Thread\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\POSIX\POSIXCriticalSection.cpp">
+      <Filter>Thread\POSIX</Filter>
+    </ClCompile>
+    <ClCompile Include="Hardware\Windows\WindowsHardware.cpp">
+      <Filter>Hardware\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Hardware\Linux\LinuxHardware.cpp">
+      <Filter>Hardware\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="Testing\Main.cpp">
+      <Filter>Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="ODR_Test.cpp">
+      <Filter>Testing</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
