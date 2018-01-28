@@ -170,8 +170,6 @@
     <ClCompile Include="Hardware\Windows\WindowsHardware.cpp" />
     <ClCompile Include="Network\BSD\BSDSocket.cpp" />
     <ClCompile Include="Network\BSD\BSDSocketSubsystem.cpp" />
-    <ClCompile Include="ODR_Test.cpp" />
-    <ClCompile Include="Testing\Main.cpp" />
     <ClCompile Include="Thread\POSIX\POSIXCriticalSection.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

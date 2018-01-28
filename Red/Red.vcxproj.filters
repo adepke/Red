@@ -46,9 +46,6 @@
     <Filter Include="System">
       <UniqueIdentifier>{6b1dc812-1544-4754-95cf-b844195ebc08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Testing">
-      <UniqueIdentifier>{0c5fd120-e52f-4983-83e4-3b8ea1f8f650}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithm\Algorithm.h">
@@ -196,12 +193,6 @@
     </ClCompile>
     <ClCompile Include="Hardware\Linux\LinuxHardware.cpp">
       <Filter>Hardware\Linux</Filter>
-    </ClCompile>
-    <ClCompile Include="Testing\Main.cpp">
-      <Filter>Testing</Filter>
-    </ClCompile>
-    <ClCompile Include="ODR_Test.cpp">
-      <Filter>Testing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
