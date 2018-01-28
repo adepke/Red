@@ -11,7 +11,8 @@ before_install:
 
 script:
 - echo "Script Started"
-- msbuild Red.sln /t:Build /p:Configuration=Release /p:Platform="x64"
+#- msbuild Red.sln /t:Build /p:Configuration=Release /p:Platform="x64"
+- xbuild /p:Configuration=Release Red.sln
 
 after_script:
 - echo "Script Ended"
