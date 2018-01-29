@@ -61,6 +61,13 @@ namespace Red
 
 		if (!RegisterClassEx(&WindowClass))
 		{
+			if (AppTitle)
+			{
+				delete[] AppTitle;
+
+				AppTitle = 0;
+			}
+
 			return false;
 		}
 
@@ -79,6 +86,13 @@ namespace Red
 			NULL);
 		if (!Handle)
 		{
+			if (AppTitle)
+			{
+				delete[] AppTitle;
+
+				AppTitle = 0;
+			}
+
 			return false;
 		}
 
@@ -86,7 +100,12 @@ namespace Red
 		CurrentState.Size = Description.Size;
 		CurrentState.Fullscreen = false;
 
-		delete[] AppTitle;
+		if (AppTitle)
+		{
+			delete[] AppTitle;
+
+			AppTitle = 0;
+		}
 
 		if (Description.AutoShow)
 		{
