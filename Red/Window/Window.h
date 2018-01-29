@@ -1,7 +1,5 @@
 #pragma once
 
-#pragma once
-
 #include "../Core/Platform.h"
 
 #if OS_WINDOWS
