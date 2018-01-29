@@ -1,24 +1,13 @@
 language: cpp
 
-#compiler:
-#- msbuild
+compiler:
+- gcc
 
 os:
-- windows
-
-before_install:
-- echo "Preinstall..."
+- linux
 
 script:
-- echo "Script Started"
-#- msbuild Red.sln /t:Build /p:Configuration=Release /p:Platform="x64"
-- xbuild /p:Configuration=Release Red.sln
-
-after_script:
-- echo "Script Ended"
-
-after_failure:
-- echo "Failure"
+- Build.sh
 
 notifications:
   email: false
