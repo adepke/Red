@@ -5,7 +5,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 IF NOT EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" (
 	ECHO "An installion of Microsoft Visual Studio 2017 version 15.2 or later does not exist."
 	PAUSE
-  EXIT /B
+	EXIT /B
 )
 
 FOR /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.Component.MSBuild -property installationPath`) DO (
