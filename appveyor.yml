@@ -11,13 +11,13 @@ platform:
   - x64
   
 build_script:
-  - ps: >-
-
-    if ($env:APPVEYOR_BUILD_WORKER_IMAGE -eq "Visual Studio 2015") {
-      $PlatformToolset = "v140"
-    } else {
-      $PlatformToolset = "v141"
-    }
+    ps: |-
+        
+        if ($env:APPVEYOR_BUILD_WORKER_IMAGE -eq "Visual Studio 2015") {
+          $PlatformToolset = "v140"
+        } else {
+          $PlatformToolset = "v141"
+        }
 
     (Get-Content Red/Red.vcxproj) | %{$_ -replace "v100", $PlatformToolset} | Set-Content Red/Red.vcxproj
 
