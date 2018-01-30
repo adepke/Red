@@ -21,4 +21,4 @@ build_script:
 
         (Get-Content Red/Red.vcxproj) | %{$_ -replace "v100", $PlatformToolset} | Set-Content Red/Red.vcxproj
 
-        & msbuild Red/Red.vcxproj "/p:platform=$env:platform; configuration=$env:configuration"
+        & msbuild Red/Red.vcxproj "/p:platform=$env:platform;configuration=$env:configuration"
