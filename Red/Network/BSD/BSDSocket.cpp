@@ -296,7 +296,7 @@ namespace Red
 
 			else
 			{
-				if (setsockopt(SocketHandle, SOL_SOCKET, SO_DONTLINGER, (char*)&Value, sizeof(Value)) != 0)
+				if (setsockopt(SocketHandle, SOL_SOCKET, ~SO_LINGER, (char*)&Value, sizeof(Value)) != 0)
 				{
 					Shutdown();
 
