@@ -8,8 +8,10 @@ namespace Red
 {
 	class BSDSocketSubsystem : public ISocketSubsystem
 	{
+#if OS_WINDOWS
 	protected:
 		WSAData SubsystemData;
+#endif
 
 	public:
 		BSDSocketSubsystem() {}
