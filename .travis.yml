@@ -7,7 +7,9 @@ os:
 - linux
 
 script:
-- Build.sh
+- cd Build
+- cmake ../Red/ -G "Unix Makefiles"
+- make
 
 notifications:
   email: false
