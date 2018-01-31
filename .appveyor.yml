@@ -9,16 +9,21 @@ configuration:
 platform:
   - x86
   - x64
-  
-build_script:
-    ps: |-
-        
+ 
+build:
+  project: Red.sln
+  parallel: true
+  verbosity: normal
+ 
+#build_script:
+#    ps: |-
+#        
 #        if ($env:APPVEYOR_BUILD_WORKER_IMAGE -eq "Visual Studio 2015") {
 #          $PlatformToolset = "v140"
 #        } else {
 #          $PlatformToolset = "v141"
 #        }
-
+#
 #        (Get-Content Red/Red.vcxproj) | %{$_ -replace "v100", $PlatformToolset} | Set-Content Red/Red.vcxproj
-
-        & msbuild Red/Red.vcxproj "/p:platform=$env:platform;configuration=$env:configuration"
+#
+#        & msbuild Red/Red.vcxproj "/p:platform=$env:platform;configuration=$env:configuration"
