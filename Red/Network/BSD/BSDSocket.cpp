@@ -1,6 +1,8 @@
 #include "BSDSocket.h"
 
-#pragma comment(lib, "Ws2_32.lib")
+#if OS_WINDOWS
+	#pragma comment(lib, "Ws2_32.lib")
+#end
 
 namespace Red
 {
