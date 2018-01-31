@@ -9,7 +9,7 @@ os:
 script:
 - mkdir Build
 - cd Build
-- cmake ../ -G "Unix Makefiles"
+- cmake ../ -G "Unix Makefiles" -std=c++14
 - make
 
 notifications:
