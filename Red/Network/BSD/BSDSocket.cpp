@@ -1,9 +1,9 @@
 #include "BSDSocket.h"
 
-#include <memory>
-
 #if OS_WINDOWS
 	#pragma comment(lib, "Ws2_32.lib")
+
+	#include <memory>
 
 	#define RED_INVALID_SOCKET INVALID_SOCKET
 #else
@@ -76,7 +76,13 @@ namespace Red
 		if (SocketHandle != RED_INVALID_SOCKET)
 		{
 			sockaddr_in SocketAddress;
+
+#if OS_WINDOWS
 			std::memset(&SocketAddress, 0, sizeof(SocketAddress));
+#else
+			memset(&SocketAddress, 0, sizeof(SocketAddress));
+#endif
+
 			SocketAddress.sin_family = AF_INET;
 			SocketAddress.sin_addr.s_addr = INADDR_ANY;  // Automatically determine the private IP.
 			SocketAddress.sin_port = htons(Port);
