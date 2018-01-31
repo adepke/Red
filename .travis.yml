@@ -9,8 +9,8 @@ os:
 script:
 - mkdir Build
 - cd Build
-- cmake ../ -G "Unix Makefiles" -std=c++14
-- make
+- cmake ../ -G "Unix Makefiles"
+- make -std=c++14
 
 notifications:
   email: false
