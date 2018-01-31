@@ -1,9 +1,14 @@
 #pragma once
 
+#include "../../Core/Platform.h"
 #include "../SocketBase.h"
 
 // API Specific Includes
-#include <WinSock2.h>
+#if OS_WINDOWS
+	#include <WinSock2.h>
+#else
+	#include <sys/socket.h>
+#endif
 
 namespace Red
 {
