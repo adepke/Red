@@ -8,6 +8,11 @@
 !*.h
 !*.hpp
 
+# Script
+!*.bat
+!*.cmd
+!*.sh
+
 # Text
 !*.txt
 !*.md
