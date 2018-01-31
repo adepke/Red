@@ -9,7 +9,7 @@ os:
 script:
 - mkdir Build
 - cd Build
-- cmake ../Red/ -G "Unix Makefiles"
+- cmake ../ -G "Unix Makefiles"
 - make
 
 notifications:
