@@ -1,6 +1,10 @@
 #!/bin/bash
 
-mkdir Build
+if [ ! -d "Build" ]; then
+	mkdir Build
+fi
+
 cd Build
+
 cmake ../ -G "Unix Makefiles"
 make
