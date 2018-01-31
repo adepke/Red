@@ -1,5 +1,5 @@
 image:
-  - Visual Studio 2015
+#  - Visual Studio 2015
   - Visual Studio 2017
   
 configuration:
@@ -13,12 +13,12 @@ platform:
 build_script:
     ps: |-
         
-        if ($env:APPVEYOR_BUILD_WORKER_IMAGE -eq "Visual Studio 2015") {
-          $PlatformToolset = "v140"
-        } else {
-          $PlatformToolset = "v141"
-        }
+#        if ($env:APPVEYOR_BUILD_WORKER_IMAGE -eq "Visual Studio 2015") {
+#          $PlatformToolset = "v140"
+#        } else {
+#          $PlatformToolset = "v141"
+#        }
 
-        (Get-Content Red/Red.vcxproj) | %{$_ -replace "v100", $PlatformToolset} | Set-Content Red/Red.vcxproj
+#        (Get-Content Red/Red.vcxproj) | %{$_ -replace "v100", $PlatformToolset} | Set-Content Red/Red.vcxproj
 
         & msbuild Red/Red.vcxproj "/p:platform=$env:platform;configuration=$env:configuration"
