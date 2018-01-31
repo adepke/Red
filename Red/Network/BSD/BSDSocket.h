@@ -13,6 +13,7 @@
 	#include <netinet/in.h>
 	#include <netinet/in.h>
 	#include <netinet/tcp.h>
+	#include <sys/ioctl.h>
 
 	typedef int SOCKET;
 #endif
