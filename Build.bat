@@ -13,6 +13,7 @@ FOR /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio
 )
 
 CALL "!VSINSTALLPATH!\Common7\Tools\VsDevCmd.bat"
+
 MSBuild.exe "%~dp0\Red.sln" /t:Build /p:Configuration=Release /p:Platform="x64" /nologo
 
 PAUSE
