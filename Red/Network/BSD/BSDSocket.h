@@ -11,6 +11,8 @@
 	#include <arpa/inet.h>
 	#include <unistd.h>
 	#include <netinet/in.h>
+	#include <netinet/in.h>
+	#include <netinet/tcp.h>
 
 	typedef int SOCKET;
 #endif

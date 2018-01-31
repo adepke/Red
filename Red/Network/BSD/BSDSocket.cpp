@@ -32,7 +32,13 @@ namespace Red
 		if (SocketHandle != RED_INVALID_SOCKET)
 		{
 			shutdown(SocketHandle, 2);  // SHUT_RDWR
+
+#if OS_WINDOWS
 			Result = (closesocket(SocketHandle) == 0);
+#else
+			Result = (close(SocketHandle) == 0);
+#endif
+
 			SocketHandle = RED_INVALID_SOCKET;
 		}
 
@@ -51,7 +57,12 @@ namespace Red
 			if (connect(SocketHandle, (sockaddr*)&SocketAddress, sizeof(SocketAddress)) == 0)
 			{
 				unsigned long Value = Description.ThreadBlocking ? 0 : 1;
+
+#if OS_WINDOWS
 				ioctlsocket(SocketHandle, FIONBIO, &Value);
+#else
+				ioctl(SocketHandle, FIONBIO, &Value);
+#endif
 
 				return true;
 			}
@@ -86,7 +97,12 @@ namespace Red
 			if (listen(SocketHandle, MaxBacklog) == 0)
 			{
 				unsigned long Value = Description.ThreadBlocking ? 0 : 1;
+
+#if OS_WINDOWS
 				ioctlsocket(SocketHandle, FIONBIO, &Value);
+#else
+				ioctl(SocketHandle, FIONBIO, &Value);
+#endif
 
 				return true;
 			}
@@ -101,10 +117,18 @@ namespace Red
 		sockaddr_in SocketAddress;
 		int SizeSmall = sizeof(SocketAddress);
 
+#if OS_WINDOWS
 		ClientHandle = accept(SocketHandle, (sockaddr*)&SocketAddress, &SizeSmall);
+#else
+		ClientHandle = accept(SocketHandle, (sockaddr*)&SocketAddress, (socklen_t*)&SizeSmall);
+#endif
 		if (ClientHandle != RED_INVALID_SOCKET)
 		{
+#if OS_WINDOWS
 			if (getpeername(ClientHandle, (sockaddr*)&SocketAddress, &SizeSmall) == 0)
+#else
+			if (getpeername(ClientHandle, (sockaddr*)&SocketAddress, (socklen_t*)&SizeSmall) == 0)
+#endif
 			{
 				BSDSocket* ClientSocket = new BSDSocket();
 
@@ -122,7 +146,11 @@ namespace Red
 		}
 
 		// Manually kill the created socket.
+#if OS_WINDOWS
 		closesocket(ClientHandle);
+#else
+		close(ClientHandle);
+#endif
 
 		return nullptr;
 	}
@@ -157,7 +185,12 @@ namespace Red
 	{
 		sockaddr_in ClientAddress;
 		int Size = sizeof(ClientAddress);
+
+#if OS_WINDOWS
 		BytesReceived = recvfrom(SocketHandle, (char*)Data, MaxReceivingBytes, 0, (sockaddr*)&ClientAddress, &Size);
+#else
+		BytesReceived = recvfrom(SocketHandle, (char*)Data, MaxReceivingBytes, 0, (sockaddr*)&ClientAddress, (socklen_t*)&Size);
+#endif
 
 		Source.Address = ntohl(ClientAddress.sin_addr.s_addr);
 
@@ -179,7 +212,11 @@ namespace Red
 		sockaddr_in Address;
 		int Size = sizeof(Address);
 
+#if OS_WINDOWS
 		if (getsockname(SocketHandle, (sockaddr*)&Address, &Size) == 0)
+#else
+		if (getsockname(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
+#endif
 		{
 			return IP4EndPoint(ntohl(Address.sin_addr.s_addr), ntohs(Address.sin_port));
 		}
@@ -192,7 +229,11 @@ namespace Red
 		sockaddr_in Address;
 		int Size = sizeof(Address);
 
+#if OS_WINDOWS
 		if (getpeername(SocketHandle, (sockaddr*)&Address, &Size) == 0)
+#else
+		if (getpeername(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
+#endif
 		{
 			return IP4EndPoint(ntohl(Address.sin_addr.s_addr), ntohs(Address.sin_port));
 		}
