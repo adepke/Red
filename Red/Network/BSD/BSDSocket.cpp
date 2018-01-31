@@ -7,6 +7,8 @@
 
 	#define RED_INVALID_SOCKET INVALID_SOCKET
 #else
+	#include <string.h>  // memset()
+
 	#define RED_INVALID_SOCKET -1
 #endif
 
