@@ -1,15 +1,19 @@
 #include "BSDSocketSubsystem.h"
 
-#include <WS2tcpip.h>
+#if OS_WINDOWS
+	#include <WS2tcpip.h>
+#endif
 
 namespace Red
 {
 	bool BSDSocketSubsystem::Initialize()
 	{
+#if OS_WINDOWS
 		if (WSAStartup(0x0202, &SubsystemData) == SOCKET_ERROR)
 		{
 			return false;
 		}
+#endif
 
 		return true;
 	}
@@ -21,7 +25,9 @@ namespace Red
 			Socket->Shutdown();
 		}
 
+#if OS_WINDOWS
 		WSACleanup();
+#endif
 	}
 
 	ISocket* BSDSocketSubsystem::CreateSocket(const SocketDescription& InDescription)

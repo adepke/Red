@@ -1,7 +1,13 @@
 #include "BSDSocket.h"
 
+#include <memory>
+
 #if OS_WINDOWS
 	#pragma comment(lib, "Ws2_32.lib")
+
+	#define RED_INVALID_SOCKET INVALID_SOCKET
+#else
+	#define RED_INVALID_SOCKET -1
 #endif
 
 namespace Red
@@ -11,7 +17,7 @@ namespace Red
 		Description = InDescription;
 
 		SocketHandle = socket(PF_INET, InDescription.Protocol == SP_TCP ? SOCK_STREAM : SOCK_DGRAM, InDescription.Protocol == SP_TCP ? IPPROTO_TCP : IPPROTO_UDP);
-		if (SocketHandle == INVALID_SOCKET)
+		if (SocketHandle == RED_INVALID_SOCKET)
 		{
 			return false;
 		}
@@ -23,11 +29,11 @@ namespace Red
 	{
 		bool Result = false;
 
-		if (SocketHandle != INVALID_SOCKET)
+		if (SocketHandle != RED_INVALID_SOCKET)
 		{
 			shutdown(SocketHandle, 2);  // SHUT_RDWR
 			Result = (closesocket(SocketHandle) == 0);
-			SocketHandle = INVALID_SOCKET;
+			SocketHandle = RED_INVALID_SOCKET;
 		}
 
 		return Result;
@@ -35,7 +41,7 @@ namespace Red
 
 	bool BSDSocket::Connect(const IP4EndPoint& EndPoint)
 	{
-		if (SocketHandle != INVALID_SOCKET)
+		if (SocketHandle != RED_INVALID_SOCKET)
 		{
 			sockaddr_in SocketAddress;
 			SocketAddress.sin_family = AF_INET;
@@ -56,10 +62,10 @@ namespace Red
 
 	bool BSDSocket::Bind(unsigned short Port)
 	{
-		if (SocketHandle != INVALID_SOCKET)
+		if (SocketHandle != RED_INVALID_SOCKET)
 		{
 			sockaddr_in SocketAddress;
-			ZeroMemory(&SocketAddress, sizeof(SocketAddress));
+			std::memset(&SocketAddress, 0, sizeof(SocketAddress));
 			SocketAddress.sin_family = AF_INET;
 			SocketAddress.sin_addr.s_addr = INADDR_ANY;  // Automatically determine the private IP.
 			SocketAddress.sin_port = htons(Port);
@@ -75,7 +81,7 @@ namespace Red
 
 	bool BSDSocket::Listen(int MaxBacklog)
 	{
-		if (SocketHandle != INVALID_SOCKET)
+		if (SocketHandle != RED_INVALID_SOCKET)
 		{
 			if (listen(SocketHandle, MaxBacklog) == 0)
 			{
@@ -96,7 +102,7 @@ namespace Red
 		int SizeSmall = sizeof(SocketAddress);
 
 		ClientHandle = accept(SocketHandle, (sockaddr*)&SocketAddress, &SizeSmall);
-		if (ClientHandle != INVALID_SOCKET)
+		if (ClientHandle != RED_INVALID_SOCKET)
 		{
 			if (getpeername(ClientHandle, (sockaddr*)&SocketAddress, &SizeSmall) == 0)
 			{
