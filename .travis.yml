@@ -1,15 +1,28 @@
 language: cpp
 
-compiler:
-- gcc
-- clang
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+      
+    - os: linux
+      compiler: clang
+      
+    - os: osx
+      osx_image: xcode8.3
+      compiler: clang
 
-os:
-- linux
+install:
+- mkdir Build
+- |
+  if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+    which cmake || brew install cmake
+  fi
+
+before_script:
+- cd Build
 
 script:
-- mkdir Build
-- cd Build
 - cmake ../ -G "Unix Makefiles"
 - make
 
