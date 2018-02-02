@@ -1,8 +1,3 @@
-#
-# This file was genared by proj2cmake and will be overwritten on it's next run!
-# Please put all configurations in the cmake_conf/*.cmake files.
-#
-
 cmake_minimum_required(VERSION 3.0)
 
 set (CMAKE_CXX_STANDARD 14)
