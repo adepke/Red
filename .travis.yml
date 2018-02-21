@@ -32,6 +32,7 @@ before_script:
 script:
 - cmake ../ -G "Unix Makefiles"
 - make
+- gcov Test/Algorithm/*.cpp
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
