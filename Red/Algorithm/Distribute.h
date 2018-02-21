@@ -17,7 +17,7 @@ namespace Red
 			for (int Iter(0); Iter < ChunkCount; ++Iter)
 			{
 				if ((Iter == (ChunkCount - 1)) && IncludeRemainder)
-					Destination[Iter] = ChunkSize + (Math::Modulus(Total, ChunkCount));
+					Destination[Iter] = ChunkSize + (Red::Modulus(Total, ChunkCount));
 				else
 					Destination[Iter] = ChunkSize;
 			}
@@ -37,7 +37,7 @@ namespace Red
 			for (int Iter(0); Iter < ChunkCount; ++Iter)
 			{
 				if ((Iter == (ChunkCount - 1)) && IncludeRemainder)
-					Destination->push_back(ChunkSize + (Math::Modulus(Total, ChunkCount)));
+					Destination->push_back(ChunkSize + (Red::Modulus(Total, ChunkCount)));
 				else
 					Destination->push_back(ChunkSize);
 			}
