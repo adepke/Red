@@ -3,6 +3,10 @@ language: cpp
 dist: trusty
 sudo: required
 
+env:
+  global:
+    - CODECOV_TOKEN="c57773e7-bd57-474c-be2c-551d66ba421b"
+
 matrix:
   include:
     - os: linux
