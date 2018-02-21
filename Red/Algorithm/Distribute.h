@@ -10,7 +10,7 @@ namespace Red
 	template <typename Type>
 	void Distribute(Type* Destination, Type Total, unsigned int ChunkCount, bool IncludeRemainder = true)
 	{
-		if (Destination)
+		if (Destination && Total != 0)
 		{
 			Type ChunkSize(Total / ChunkCount);
 
@@ -27,7 +27,7 @@ namespace Red
 	template <typename Type>
 	void Distribute(std::vector<Type>* Destination, Type Total, unsigned int ChunkCount, bool IncludeRemainder = true)
 	{
-		if (Destination)
+		if (Destination && Total != 0)
 		{
 			Type ChunkSize(Total / ChunkCount);
 
