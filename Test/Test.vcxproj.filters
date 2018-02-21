@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Algorithm\Test_Distribute.cpp">
+      <Filter>Algorithm</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Algorithm">
+      <UniqueIdentifier>{a68d8e52-436a-40a1-a7aa-75c6c24cac30}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
