@@ -10,6 +10,9 @@ platform:
   - x86
   - x64
  
+before_build:
+  - nuget restore
+ 
 build:
   project: Red.sln
   parallel: true
