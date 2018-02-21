@@ -1,3 +1,5 @@
+[![Code Coverage](https://codecov.io/gh/XenonicDev/Red/branch/master/graph/badge.svg)](https://codecov.io/gh/XenonicDev/Red)
+
 | Build Status          | System         |
 | ------------- | ------------------------------------------ |
 | [![Build Status Windows](https://ci.appveyor.com/api/projects/status/uaoee0lwjm5qfx5t?svg=true)](https://ci.appveyor.com/project/XenonicDev/red) | Windows 10 (MSVS 2017) |
