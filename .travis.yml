@@ -25,6 +25,7 @@ install:
   if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
     which cmake || brew install cmake
   fi
+- npm install -g codecov
 
 before_script:
 - cd Build
@@ -32,6 +33,9 @@ before_script:
 script:
 - cmake ../ -G "Unix Makefiles"
 - make
+
+after_success:
+- codecov -X gcov
 
 notifications:
   email: false
