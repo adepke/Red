@@ -109,18 +109,26 @@ TEST(DistributeSuite, ChunkCountZero)
 
 TEST(DistributeSuite, MoreChunksThanTotalAsInteger)
 {
-	int* Return = new int;
+	int* Return = new int[10];
 
 	ASSERT_NO_THROW(Red::Distribute(Return, 5, 10));
-	EXPECT_EQ(0, *Return);
+	for (int Iter = 0; Iter < 9; ++Iter)
+	{
+		EXPECT_EQ(0, Return[Iter]);
+	}
+	EXPECT_EQ(5, Return[9]);
 
-	delete Return;
+	delete[] Return;
 
 	std::vector<int> ReturnVector;
 
 	ASSERT_NO_THROW(Red::Distribute(&ReturnVector, 5, 10));
-	EXPECT_EQ(1, ReturnVector.size());
-	EXPECT_EQ(0, ReturnVector[0]);
+	EXPECT_EQ(10, ReturnVector.size());
+	for (int Iter = 0; Iter < 9; ++Iter)
+	{
+		EXPECT_EQ(0, ReturnVector[Iter]);
+	}
+	EXPECT_EQ(5, ReturnVector[9]);
 }
 
 TEST(DistributeSuite, MoreChunksThanTotalAsFloat)
