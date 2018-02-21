@@ -10,16 +10,24 @@ namespace Red
 	template <typename Type>
 	void Distribute(Type* Destination, Type Total, unsigned int ChunkCount, bool IncludeRemainder = true)
 	{
-		if (Destination && Total != 0)
+		if (Destination)
 		{
-			Type ChunkSize(Total / ChunkCount);
-
-			for (unsigned int Iter = 0; Iter < ChunkCount; ++Iter)
+			if (Total != 0)
 			{
-				if ((Iter == (ChunkCount - 1)) && IncludeRemainder)
-					Destination[Iter] = ChunkSize + (Red::Modulus(Total, static_cast<Type>(ChunkCount)));
-				else
-					Destination[Iter] = ChunkSize;
+				Type ChunkSize(Total / ChunkCount);
+
+				for (unsigned int Iter = 0; Iter < ChunkCount; ++Iter)
+				{
+					if ((Iter == (ChunkCount - 1)) && IncludeRemainder)
+						Destination[Iter] = ChunkSize + (Red::Modulus(Total, static_cast<Type>(ChunkCount)));
+					else
+						Destination[Iter] = ChunkSize;
+				}
+			}
+
+			else
+			{
+				*Destination = 0;
 			}
 		}
 	}
@@ -27,19 +35,27 @@ namespace Red
 	template <typename Type>
 	void Distribute(std::vector<Type>* Destination, Type Total, unsigned int ChunkCount, bool IncludeRemainder = true)
 	{
-		if (Destination && Total != 0)
+		if (Destination)
 		{
-			Type ChunkSize(Total / ChunkCount);
-
-			if (!Destination->empty())
-				Destination->clear();
-
-			for (unsigned int Iter = 0; Iter < ChunkCount; ++Iter)
+			if (Total != 0)
 			{
-				if ((Iter == (ChunkCount - 1)) && IncludeRemainder)
-					Destination->push_back(ChunkSize + (Red::Modulus(Total, static_cast<Type>(ChunkCount))));
-				else
-					Destination->push_back(ChunkSize);
+				Type ChunkSize(Total / ChunkCount);
+
+				if (!Destination->empty())
+					Destination->clear();
+
+				for (unsigned int Iter = 0; Iter < ChunkCount; ++Iter)
+				{
+					if ((Iter == (ChunkCount - 1)) && IncludeRemainder)
+						Destination->push_back(ChunkSize + (Red::Modulus(Total, static_cast<Type>(ChunkCount))));
+					else
+						Destination->push_back(ChunkSize);
+				}
+			}
+
+			else
+			{
+				Destination->push_back(0);
 			}
 		}
 	}

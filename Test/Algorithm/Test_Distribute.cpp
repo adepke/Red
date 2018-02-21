@@ -89,7 +89,7 @@ TEST(DistributeSuite, TotalZero)
 	std::vector<int> ReturnVector;
 
 	ASSERT_NO_THROW(Red::Distribute(&ReturnVector, 0, 5));
-	EXPECT_EQ(0, ReturnVector.size());
+	EXPECT_EQ(1, ReturnVector.size());
 }
 
 TEST(DistributeSuite, ChunkCountZero)
