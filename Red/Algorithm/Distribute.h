@@ -14,10 +14,10 @@ namespace Red
 		{
 			Type ChunkSize(Total / ChunkCount);
 
-			for (int Iter(0); Iter < ChunkCount; ++Iter)
+			for (unsigned int Iter = 0; Iter < ChunkCount; ++Iter)
 			{
 				if ((Iter == (ChunkCount - 1)) && IncludeRemainder)
-					Destination[Iter] = ChunkSize + (Red::Modulus(Total, ChunkCount));
+					Destination[Iter] = ChunkSize + (Red::Modulus(Total, static_cast<Type>(ChunkCount)));
 				else
 					Destination[Iter] = ChunkSize;
 			}
@@ -34,10 +34,10 @@ namespace Red
 			if (!Destination->empty())
 				Destination->clear();
 
-			for (int Iter(0); Iter < ChunkCount; ++Iter)
+			for (unsigned int Iter = 0; Iter < ChunkCount; ++Iter)
 			{
 				if ((Iter == (ChunkCount - 1)) && IncludeRemainder)
-					Destination->push_back(ChunkSize + (Red::Modulus(Total, ChunkCount)));
+					Destination->push_back(ChunkSize + (Red::Modulus(Total, static_cast<Type>(ChunkCount))));
 				else
 					Destination->push_back(ChunkSize);
 			}

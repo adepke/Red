@@ -33,7 +33,7 @@ TEST(DistributeSuite, Remainder)
 	{
 		EXPECT_EQ(4, Return[Iter]);
 	}
-	EXPECT_EQ(1, Return[4]);
+	EXPECT_EQ(5, Return[4]);
 
 	delete[] Return;
 
@@ -45,14 +45,14 @@ TEST(DistributeSuite, Remainder)
 	{
 		EXPECT_EQ(4, ReturnVector[Iter]);
 	}
-	EXPECT_EQ(1, ReturnVector[4]);
+	EXPECT_EQ(5, ReturnVector[4]);
 }
 
 TEST(DistributeSuite, RemainderDropped)
 {
 	int* Return = new int[4];
 
-	ASSERT_NO_THROW(Red::Distribute(Return, 21, 5));
+	ASSERT_NO_THROW(Red::Distribute(Return, 21, 5, false));
 	for (int Iter = 0; Iter < 4; ++Iter)
 	{
 		EXPECT_EQ(4, Return[Iter]);
@@ -62,7 +62,7 @@ TEST(DistributeSuite, RemainderDropped)
 
 	std::vector<int> ReturnVector;
 
-	ASSERT_NO_THROW(Red::Distribute(&ReturnVector, 21, 5));
+	ASSERT_NO_THROW(Red::Distribute(&ReturnVector, 21, 5, false));
 	EXPECT_EQ(4, ReturnVector.size());
 	for (auto& Element : ReturnVector)
 	{
