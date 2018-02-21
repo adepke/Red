@@ -50,7 +50,7 @@ TEST(DistributeSuite, Remainder)
 
 TEST(DistributeSuite, RemainderDropped)
 {
-	int* Return = new int[4];
+	int* Return = new int[5];
 
 	ASSERT_NO_THROW(Red::Distribute(Return, 21, 5, false));
 	for (int Iter = 0; Iter < 4; ++Iter)
@@ -59,7 +59,7 @@ TEST(DistributeSuite, RemainderDropped)
 	}
 
 	delete[] Return;
-
+	
 	std::vector<int> ReturnVector;
 
 	ASSERT_NO_THROW(Red::Distribute(&ReturnVector, 21, 5, false));
