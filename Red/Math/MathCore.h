@@ -99,6 +99,12 @@ namespace Red
 		return std::sqrtl(Target);
 	}
 
+	// Modulus
+	REDINLINE int Modulus(int TargetA, int TargetB) noexcept
+	{
+		return TargetA % TargetB;
+	}
+
 	// Modulus [CMath Built-in]
 	REDINLINE float Modulus(float TargetA, float TargetB) noexcept
 	{
