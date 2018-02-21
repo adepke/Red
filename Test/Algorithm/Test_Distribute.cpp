@@ -53,7 +53,7 @@ TEST(DistributeSuite, RemainderDropped)
 	int* Return = new int[5];
 
 	ASSERT_NO_THROW(Red::Distribute(Return, 21, 5, false));
-	for (int Iter = 0; Iter < 4; ++Iter)
+	for (int Iter = 0; Iter < 5; ++Iter)
 	{
 		EXPECT_EQ(4, Return[Iter]);
 	}
@@ -63,7 +63,7 @@ TEST(DistributeSuite, RemainderDropped)
 	std::vector<int> ReturnVector;
 
 	ASSERT_NO_THROW(Red::Distribute(&ReturnVector, 21, 5, false));
-	EXPECT_EQ(4, ReturnVector.size());
+	EXPECT_EQ(5, ReturnVector.size());
 	for (auto& Element : ReturnVector)
 	{
 		EXPECT_EQ(4, Element);
@@ -104,7 +104,7 @@ TEST(DistributeSuite, ChunkCountZero)
 	std::vector<int> ReturnVector;
 
 	ASSERT_NO_THROW(Red::Distribute(&ReturnVector, 10, 0));
-	EXPECT_EQ(0, ReturnVector.size());
+	EXPECT_EQ(1, ReturnVector.size());
 }
 
 TEST(DistributeSuite, MoreChunksThanTotalAsInteger)

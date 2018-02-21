@@ -12,7 +12,7 @@ namespace Red
 	{
 		if (Destination)
 		{
-			if (Total != 0)
+			if (Total != 0 && ChunkCount != 0)
 			{
 				Type ChunkSize(Total / ChunkCount);
 
@@ -37,7 +37,7 @@ namespace Red
 	{
 		if (Destination)
 		{
-			if (Total != 0)
+			if (Total != 0 && ChunkCount != 0)
 			{
 				Type ChunkSize(Total / ChunkCount);
 
