@@ -145,3 +145,61 @@ TEST(MultiplyRowCopySuite, General)
 	EXPECT_NEAR(5.19f, Result[3], 0.01f);
 	EXPECT_NEAR(6.10f, Result[4], 0.01f);
 }
+
+class RowEchelonSuite : public ::testing::Test
+{
+protected:
+	virtual void SetUp() override
+	{
+		Normal.Data[0][0] = 0.0f;
+		Normal.Data[0][1] = 3.0f;
+		Normal.Data[0][2] = -6.0f;
+		Normal.Data[0][3] = 6.0f;
+		Normal.Data[0][4] = 4.0f;
+		Normal.Data[0][5] = -5.0f;
+		Normal.Data[1][0] = 3.0f;
+		Normal.Data[1][1] = -7.0f;
+		Normal.Data[1][2] = 8.0f;
+		Normal.Data[1][3] = -5.0f;
+		Normal.Data[1][4] = 8.0f;
+		Normal.Data[1][5] = 9.0f;
+		Normal.Data[2][0] = 3.0f;
+		Normal.Data[2][1] = -9.0f;
+		Normal.Data[2][2] = 12.0f;
+		Normal.Data[2][3] = -9.0f;
+		Normal.Data[2][4] = 6.0f;
+		Normal.Data[2][5] = 15.0f;
+	}
+
+	virtual void TearDown() override
+	{
+	}
+
+	Matrix<3, 6> Normal;
+};
+
+TEST_F(RowEchelonSuite, General)
+{
+	Matrix<3, 6> Result;
+
+	Result = RowEchelon(Normal);
+
+	EXPECT_EQ(1.0f, Result.Data[0][0]);
+	EXPECT_EQ(-3.0f, Result.Data[0][1]);
+	EXPECT_EQ(4.0f, Result.Data[0][2]);
+	EXPECT_EQ(-3.0f, Result.Data[0][3]);
+	EXPECT_EQ(2.0f, Result.Data[0][4]);
+	EXPECT_EQ(5.0f, Result.Data[0][5]);
+	EXPECT_EQ(0.0f, Result.Data[1][0]);
+	EXPECT_EQ(1.0f, Result.Data[1][1]);
+	EXPECT_EQ(-2.0f, Result.Data[1][2]);
+	EXPECT_EQ(2.0f, Result.Data[1][3]);
+	EXPECT_EQ(1.0f, Result.Data[1][4]);
+	EXPECT_EQ(-3.0f, Result.Data[1][5]);
+	EXPECT_EQ(0.0f, Result.Data[2][0]);
+	EXPECT_EQ(0.0f, Result.Data[2][1]);
+	EXPECT_EQ(0.0f, Result.Data[2][2]);
+	EXPECT_EQ(0.0f, Result.Data[2][3]);
+	EXPECT_EQ(1.0f, Result.Data[2][4]);
+	EXPECT_EQ(4.0f, Result.Data[2][5]);
+}
