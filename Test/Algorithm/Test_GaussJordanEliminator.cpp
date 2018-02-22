@@ -114,7 +114,7 @@ TEST(DivideRowSuite, General)
 {
 	Matrix<1, 5> Mat;
 	Mat.Data[0][0] = 4.20f;
-	Mat.Data[0][1] = 0.01f;
+	Mat.Data[0][1] = 0.00f;
 	Mat.Data[0][2] = 1.05f;
 	Mat.Data[0][3] = 1.70f;
 	Mat.Data[0][4] = 2.00f;
@@ -125,4 +125,23 @@ TEST(DivideRowSuite, General)
 	EXPECT_NEAR(0.34f, Mat.Data[0][2], 0.01f);
 	EXPECT_NEAR(0.56f, Mat.Data[0][3], 0.01f);
 	EXPECT_NEAR(0.66f, Mat.Data[0][4], 0.01f);
+}
+
+TEST(MultiplyRowCopySuite, General)
+{
+	Matrix<1, 5> Mat;
+	Mat.Data[0][0] = 4.20f;
+	Mat.Data[0][1] = 0.00f;
+	Mat.Data[0][2] = 1.05f;
+	Mat.Data[0][3] = 1.70f;
+	Mat.Data[0][4] = 2.00f;
+
+	float Result[5];
+
+	ASSERT_NO_THROW(Internal::MultiplyRowCopy(Mat, Result, 0, 3.05f));
+	EXPECT_NEAR(12.81f, Result[0], 0.01f);
+	EXPECT_NEAR(0.00f, Result[1], 0.01f);
+	EXPECT_NEAR(3.20f, Result[2], 0.01f);
+	EXPECT_NEAR(5.19f, Result[3], 0.01f);
+	EXPECT_NEAR(6.10f, Result[4], 0.01f);
 }
