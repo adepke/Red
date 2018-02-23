@@ -7,10 +7,16 @@
     <ClCompile Include="Algorithm\Test_GaussJordanEliminator.cpp">
       <Filter>Algorithm</Filter>
     </ClCompile>
+    <ClCompile Include="Function\Test_Function.cpp">
+      <Filter>Function</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Algorithm">
       <UniqueIdentifier>{a68d8e52-436a-40a1-a7aa-75c6c24cac30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Function">
+      <UniqueIdentifier>{97ba219e-12c9-4042-862a-93f7e8c50d8e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

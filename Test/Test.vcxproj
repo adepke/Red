@@ -35,6 +35,7 @@
   <ItemGroup>
     <ClCompile Include="Algorithm\Test_Distribute.cpp" />
     <ClCompile Include="Algorithm\Test_GaussJordanEliminator.cpp" />
+    <ClCompile Include="Function\Test_Function.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Red\Red.vcxproj">
