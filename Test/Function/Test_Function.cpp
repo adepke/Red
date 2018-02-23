@@ -66,7 +66,7 @@ protected:
 
 TEST_F(DelegateSuite, MemberFunctionPointerConstruction)
 {
-	Delegate<DummyClass, int()> Del(*Dummy, &Dummy::GetValue);
+	Delegate<DummyClass, int> Del(*Dummy, &DummyClass::GetValue);
 
 	EXPECT_EQ(6, Del());
 }
