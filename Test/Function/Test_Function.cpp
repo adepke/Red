@@ -32,8 +32,6 @@ TEST(FunctionSuite, LambaConstruction)
 
 TEST(FunctionSuite, LambaAssignment)
 {
-	int Result = 0;
-
 	Function<int(int)> Func = [&](int Value) { return TestFunction(Value); };
 
 	EXPECT_EQ(3, Func(5));
