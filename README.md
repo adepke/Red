@@ -11,3 +11,6 @@ Open source collection of C++ modules built to interest a wide variety of progra
 
 ## Building
 Building is simplified into platform specific build scripts. For Windows systems, execute Build.bat, while on Unix systems, use Build.sh. These will generate a Build folder in the project root to store all intermediates and binaries. Build script parameters are in the immediate roadmap.
+
+## Contributing
+This is an open source project that is open to any public submissions that fall within the loosely held style guide of the project. Until an official guide is written, potential contributors can look over the code provided and do their best to get a sense of the structure and style. As for work environments, Microsoft Visual Studio is the native development suite for work on the library and will always be supported. It is unknown whether or not other IDEs will be natively supported in the future.
