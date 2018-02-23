@@ -185,11 +185,11 @@ TEST_F(RowEchelonSuite, General)
 	Result = RowEchelon(Normal);
 
 	EXPECT_FLOAT_EQ(1.0f, Result.Data[0][0]);
-	EXPECT_FLOAT_EQ(-3.0f, Result.Data[0][1]);
-	EXPECT_FLOAT_EQ(4.0f, Result.Data[0][2]);
-	EXPECT_FLOAT_EQ(-3.0f, Result.Data[0][3]);
-	EXPECT_FLOAT_EQ(2.0f, Result.Data[0][4]);
-	EXPECT_FLOAT_EQ(5.0f, Result.Data[0][5]);
+	EXPECT_NEAR(-2.33f, Result.Data[0][1], 0.01f);
+	EXPECT_NEAR(2.67f, Result.Data[0][2], 0.01f);
+	EXPECT_NEAR(-1.67f, Result.Data[0][3], 0.01f);
+	EXPECT_NEAR(2.67f, Result.Data[0][4], 0.01f);
+	EXPECT_FLOAT_EQ(3.0f, Result.Data[0][5]);
 	EXPECT_FLOAT_EQ(0.0f, Result.Data[1][0]);
 	EXPECT_FLOAT_EQ(1.0f, Result.Data[1][1]);
 	EXPECT_FLOAT_EQ(-2.0f, Result.Data[1][2]);
