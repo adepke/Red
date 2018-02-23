@@ -169,6 +169,9 @@ protected:
 		Normal.Data[2][3] = -9.0f;
 		Normal.Data[2][4] = 6.0f;
 		Normal.Data[2][5] = 15.0f;
+
+		OneRow.Data[0][0] = 3.0f;
+		OneRow.Data[0][1] = 7.0f;
 	}
 
 	virtual void TearDown() override
@@ -176,6 +179,7 @@ protected:
 	}
 
 	Matrix<3, 6> Normal;
+	Matrix<1, 2> OneRow;
 };
 
 TEST_F(RowEchelonSuite, General)
@@ -204,6 +208,16 @@ TEST_F(RowEchelonSuite, General)
 	EXPECT_FLOAT_EQ(4.0f, Result.Data[2][5]);
 }
 
+TEST_F(RowEchelonSuite, OneRow)
+{
+	Matrix<1, 2> Result;
+
+	Result = RowEchelon(OneRow);
+
+	EXPECT_FLOAT_EQ(3.0f, Result.Data[0][0]);
+	EXPECT_FLOAT_EQ(7.0f, Result.Data[0][1]);
+}
+
 TEST_F(RowEchelonSuite, ReducedGeneral)
 {
 	Matrix<3, 6> Result;
@@ -228,4 +242,14 @@ TEST_F(RowEchelonSuite, ReducedGeneral)
 	EXPECT_FLOAT_EQ(0.0f, Result.Data[2][3]);
 	EXPECT_FLOAT_EQ(1.0f, Result.Data[2][4]);
 	EXPECT_FLOAT_EQ(4.0f, Result.Data[2][5]);
+}
+
+TEST_F(RowEchelonSuite, ReducedOneRow)
+{
+	Matrix<1, 2> Result;
+
+	Result = ReducedRowEchelon(OneRow);
+
+	EXPECT_FLOAT_EQ(3.0f, Result.Data[0][0]);
+	EXPECT_FLOAT_EQ(7.0f, Result.Data[0][1]);
 }
