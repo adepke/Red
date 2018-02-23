@@ -184,22 +184,48 @@ TEST_F(RowEchelonSuite, General)
 
 	Result = RowEchelon(Normal);
 
-	EXPECT_EQ(1.0f, Result.Data[0][0]);
-	EXPECT_EQ(-3.0f, Result.Data[0][1]);
-	EXPECT_EQ(4.0f, Result.Data[0][2]);
-	EXPECT_EQ(-3.0f, Result.Data[0][3]);
-	EXPECT_EQ(2.0f, Result.Data[0][4]);
-	EXPECT_EQ(5.0f, Result.Data[0][5]);
-	EXPECT_EQ(0.0f, Result.Data[1][0]);
-	EXPECT_EQ(1.0f, Result.Data[1][1]);
-	EXPECT_EQ(-2.0f, Result.Data[1][2]);
-	EXPECT_EQ(2.0f, Result.Data[1][3]);
-	EXPECT_EQ(1.0f, Result.Data[1][4]);
-	EXPECT_EQ(-3.0f, Result.Data[1][5]);
-	EXPECT_EQ(0.0f, Result.Data[2][0]);
-	EXPECT_EQ(0.0f, Result.Data[2][1]);
-	EXPECT_EQ(0.0f, Result.Data[2][2]);
-	EXPECT_EQ(0.0f, Result.Data[2][3]);
-	EXPECT_EQ(1.0f, Result.Data[2][4]);
-	EXPECT_EQ(4.0f, Result.Data[2][5]);
+	EXPECT_FLOAT_EQ(1.0f, Result.Data[0][0]);
+	EXPECT_FLOAT_EQ(-3.0f, Result.Data[0][1]);
+	EXPECT_FLOAT_EQ(4.0f, Result.Data[0][2]);
+	EXPECT_FLOAT_EQ(-3.0f, Result.Data[0][3]);
+	EXPECT_FLOAT_EQ(2.0f, Result.Data[0][4]);
+	EXPECT_FLOAT_EQ(5.0f, Result.Data[0][5]);
+	EXPECT_FLOAT_EQ(0.0f, Result.Data[1][0]);
+	EXPECT_FLOAT_EQ(1.0f, Result.Data[1][1]);
+	EXPECT_FLOAT_EQ(-2.0f, Result.Data[1][2]);
+	EXPECT_FLOAT_EQ(2.0f, Result.Data[1][3]);
+	EXPECT_FLOAT_EQ(1.0f, Result.Data[1][4]);
+	EXPECT_FLOAT_EQ(-3.0f, Result.Data[1][5]);
+	EXPECT_FLOAT_EQ(0.0f, Result.Data[2][0]);
+	EXPECT_FLOAT_EQ(0.0f, Result.Data[2][1]);
+	EXPECT_FLOAT_EQ(0.0f, Result.Data[2][2]);
+	EXPECT_FLOAT_EQ(0.0f, Result.Data[2][3]);
+	EXPECT_FLOAT_EQ(1.0f, Result.Data[2][4]);
+	EXPECT_FLOAT_EQ(4.0f, Result.Data[2][5]);
+}
+
+TEST_F(RowEchelonSuite, ReducedGeneral)
+{
+	Matrix<3, 6> Result;
+
+	Result = ReducedRowEchelon(Normal);
+
+	EXPECT_FLOAT_EQ(1.0f, Result.Data[0][0]);
+	EXPECT_FLOAT_EQ(0.0f, Result.Data[0][1]);
+	EXPECT_FLOAT_EQ(-2.0f, Result.Data[0][2]);
+	EXPECT_FLOAT_EQ(3.0f, Result.Data[0][3]);
+	EXPECT_FLOAT_EQ(0.0f, Result.Data[0][4]);
+	EXPECT_FLOAT_EQ(-24.0f, Result.Data[0][5]);
+	EXPECT_FLOAT_EQ(0.0f, Result.Data[1][0]);
+	EXPECT_FLOAT_EQ(1.0f, Result.Data[1][1]);
+	EXPECT_FLOAT_EQ(-2.0f, Result.Data[1][2]);
+	EXPECT_FLOAT_EQ(2.0f, Result.Data[1][3]);
+	EXPECT_FLOAT_EQ(0.0f, Result.Data[1][4]);
+	EXPECT_FLOAT_EQ(-7.0f, Result.Data[1][5]);
+	EXPECT_FLOAT_EQ(0.0f, Result.Data[2][0]);
+	EXPECT_FLOAT_EQ(0.0f, Result.Data[2][1]);
+	EXPECT_FLOAT_EQ(0.0f, Result.Data[2][2]);
+	EXPECT_FLOAT_EQ(0.0f, Result.Data[2][3]);
+	EXPECT_FLOAT_EQ(1.0f, Result.Data[2][4]);
+	EXPECT_FLOAT_EQ(4.0f, Result.Data[2][5]);
 }
