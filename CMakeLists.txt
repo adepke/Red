@@ -55,7 +55,7 @@ add_custom_target(
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-set(GTEST_ROOT 3rdPart/googletest/googletest CACHE STRING "Google Test Root")
+set(GTEST_ROOT 3rdParty/googletest/googletest CACHE STRING "Google Test Root")
 
 include_directories(
 	"${CMAKE_CURRENT_SOURCE_DIR}/${GTEST_ROOT}"
