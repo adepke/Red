@@ -13,7 +13,7 @@ set (CMAKE_CXX_STANDARD 14)
 
 # Build For GCC Coverage?
 option(COVERAGE "Build for code coverage analysis" OFF)
-if(COVERAGE)
+if(COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES GNU)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
 endif()
 
