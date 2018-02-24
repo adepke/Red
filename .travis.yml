@@ -27,7 +27,7 @@ install:
 
 script:
 - sh Build.sh COVERAGE
-- gcov Test/Algorithm/*.cpp
+- gcov Build/*.cpp
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
