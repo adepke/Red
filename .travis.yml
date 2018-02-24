@@ -20,18 +20,13 @@ matrix:
       compiler: clang
 
 install:
-- mkdir Build
 - |
   if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
     which cmake || brew install cmake
   fi
 
-before_script:
-- cd Build
-
 script:
-- cmake ../ -G "Unix Makefiles"
-- make
+- sh Build.sh COVERAGE
 - gcov Test/Algorithm/*.cpp
 
 after_success:
