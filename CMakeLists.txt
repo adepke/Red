@@ -81,10 +81,6 @@ file(GLOB_RECURSE TEST_SOURCE
 	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*.cpp"
 )
 
-foreach(SR ${TEST_SOURCE})
-	message(STATUS "Source File Found")
-endforeach()
-
 add_executable(Test ${TEST_SOURCE})
 
 add_dependencies(Test googletest)
