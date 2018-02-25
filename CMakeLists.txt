@@ -96,6 +96,12 @@ file(GLOB_RECURSE TEST_SOURCE
 	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*.cpp"
 )
 
+list(REMOVE_ITEM TEST_SOURCE
+	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Hardware/Windows/*.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Thread/Windows/*.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Window/Windows/*.cpp"
+)
+
 add_executable(Test ${TEST_SOURCE})
 
 add_dependencies(Test googletest)
