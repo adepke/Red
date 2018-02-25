@@ -27,7 +27,6 @@ install:
 
 script:
 - sh Build.sh COVERAGE
-- pwd
 - gcov Build/*.cpp.gcno
 
 after_success:
