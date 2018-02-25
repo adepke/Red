@@ -10,6 +10,66 @@
     <ClCompile Include="Function\Test_Function.cpp">
       <Filter>Function</Filter>
     </ClCompile>
+    <ClCompile Include="Hardware\Linux\Test_LinuxHardware.cpp">
+      <Filter>Hardware\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="Hardware\Windows\Test_WindowsHardware.cpp">
+      <Filter>Hardware\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Test_AABB.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Test_BinaryOps.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Test_Intersection.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Test_LineSegment.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Test_MathCore.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Test_Matrix.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Test_MatrixOperations.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Test_OBB.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Test_Quaternion.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Test_Ray.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Test_Vector.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Test_IPv4.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\BSD\Test_BSDSocketSubsystem.cpp">
+      <Filter>Network\BSD</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\BSD\Test_BSDSocket.cpp">
+      <Filter>Network\BSD</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Test_Shell.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\Windows\Test_WindowsCriticalSection.cpp">
+      <Filter>Thread\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\POSIX\Test_POSIXCriticalThread.cpp">
+      <Filter>Thread\POSIX</Filter>
+    </ClCompile>
+    <ClCompile Include="Window\Window\Test_WindowsWindow.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Algorithm">
@@ -17,6 +77,39 @@
     </Filter>
     <Filter Include="Function">
       <UniqueIdentifier>{97ba219e-12c9-4042-862a-93f7e8c50d8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware">
+      <UniqueIdentifier>{cbd358a7-e50b-4161-b303-1bd02b1b69eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{d07c8c95-c596-43bb-a7bd-3a665caf25d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{ae111ef8-9143-48df-a30d-7774f4ebb6c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{089d489d-19f8-4109-982c-6df7124f2653}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{d56aaf08-f6fb-43a1-9622-d460b9378e4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{d49198c4-f098-4e76-91bc-2b94bdc7c4a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Linux">
+      <UniqueIdentifier>{c35dbbb7-4b1f-4db8-8a68-a132677f285a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Windows">
+      <UniqueIdentifier>{ad94af30-2c0b-4dc3-a3fc-a7dba212bd4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\BSD">
+      <UniqueIdentifier>{130c05a6-ddd9-4923-b4ce-7fe4902c95d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread\POSIX">
+      <UniqueIdentifier>{1bb46386-7322-4649-aa29-ee4a2f23e2f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread\Windows">
+      <UniqueIdentifier>{c14ad82a-0a41-4ce0-aa76-c9503a83332a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

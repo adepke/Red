@@ -52,6 +52,26 @@
     <ClCompile Include="Algorithm\Test_Distribute.cpp" />
     <ClCompile Include="Algorithm\Test_GaussJordanEliminator.cpp" />
     <ClCompile Include="Function\Test_Function.cpp" />
+    <ClCompile Include="Hardware\Linux\Test_LinuxHardware.cpp" />
+    <ClCompile Include="Hardware\Windows\Test_WindowsHardware.cpp" />
+    <ClCompile Include="Math\Test_AABB.cpp" />
+    <ClCompile Include="Math\Test_BinaryOps.cpp" />
+    <ClCompile Include="Math\Test_Intersection.cpp" />
+    <ClCompile Include="Math\Test_LineSegment.cpp" />
+    <ClCompile Include="Math\Test_MathCore.cpp" />
+    <ClCompile Include="Math\Test_Matrix.cpp" />
+    <ClCompile Include="Math\Test_MatrixOperations.cpp" />
+    <ClCompile Include="Math\Test_OBB.cpp" />
+    <ClCompile Include="Math\Test_Quaternion.cpp" />
+    <ClCompile Include="Math\Test_Ray.cpp" />
+    <ClCompile Include="Math\Test_Vector.cpp" />
+    <ClCompile Include="Network\BSD\Test_BSDSocket.cpp" />
+    <ClCompile Include="Network\BSD\Test_BSDSocketSubsystem.cpp" />
+    <ClCompile Include="Network\Test_IPv4.cpp" />
+    <ClCompile Include="System\Test_Shell.cpp" />
+    <ClCompile Include="Thread\POSIX\Test_POSIXCriticalThread.cpp" />
+    <ClCompile Include="Thread\Windows\Test_WindowsCriticalSection.cpp" />
+    <ClCompile Include="Window\Window\Test_WindowsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Red\Red.vcxproj">
