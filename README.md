@@ -26,7 +26,7 @@ Changes whether or not code coverage data should be included in the build.
 
 *\*Unix build script only, used mainly by CI for code coverage statistics.*
 
-*\*\*Windows build script only, use this if you have NuGet in your system path and don't need to download it.*
+*\*\*Windows build script only, use this if you have NuGet in your PATH and don't need to download it.*
 ### Requirements
 #### Windows
 * [Microsoft Visual Studio 2017 15.2 or Later](https://www.visualstudio.com/downloads/)
