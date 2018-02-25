@@ -14,7 +14,11 @@
 #define REDINLINE inline
 #endif
 
+#if OS_WINDOWS
 #define QUA_ALIGN(n) __declspec(align(n))
+#else
+#define QUA_ALIGN(n)
+#endif
 
 namespace Red
 {

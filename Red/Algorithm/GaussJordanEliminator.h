@@ -7,6 +7,42 @@ namespace Red
 	namespace Internal
 	{
 		template <int Rows, int Columns>
+		int RowZeroCount(const Matrix<Rows, Columns>& Target, int Row)
+		{
+			int Result = 0;
+
+			for (int Iter = 0; Iter < Columns; ++Iter)
+			{
+				if (Target.Data[Row][Iter] == 0.f)
+				{
+					++Result;
+				}
+
+				else
+				{
+					break;
+				}
+			}
+
+			return Result;
+		}
+
+		template <int Rows, int Columns>
+		void SwapRow(Matrix<Rows, Columns>& Target, int RowA, int RowB)
+		{
+			float Swappable[Columns];
+
+			for (int Iter = 0; Iter < Columns; ++Iter)
+			{
+				Swappable[Iter] = Target.Data[RowA][Iter];
+
+				Target.Data[RowA][Iter] = Target.Data[RowB][Iter];
+
+				Target.Data[RowB][Iter] = Swappable[Iter];
+			}
+		}
+
+		template <int Rows, int Columns>
 		void CocktailShakerSort(Matrix<Rows, Columns>& Target)
 		{
 			int StartIndex = 0;
@@ -42,42 +78,6 @@ namespace Red
 
 				// Elements before NewStartIndex are in the correct position, add 1 to the minimum index range.
 				StartIndex = NewStartIndex + 1;
-			}
-		}
-		
-		template <int Rows, int Columns>
-		int RowZeroCount(const Matrix<Rows, Columns>& Target, int Row)
-		{
-			int Result = 0;
-
-			for (int Iter = 0; Iter < Columns; ++Iter)
-			{
-				if (Target.Data[Row][Iter] == 0.f)
-				{
-					++Result;
-				}
-
-				else
-				{
-					break;
-				}
-			}
-
-			return Result;
-		}
-
-		template <int Rows, int Columns>
-		void SwapRow(Matrix<Rows, Columns>& Target, int RowA, int RowB)
-		{
-			float Swappable[Columns];
-
-			for (int Iter = 0; Iter < Columns; ++Iter)
-			{
-				Swappable[Iter] = Target.Data[RowA][Iter];
-
-				Target.Data[RowA][Iter] = Target.Data[RowB][Iter];
-
-				Target.Data[RowB][Iter] = Swappable[Iter];
 			}
 		}
 
