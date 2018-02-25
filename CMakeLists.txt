@@ -12,8 +12,9 @@ option(FORCEDINLINES "Force all inlines" OFF)
 option(VEC_DOUBLE "Vectors allocate each component as doubles, increasing accuracy" OFF)
 option(PRECOMPUTED_RAY "Precompute ray components to reduce execution overhead" OFF)
 
-# C++ 14
-set (CMAKE_CXX_STANDARD 14)
+# C++ 14 Required
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Apply Platform
 set(PLATFORM "x64")
