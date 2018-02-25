@@ -31,6 +31,7 @@ install:
 script:
 - bash Build.sh Release x64 coverage
 # Run Unit Tests
+- find Build
 - ./Build/Test/x64/Release/Test.out
 - |
   if [[ "${TRAVIS_OS_NAME}" == "linux" && "${COMPILER}" == "gcc" ]]; then
