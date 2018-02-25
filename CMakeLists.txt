@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 project(Red)
 
-if (${CMAKE_SYSTEM_NAME} MATCHES "Windows)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	message(FATAL_ERROR "Windows Builds with CMake is Not Currently Supported. Use Build.bat Instead")
 endif()
 
