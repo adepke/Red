@@ -38,6 +38,11 @@ file(GLOB_RECURSE ${PROJECT_NAME}_SOURCE
 	"${CMAKE_CURRENT_SOURCE_DIR}/Red/*.h"
 )
 
+# Remove Windows Window Headers Manually Until Platform-Specific Files are Moved to Source Files
+list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE
+	"${PROJECT_NAME}_SOURCE/Red/Window/Windows/*.h"
+)
+
 # Windows Specific Source Files
 set(${PROJECT_NAME}_WINDOWSSOURCE
 	"Red/Hardware/Windows/WindowsHardware.cpp"
