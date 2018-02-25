@@ -12,17 +12,21 @@ FOR /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio
   SET VSINSTALLPATH=%%i
 )
 
-mkdir Tools
+IF NOT "%1" == "HASNUGET" (
+	mkdir Tools
 
-ECHO Fetching Latest NuGet...
+	ECHO Fetching Latest NuGet...
 
-rem Get NuGet
-powershell -Command "Invoke-WebRequest https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile Tools/nuget.exe"
+	rem Get NuGet
+	powershell -Command "Invoke-WebRequest https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile Tools/nuget.exe"
 
-rem Restore Required Packages
-cd Tools
-nuget.exe restore ../Red.sln
-cd ../
+	rem Restore Required Packages
+	cd Tools
+	nuget.exe restore ../Red.sln
+	cd ../
+) ELSE (
+	nuget.exe restore Red.sln
+)
 
 CALL "!VSINSTALLPATH!\Common7\Tools\VsDevCmd.bat"
 

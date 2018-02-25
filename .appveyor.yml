@@ -19,7 +19,7 @@ build:
   verbosity: normal
 
 build_script:
-  - cmd: Build.bat
+  - cmd: Build.bat HASNUGET
  
 #build_script:
 #    ps: |-
