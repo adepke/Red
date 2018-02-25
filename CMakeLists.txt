@@ -100,4 +100,4 @@ add_executable(Test ${TEST_SOURCE})
 
 add_dependencies(Test googletest)
 
-target_link_libraries(Test googletest ${PROJECT_NAME})
+target_link_libraries(Test googletest ${PROJECT_NAME} pthread)
