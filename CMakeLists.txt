@@ -19,7 +19,7 @@ set (CMAKE_CXX_STANDARD 14)
 set(PLATFORM "x64")
 if(${PLATFORM} STREQUAL "x64")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
-else
+else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
 endif()
 
