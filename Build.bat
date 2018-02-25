@@ -44,7 +44,6 @@ IF NOT "%3" == "HASNUGET" (
 
 CALL "!VSINSTALLPATH!\Common7\Tools\VsDevCmd.bat"
 
-rem Todo: Parameterize Config and Platform
 MSBuild.exe "%~dp0\Red.sln" /t:Build /p:Configuration=%CONFIG% /p:Platform=%PLATFORM% /nologo
 
 PAUSE
