@@ -39,9 +39,12 @@ file(GLOB_RECURSE ${PROJECT_NAME}_SOURCE
 )
 
 # Remove Windows Window Headers Manually Until Platform-Specific Files are Moved to Source Files
-list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE
-	"${PROJECT_NAME}_SOURCE/Red/Window/Windows/*.h"
+foreach(ITEM ${${PROJECT_NAME}_SOURCE})
+	if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/Window/Windows/WindowsWindow.h")
+		list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
+	endif()
 )
+endforeach()
 
 # Windows Specific Source Files
 set(${PROJECT_NAME}_WINDOWSSOURCE
@@ -101,11 +104,14 @@ file(GLOB_RECURSE TEST_SOURCE
 	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*.cpp"
 )
 
-list(REMOVE_ITEM TEST_SOURCE
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Hardware/Windows/*.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Thread/Windows/*.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Window/Windows/*.cpp"
+foreach(ITEM ${TEST_SOURCE})
+	if(${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/Hardware/Windows/WindowsHardware.cpp" OR
+	   ${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/Thread/Windows/WindowsCriticalSection.cpp" OR
+	   ${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/Window/Windows/WindowsWindow.cpp")
+		list(REMOVE_ITEM TEST_SOURCE ${ITEM})
+	endif()
 )
+endforeach()
 
 add_executable(Test ${TEST_SOURCE})
 
