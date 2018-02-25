@@ -11,13 +11,16 @@ matrix:
   include:
     - os: linux
       compiler: gcc
+      env: COMPILER=gcc
       
     - os: linux
       compiler: clang
+      env: COMPILER=clang
       
     - os: osx
       osx_image: xcode8.3
       compiler: clang
+      env: COMPILER=clang
 
 install:
 - |
@@ -27,7 +30,10 @@ install:
 
 script:
 - bash Build.sh Release x64 coverage
-- gcov Build/*.cpp.gcno
+- |
+  if [[ "${TRAVIS_OS_NAME}" == "linux" -a "${COMPILER}" == "gcc" ]]; then
+    gcov Build/*.cpp.gcno
+  fi
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
