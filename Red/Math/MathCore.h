@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cmath>
+#include <math.h>
 
 #ifdef FORCEDINLINES
 #define REDINLINE __forceinline

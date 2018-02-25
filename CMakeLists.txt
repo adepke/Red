@@ -96,8 +96,8 @@ file(GLOB_RECURSE TEST_SOURCE
 	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*.cpp"
 )
 
-#add_executable(Test ${TEST_SOURCE})
+add_executable(Test ${TEST_SOURCE})
 
-#add_dependencies(Test googletest)
+add_dependencies(Test googletest)
 
-#target_link_libraries(Test googletest ${PROJECT_NAME})
+target_link_libraries(Test googletest ${PROJECT_NAME})
