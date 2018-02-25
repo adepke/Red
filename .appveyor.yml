@@ -15,7 +15,7 @@ build:
   verbosity: normal
 
 build_script:
-  - cmd: Build.bat HASNUGET
+  - cmd: Build.bat $env:configuration $env:platform HASNUGET
  
 #build_script:
 #    ps: |-
