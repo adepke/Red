@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.1)
 
 project(Red)
 
+if (${CMAKE_SYSTEM_NAME} MATCHES "Windows)
+	message(FATAL_ERROR "Windows Builds with CMake is Not Currently Supported. Use Build.bat Instead")
+endif()
+
 # Currently Overriden in Code
 option(ASSERTIONS "Use compile time and runtime assertions when possible" ON)
 option(FORCEDINLINES "Force all inlines" OFF)
@@ -20,8 +24,10 @@ endif()
 message(STATUS "System Name: ${CMAKE_SYSTEM}")
 message(STATUS "System Processor: ${CMAKE_SYSTEM_PROCESSOR}")
 
-# Will Hold the Project's Source Files
-set(${PROJECT_NAME}_SOURCE "")
+# Project's Header Files
+file(GLOB_RECURSE ${PROJECT_NAME}_SOURCE
+	"${CMAKE_CURRENT_SOURCE_DIR}/Red/*.h"
+)
 
 # Windows Specific Source Files
 set(${PROJECT_NAME}_WINDOWSSOURCE
@@ -81,8 +87,8 @@ file(GLOB_RECURSE TEST_SOURCE
 	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*.cpp"
 )
 
-add_executable(Test ${TEST_SOURCE})
+#add_executable(Test ${TEST_SOURCE})
 
-add_dependencies(Test googletest)
+#add_dependencies(Test googletest)
 
-target_link_libraries(Test googletest ${PROJECT_NAME})
+#target_link_libraries(Test googletest ${PROJECT_NAME})

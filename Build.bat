@@ -12,9 +12,21 @@ FOR /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio
   SET VSINSTALLPATH=%%i
 )
 
+mkdir Tools
+
+ECHO Fetching Latest NuGet...
+
+rem Get NuGet
+powershell -Command "Invoke-WebRequest https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile Tools/nuget.exe"
+
+rem Restore Required Packages
+cd Tools
+nuget.exe restore ../Red.sln
+cd ../
+
 CALL "!VSINSTALLPATH!\Common7\Tools\VsDevCmd.bat"
 
-MSBuild.exe "%~dp0\Red.sln" /t:Build /p:Configuration=Release /p:Platform="x86" /nologo
+rem Todo: Parameterize Config and Platform
 MSBuild.exe "%~dp0\Red.sln" /t:Build /p:Configuration=Release /p:Platform="x64" /nologo
 
 PAUSE
