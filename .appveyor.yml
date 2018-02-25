@@ -1,5 +1,4 @@
 image:
-#  - Visual Studio 2015
   - Visual Studio 2017
   
 configuration:
@@ -9,9 +8,6 @@ configuration:
 platform:
   - x86
   - x64
- 
-before_build:
-  - nuget restore Red.sln
  
 build:
   project: Red.sln
