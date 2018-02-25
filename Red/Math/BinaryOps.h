@@ -19,18 +19,18 @@ namespace Red
 	{
 		if (Value)
 		{
-			Base |= 1 << Bit;
+			Target |= 1 << Bit;
 		}
 
 		else
 		{
-			Base &= ~(1 << Bit);
+			Target &= ~(1 << Bit);
 		}
 	}
 
 	template <typename Type>
 	void BitFlip(Type& Target, const unsigned int Bit)
 	{
-		Base ^ (1 << Bit);
+		Target ^ (1 << Bit);
 	}
 }  // namespace Red

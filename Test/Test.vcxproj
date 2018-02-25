@@ -52,7 +52,12 @@
     <ClCompile Include="Algorithm\Test_Distribute.cpp" />
     <ClCompile Include="Algorithm\Test_GaussJordanEliminator.cpp" />
     <ClCompile Include="Function\Test_Function.cpp" />
-    <ClCompile Include="Hardware\Linux\Test_LinuxHardware.cpp" />
+    <ClCompile Include="Hardware\Linux\Test_LinuxHardware.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Hardware\Windows\Test_WindowsHardware.cpp" />
     <ClCompile Include="Math\Test_AABB.cpp" />
     <ClCompile Include="Math\Test_BinaryOps.cpp" />
@@ -69,7 +74,12 @@
     <ClCompile Include="Network\BSD\Test_BSDSocketSubsystem.cpp" />
     <ClCompile Include="Network\Test_IPv4.cpp" />
     <ClCompile Include="System\Test_Shell.cpp" />
-    <ClCompile Include="Thread\POSIX\Test_POSIXCriticalThread.cpp" />
+    <ClCompile Include="Thread\POSIX\Test_POSIXCriticalThread.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Thread\Windows\Test_WindowsCriticalSection.cpp" />
     <ClCompile Include="Window\Window\Test_WindowsWindow.cpp" />
   </ItemGroup>
