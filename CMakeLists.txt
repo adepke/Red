@@ -43,7 +43,6 @@ foreach(ITEM ${${PROJECT_NAME}_SOURCE})
 	if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/Window/Windows/WindowsWindow.h")
 		list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
 	endif()
-)
 endforeach()
 
 # Windows Specific Source Files
@@ -110,7 +109,6 @@ foreach(ITEM ${TEST_SOURCE})
 	   ${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/Window/Windows/WindowsWindow.cpp")
 		list(REMOVE_ITEM TEST_SOURCE ${ITEM})
 	endif()
-)
 endforeach()
 
 add_executable(Test ${TEST_SOURCE})
