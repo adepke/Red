@@ -1,3 +1,3 @@
 #include "gtest/gtest.h"
 
-#include "../../../Red/Thread/Posix/POSIXCriticalSection.h"
+#include "../../../Red/Thread/POSIX/POSIXCriticalSection.h"
