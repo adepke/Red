@@ -16,6 +16,8 @@ option(PRECOMPUTED_RAY "Precompute ray components to reduce execution overhead" 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdeclspec")
+
 # Apply Platform
 set(PLATFORM "x64")
 if(${PLATFORM} STREQUAL "x64")
