@@ -14,10 +14,18 @@
 
 #ifdef VEC_DOUBLE
 #define VEC_MEMBER double
+#if OS_WINDOWS
 #define VEC_ALIGN(n) __declspec(align(n * 2))
 #else
+#define VEC_ALIGN(n)
+#endif
+#else
 #define VEC_MEMBER float
+#if OS_WINDOWS
 #define VEC_ALIGN(n) __declspec(align(n))
+#else
+#define VEC_ALIGN(n)
+#endif
 #endif
 
 namespace Red

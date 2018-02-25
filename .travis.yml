@@ -11,28 +11,37 @@ matrix:
   include:
     - os: linux
       compiler: gcc
+      env: COMPILER=gcc
       
     - os: linux
       compiler: clang
+      env: COMPILER=clang
       
     - os: osx
       osx_image: xcode8.3
       compiler: clang
+      env: COMPILER=clang
 
 install:
-- mkdir Build
 - |
   if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
     which cmake || brew install cmake
   fi
 
-before_script:
-- cd Build
-
 script:
-- cmake ../ -G "Unix Makefiles"
-- make
-- gcov Test/Algorithm/*.cpp
+- bash Build.sh Release x64 coverage
+# Run Unit Tests
+- ./Build/Test
+- |
+  if [[ "${TRAVIS_OS_NAME}" == "linux" && "${COMPILER}" == "gcc" ]]; then
+    # Debugging
+    find Build -name "*.gcda"
+    find Build -name "*.cpp.gcda"
+    find Build -name "*.gcno"
+    find Build -name "*.cpp.gcno"
+    
+    gcov Build/*.cpp.gcda
+  fi
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)

@@ -12,9 +12,38 @@ FOR /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio
   SET VSINSTALLPATH=%%i
 )
 
+SET CONFIG=%1
+IF NOT "%CONFIG%" == "Release" (
+	IF NOT "%CONFIG%" == "Debug" (
+		SET CONFIG=Release
+	)
+)
+
+SET PLATFORM=%2
+IF NOT "%PLATFORM%" == "x86" (
+	IF NOT "%PLATFORM%" == "x64" (
+		SET PLATFORM="x64"
+	)
+)
+
+IF NOT "%3" == "HASNUGET" (
+	mkdir Tools
+
+	ECHO Fetching Latest NuGet...
+
+	rem Get NuGet
+	powershell -Command "Invoke-WebRequest https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile Tools/nuget.exe"
+
+	rem Restore Required Packages
+	cd Tools
+	nuget.exe restore ../Red.sln
+	cd ../
+) ELSE (
+	nuget.exe restore Red.sln
+)
+
 CALL "!VSINSTALLPATH!\Common7\Tools\VsDevCmd.bat"
 
-MSBuild.exe "%~dp0\Red.sln" /t:Build /p:Configuration=Release /p:Platform="x86" /nologo
-MSBuild.exe "%~dp0\Red.sln" /t:Build /p:Configuration=Release /p:Platform="x64" /nologo
+MSBuild.exe "%~dp0\Red.sln" /t:Build /p:Configuration=%CONFIG% /p:Platform=%PLATFORM% /nologo
 
 PAUSE

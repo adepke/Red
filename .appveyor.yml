@@ -1,5 +1,4 @@
 image:
-#  - Visual Studio 2015
   - Visual Studio 2017
   
 configuration:
@@ -10,13 +9,13 @@ platform:
   - x86
   - x64
  
-before_build:
-  - nuget restore Red.sln
- 
 build:
   project: Red.sln
   parallel: true
   verbosity: normal
+
+build_script:
+  - cmd: Build.bat $env:configuration $env:platform HASNUGET
  
 #build_script:
 #    ps: |-

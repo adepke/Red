@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "../Core/Platform.h"
+
 #ifdef FORCEDINLINES
 #define REDINLINE __forceinline
 #else
@@ -86,17 +88,29 @@ namespace Red
 	// Square Root [CMath Built-in]
 	REDINLINE float SquareRoot(float Target)
 	{
+#if OS_WINDOWS
 		return std::sqrtf(Target);
+#else
+		return sqrtf(Target);
+#endif
 	}
 
 	REDINLINE double SquareRoot(double Target)
 	{
+#if OS_WINDOWS
 		return std::sqrt(Target);
+#else
+		return sqrt(Target);
+#endif
 	}
 
 	REDINLINE long double SquareRoot(long double Target)
 	{
+#if OS_WINDOWS
 		return std::sqrtl(Target);
+#else
+		return sqrtl(Target);
+#endif
 	}
 
 	// Modulus
@@ -108,17 +122,29 @@ namespace Red
 	// Modulus [CMath Built-in]
 	REDINLINE float Modulus(float TargetA, float TargetB) noexcept
 	{
+#if OS_WINDOWS
 		return std::fmodf(TargetA, TargetB);
+#else
+		return fmodf(TargetA, TargetB);
+#endif
 	}
 
 	REDINLINE double Modulus(double TargetA, double TargetB) noexcept
 	{
+#if OS_WINDOWS
 		return std::fmod(TargetA, TargetB);
+#else
+		return fmod(TargetA, TargetB);
+#endif
 	}
 
 	REDINLINE long double Modulus(long double TargetA, long double TargetB) noexcept
 	{
+#if OS_WINDOWS
 		return std::fmodl(TargetA, TargetB);
+#else
+		return fmodl(TargetA, TargetB);
+#endif
 	}
 
 	// Factorial [Recursive Algorithm]
