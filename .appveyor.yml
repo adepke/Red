@@ -17,6 +17,9 @@ build:
   project: Red.sln
   parallel: true
   verbosity: normal
+
+build_script:
+  - cmd: Build.bat
  
 #build_script:
 #    ps: |-
