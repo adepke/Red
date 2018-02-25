@@ -31,7 +31,7 @@ install:
 script:
 - bash Build.sh Release x64 coverage
 - |
-  if [[ "${TRAVIS_OS_NAME}" == "linux" -a "${COMPILER}" == "gcc" ]]; then
+  if [[ "${TRAVIS_OS_NAME}" == "linux" && "${COMPILER}" == "gcc" ]]; then
     gcov Build/*.cpp.gcno
   fi
 
