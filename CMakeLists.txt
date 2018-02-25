@@ -105,7 +105,7 @@ file(GLOB_RECURSE TEST_SOURCE
 
 foreach(ITEM ${TEST_SOURCE})
 	if(${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/Hardware/Windows/WindowsHardware.cpp" OR
-	   ${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/Thread/Windows/WindowsCriticalSection.cpp" OR
+	   ${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/Thread/Windows/Test_WindowsCriticalSection.cpp" OR
 	   ${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/Window/Windows/WindowsWindow.cpp")
 		list(REMOVE_ITEM TEST_SOURCE ${ITEM})
 	endif()
