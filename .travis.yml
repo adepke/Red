@@ -30,9 +30,17 @@ install:
 
 script:
 - bash Build.sh Release x64 coverage
+# Run Unit Tests
+- ./Build/Test/x64/Release/Test.out
 - |
   if [[ "${TRAVIS_OS_NAME}" == "linux" && "${COMPILER}" == "gcc" ]]; then
-    gcov Build/*.cpp.gcno
+    # Debugging
+    find Build -name "*.gcda"
+    find Build -name "*.cpp.gcda"
+    find Build -name "*.gcno"
+    find Build -name "*.cpp.gcno"
+    
+    gcov Build/*.cpp.gcda
   fi
 
 after_success:
