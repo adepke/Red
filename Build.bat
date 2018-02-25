@@ -12,7 +12,21 @@ FOR /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio
   SET VSINSTALLPATH=%%i
 )
 
-IF NOT "%1" == "HASNUGET" (
+SET CONFIG = %1
+IF NOT "CONFIG" == "Release" (
+	IF NOT "CONFIG" == "Debug" (
+		SET CONFIG = "Release"
+	)
+)
+
+SET PLATFORM = %2
+IF NOT "PLATFORM" == "x86" (
+	IF NOT "PLATFORM" == "x64" (
+		SET CONFIG = "x64"
+	)
+)
+
+IF NOT "%3" == "HASNUGET" (
 	mkdir Tools
 
 	ECHO Fetching Latest NuGet...
@@ -31,6 +45,6 @@ IF NOT "%1" == "HASNUGET" (
 CALL "!VSINSTALLPATH!\Common7\Tools\VsDevCmd.bat"
 
 rem Todo: Parameterize Config and Platform
-MSBuild.exe "%~dp0\Red.sln" /t:Build /p:Configuration=Release /p:Platform="x64" /nologo
+MSBuild.exe "%~dp0\Red.sln" /t:Build /p:Configuration=CONFIG /p:Platform=PLATFORM /nologo
 
 PAUSE
