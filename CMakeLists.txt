@@ -6,7 +6,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	message(FATAL_ERROR "Windows Builds with CMake is Not Currently Supported. Use Build.bat Instead")
 endif()
 
-# Currently Overriden in Code
+# Currently Overridden in Code
 option(ASSERTIONS "Use compile time and runtime assertions when possible" ON)
 option(FORCEDINLINES "Force all inlines" OFF)
 option(VEC_DOUBLE "Vectors allocate each component as doubles, increasing accuracy" OFF)
