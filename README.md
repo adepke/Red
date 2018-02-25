@@ -11,6 +11,22 @@ Open source collection of C++ modules built to interest a wide variety of progra
 
 ## Building
 Building is simplified into platform specific build scripts. For Windows systems, execute Build.bat, while on Unix systems, use Build.sh. These will generate a Build folder in the project root to store all intermediates and binaries. Running these scripts without any arguments will default to 64 bit builds without debugging information.
+### Customizing the Build
+You can customize the build with the following set of commandline arguments. *Note: If you want to specify one of these arguments, you must specify all preceding arguments. Any arguments not specified after will resort to defaults. Order does matter.*
+> [**Argument 1**] Release | Debug
+
+Changes whether or not debugging information should be included in the build.
+> [**Argument 2**] x86 | x64
+
+Changes the target system architecture.
+> [**Argument 3\***] coverage
+
+Changes whether or not code coverage data should be included in the build.
+> [**Argument 3\*\***] HASNUGET
+
+*\*Unix build script only, used mainly by CI for code coverage statistics.*
+
+*\*\*Windows build script only, use this if you have NuGet in your system path and don't need to download it.*
 ### Requirements
 #### Windows
 * [Microsoft Visual Studio 2017 15.2 or Later](https://www.visualstudio.com/downloads/)
