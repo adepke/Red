@@ -26,7 +26,7 @@ install:
   fi
 
 script:
-- sh Build.sh Release x64 coverage
+- bash Build.sh Release x64 coverage
 - gcov Build/*.cpp.gcno
 
 after_success:
