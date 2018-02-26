@@ -17,10 +17,10 @@ build:
 build_script:
   - ps:
       Start-Process -FilePath "./Build.bat" -ArgumentList "$env:configuration","$env:platform","HASNUGET" -NoNewWindow
-      if ($env:platform -eq "x86") {
+  - ps:
+      ($env:platform -eq "x86") {
         $Platform = "Win32"
       } else {
         $Platform = "x64"
       }
-      cd Build/Test/$Platform/$Configuration
-      Start-Process -FilePath "Test.exe" -NoNewWindow
+      Start-Process -FilePath "Build/Test/$Platform/$Configuration/Test.exe" -NoNewWindow
