@@ -23,4 +23,4 @@ build_script:
         $Platform = "x64"
       }
       cd Build/Test/$Platform/$Configuration
-      ps: Start-Process -FilePath "Test.exe" -NoNewWindow
+      Start-Process -FilePath "Test.exe" -NoNewWindow
