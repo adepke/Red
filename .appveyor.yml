@@ -16,16 +16,10 @@ build:
 
 build_script:
   - cmd: Build.bat $env:configuration $env:platform HASNUGET
- 
-#build_script:
-#    ps: |-
-#        
-#        if ($env:APPVEYOR_BUILD_WORKER_IMAGE -eq "Visual Studio 2015") {
-#          $PlatformToolset = "v140"
-#        } else {
-#          $PlatformToolset = "v141"
-#        }
-#
-#        (Get-Content Red/Red.vcxproj) | %{$_ -replace "v100", $PlatformToolset} | Set-Content Red/Red.vcxproj
-#
-#        & msbuild Red/Red.vcxproj "/p:platform=$env:platform;configuration=$env:configuration"
+  - if ($env:platform -eq "x86") {
+      $Platform = "Win32"
+    } else {
+      $Platform = "x64"
+    }
+  - cd Build/Test/$Platform/$Configuration
+  - ps: Start-Process Test.exe
