@@ -23,4 +23,9 @@ build_script:
       } else {
         $Platform = "x64"
       }
+      
+      Get-ChildItem -Path "Build/Test" -Filter *.exe -Recurse -File -Name| ForEach-Object {
+        [System.IO.Path]::GetFileNameWithoutExtension($_)
+      }
+      
       Start-Process -FilePath "Build/Test/$Platform/$env:configuration/Test.exe" -NoNewWindow
