@@ -81,7 +81,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Thread\Windows\Test_WindowsCriticalSection.cpp" />
-    <ClCompile Include="Window\Window\Test_WindowsWindow.cpp" />
+    <ClCompile Include="Window\Windows\Test_WindowsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Red\Red.vcxproj">

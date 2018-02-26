@@ -67,8 +67,8 @@
     <ClCompile Include="Thread\POSIX\Test_POSIXCriticalThread.cpp">
       <Filter>Thread\POSIX</Filter>
     </ClCompile>
-    <ClCompile Include="Window\Window\Test_WindowsWindow.cpp">
-      <Filter>Window</Filter>
+    <ClCompile Include="Window\Windows\Test_WindowsWindow.cpp">
+      <Filter>Window\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +110,9 @@
     </Filter>
     <Filter Include="Thread\Windows">
       <UniqueIdentifier>{c14ad82a-0a41-4ce0-aa76-c9503a83332a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window\Windows">
+      <UniqueIdentifier>{589f8032-b7fa-4a3a-8b34-0983ebdc6da5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
