@@ -14,18 +14,16 @@ build:
   parallel: true
   verbosity: normal
 
-build_script:
-  - ps: |
-      Start-Process -FilePath "./Build.bat" -ArgumentList "$env:configuration","$env:platform","HASNUGET" -NoNewWindow -Wait
-  - ps: |
-      if ($env:platform -eq "x86") {
-        $Platform = "Win32"
-      } else {
-        $Platform = "x64"
-      }
-      
-      Get-ChildItem -Path "Build/Test" -Filter *.exe -Recurse -File -Name| ForEach-Object {
-        [System.IO.Path]::GetFileNameWithoutExtension($_)
-      }
-      
-      Start-Process -FilePath "Build/Test/$Platform/$env:configuration/Test.exe" -NoNewWindow -Wait
+# Stalls on "Press any key to continue". Use built-in testing until a proper work around is implemented.
+#build_script:
+#  - ps: |
+#      Start-Process -FilePath "./Build.bat" -ArgumentList "$env:configuration","$env:platform","HASNUGET" -NoNewWindow -Wait
+
+after_build:
+- ps: |
+    if ($env:platform -eq "x86") {
+      $Platform = "Win32"
+    } else {
+      $Platform = "x64"
+    }
+    Start-Process -FilePath "Build/Test/$Platform/$env:configuration/Test.exe" -Wait
