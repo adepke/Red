@@ -9,6 +9,9 @@ platform:
   - x86
   - x64
  
+install:
+  - nuget.exe restore Red.sln
+
 build:
   project: Red.sln
   parallel: true
