@@ -15,9 +15,9 @@ build:
   verbosity: normal
 
 build_script:
-  - ps:
+  - ps: |
       Start-Process -FilePath "./Build.bat" -ArgumentList "$env:configuration","$env:platform","HASNUGET" -NoNewWindow
-  - ps:
+  - ps: |
       ($env:platform -eq "x86") {
         $Platform = "Win32"
       } else {
