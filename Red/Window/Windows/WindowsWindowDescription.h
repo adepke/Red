@@ -13,7 +13,7 @@ namespace Red
 	public:
 		HINSTANCE Instance;
 		WNDPROC MessageProcessor;
-		std::string Title;
+		std::wstring Title;
 		DWORD Style;
 		DWORD StyleEx;
 		Vector2 Location;

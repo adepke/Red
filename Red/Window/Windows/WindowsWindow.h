@@ -44,8 +44,8 @@ namespace Red
 	{
 		Description = InDescription;
 
-		char* AppTitle = new char[Description.Title.length() + 1];
-		strcpy_s(AppTitle, Description.Title.length() + 1, Description.Title.c_str());
+		wchar_t* AppTitle = new wchar_t[Description.Title.length() + 1];
+		wcsncpy(AppTitle, Description.Title.c_str(), Description.Title.length() + 1);
 
 		WNDCLASSEX WindowClass;
 		ZeroMemory(&WindowClass, sizeof(WindowClass));

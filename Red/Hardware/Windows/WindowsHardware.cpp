@@ -87,12 +87,12 @@ namespace Red
 		const int Type = REG_DWORD;
 		HKEY Key;
 
-		if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", 0, KEY_READ, &Key) != ERROR_SUCCESS)
+		if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", 0, KEY_READ, &Key) != ERROR_SUCCESS)
 		{
 			return 0;
 		}
 
-		RegQueryValueEx(Key, "~MHz", NULL, (LPDWORD)&Type, (LPBYTE)&Value, (LPDWORD)&BufferSize);
+		RegQueryValueEx(Key, L"~MHz", NULL, (LPDWORD)&Type, (LPBYTE)&Value, (LPDWORD)&BufferSize);
 
 		return Value;
 	}
