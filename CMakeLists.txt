@@ -38,6 +38,13 @@ file(GLOB_RECURSE ${PROJECT_NAME}_SOURCE
 	"${CMAKE_CURRENT_SOURCE_DIR}/Red/*.h"
 )
 
+# Remove Windows Window Headers Manually Until Platform-Specific Files are Moved to Source Files
+foreach(ITEM ${${PROJECT_NAME}_SOURCE})
+	if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/Window/Windows/WindowsWindow.h")
+		list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
+	endif()
+endforeach()
+
 # Windows Specific Source Files
 set(${PROJECT_NAME}_WINDOWSSOURCE
 	"Red/Hardware/Windows/WindowsHardware.cpp"
@@ -95,6 +102,14 @@ add_dependencies(googletest Update3rdParty)
 file(GLOB_RECURSE TEST_SOURCE
 	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*.cpp"
 )
+
+foreach(ITEM ${TEST_SOURCE})
+	if(${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/Hardware/Windows/Test_WindowsHardware.cpp" OR
+	   ${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/Thread/Windows/Test_WindowsCriticalSection.cpp" OR
+	   ${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/Window/Windows/Test_WindowsWindow.cpp")
+		list(REMOVE_ITEM TEST_SOURCE ${ITEM})
+	endif()
+endforeach()
 
 add_executable(Test ${TEST_SOURCE})
 
