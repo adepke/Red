@@ -64,11 +64,11 @@
     <ClCompile Include="Thread\Windows\Test_WindowsCriticalSection.cpp">
       <Filter>Thread\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="Thread\POSIX\Test_POSIXCriticalThread.cpp">
-      <Filter>Thread\POSIX</Filter>
-    </ClCompile>
     <ClCompile Include="Window\Windows\Test_WindowsWindow.cpp">
       <Filter>Window\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\POSIX\Test_POSIXCriticalSection.cpp">
+      <Filter>Thread\POSIX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
