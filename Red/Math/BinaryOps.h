@@ -11,7 +11,7 @@ namespace Red
 	template <typename Type>
 	uint8_t BitRead(const Type& Target, const unsigned int Bit)
 	{
-		return (Target & (1 << Bit));
+		return (Target >> Bit) & 1;
 	}
 
 	template <typename Type>
@@ -31,6 +31,6 @@ namespace Red
 	template <typename Type>
 	void BitFlip(Type& Target, const unsigned int Bit)
 	{
-		Target ^ (1 << Bit);
+		Target ^= (1 << Bit);
 	}
 }  // namespace Red
