@@ -1,5 +1,3 @@
-// Copyright (c) 2017 Andrew Depke, Some Rights Reserved
-
 #pragma once
 
 #include "../Core/Definitions.h"
