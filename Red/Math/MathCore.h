@@ -160,7 +160,7 @@ namespace Red
 	// Factorial [Recursive Algorithm]
 	constexpr unsigned long int Factorial(unsigned int Factor) noexcept
 	{
-		return (Factor == 1 ? 1 : Factor * Factorial(Factor - 1));
+		return ((Factor == 1 || Factor == 0) ? 1 : Factor * Factorial(Factor - 1));
 	}
 
 	// Meta Factorial (Baked Expression)

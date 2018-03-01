@@ -93,3 +93,12 @@ TEST(MathCoreSuite, ModulusSpecialCases)
 	EXPECT_EQ(0, Modulus(0, 1));
 	EXPECT_NO_THROW(Modulus(0, 0));
 }
+
+TEST(MathCoreSuite, FactorialGeneral)
+{
+	EXPECT_EQ(1, Factorial(0));
+	EXPECT_EQ(1, Factorial(1));
+	EXPECT_EQ(24, Factorial(4));
+	EXPECT_EQ(479001600, Factorial(12));
+	//EXPECT_EQ(243902008176640000, Factorial(20));  // Overflow Issues
+}
