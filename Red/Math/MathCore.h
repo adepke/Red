@@ -48,22 +48,32 @@ namespace Red
 		return (TargetA >= TargetB ? TargetA : TargetB);
 	}
 
-	// Power [Exponentiation by Squaring Algorithm]
-	template <typename Type>
-	Type Power(Type Base, Type Exponent) noexcept
+	// Power [CMath Built-in]
+	REDINLINE float Power(float Target, float Exponent)
 	{
-		Type Result(1);
-		while (Exponent)
-		{
-			if (Exponent & 1)
-				Result *= Base;
+#if OS_WINDOWS
+		return std::powf(Target, Exponent);
+#else
+		return powf(Target);
+#endif
+	}
 
-			Exponent >>= 1;
+	REDINLINE double Power(double Target, double Exponent)
+	{
+#if OS_WINDOWS
+		return std::pow(Target, Exponent);
+#else
+		return pow(Target);
+#endif
+	}
 
-			Base *= Base;
-		}
-
-		return Result;
+	REDINLINE long double Power(long double Target, long double Exponent)
+	{
+#if OS_WINDOWS
+		return std::powl(Target, Exponent);
+#else
+		return powl(Target);
+#endif
 	}
 
 	// Meta Power (Baked Expression)
