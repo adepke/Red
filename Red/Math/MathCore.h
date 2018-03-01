@@ -54,7 +54,7 @@ namespace Red
 #if OS_WINDOWS
 		return std::powf(Target, Exponent);
 #else
-		return powf(Target);
+		return powf(Target, Exponent);
 #endif
 	}
 
@@ -63,7 +63,7 @@ namespace Red
 #if OS_WINDOWS
 		return std::pow(Target, Exponent);
 #else
-		return pow(Target);
+		return pow(Target, Exponent);
 #endif
 	}
 
@@ -72,7 +72,7 @@ namespace Red
 #if OS_WINDOWS
 		return std::powl(Target, Exponent);
 #else
-		return powl(Target);
+		return powl(Target, Exponent);
 #endif
 	}
 
