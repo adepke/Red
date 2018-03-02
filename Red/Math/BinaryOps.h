@@ -33,4 +33,55 @@ namespace Red
 	{
 		Target ^= (1 << Bit);
 	}
+
+	void Swap(int TargetA, int TargetB)
+	{
+		if (TargetA != TargetB)
+		{
+			TargetA ^= TargetB;
+			TargetB ^= TargetA;
+			TargetA ^= TargetB;
+		}
+	}
+
+	// Credit: The C Programming Language 2nd Ed. by Brian W. Kernighan and Dennis M. Ritchie
+	unsigned int BitsSet(unsigned int Value)
+	{
+		unsigned int Result = 0;
+
+		for (; Value; ++Result)
+		{
+			Value &= Value - 1;
+		}
+
+		return Result;
+	}
+
+	int GetSign(int Value)
+	{
+		return ((Value > 0) - (Value < 0));
+	}
+
+	bool InverseSigns(int TargetA, int TargetB)
+	{
+		return ((TargetA ^ TargetB) < 0);
+	}
+
+	bool IsPowerOf2(unsigned int Value)
+	{
+		return Value && !(Value & (Value - 1));
+	}
+
+	unsigned int RoundUpToPowerOf2(unsigned int Value)
+	{
+		--Value;
+		Value |= Value >> 1;
+		Value |= Value >> 2;
+		Value |= Value >> 4;
+		Value |= Value >> 8;
+		Value |= Value >> 16;
+		++Value;
+
+		return Value;
+	}
 }  // namespace Red
