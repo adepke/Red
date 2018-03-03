@@ -1,3 +1,6 @@
+/*
+	Copyright (c) 2018 Andrew Depke
+*/
 #include "LinuxHardware.h"
 
 #include <cstring>  // std::memcpy()

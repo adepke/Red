@@ -1,3 +1,6 @@
+/*
+	Copyright (c) 2018 Andrew Depke
+*/
 #pragma once
 
 // Uses Compile Time And Runtime Assertions When Possible

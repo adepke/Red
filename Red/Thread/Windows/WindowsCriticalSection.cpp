@@ -1,3 +1,6 @@
+/*
+	Copyright (c) 2018 Andrew Depke
+*/
 #include "WindowsCriticalSection.h"
 
 #include <Windows.h>

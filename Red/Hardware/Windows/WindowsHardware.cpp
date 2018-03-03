@@ -1,3 +1,6 @@
+/*
+	Copyright (c) 2018 Andrew Depke
+*/
 #include "WindowsHardware.h"
 
 #include <thread>
