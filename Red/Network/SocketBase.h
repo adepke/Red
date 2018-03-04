@@ -42,6 +42,11 @@ namespace Red
 		// Client/Server: Copy the socket's internal receiving buffer into Data. Output the data's source address to Source.
 		virtual bool Receive(IP4Address& Source, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) = 0;
 
+		// Client: Join the specified multicast group.
+		virtual bool JoinMulticastGroup(const IP4Address& GroupAddress) = 0;
+		// Client: Leave the specified multicast group.
+		virtual bool LeaveMulticastGroup(const IP4Address& GroupAddress) = 0;
+
 		virtual bool SetSendBufferSize(unsigned int Size) = 0;
 		virtual bool SetReceiveBufferSize(unsigned int Size) = 0;
 

@@ -18,6 +18,7 @@ namespace Red
 		SP_Unknown,
 		SP_TCP,
 		SP_UDP,
+		SP_IGMP,
 	};
 
 	struct SocketDescription

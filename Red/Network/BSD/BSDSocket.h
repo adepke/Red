@@ -6,19 +6,11 @@
 #include "../../Core/Platform.h"
 #include "../SocketBase.h"
 
-// API Specific Includes
-#if OS_WINDOWS
-	#include <WinSock2.h>
-#else
-	#include <sys/socket.h>
-	#include <arpa/inet.h>
-	#include <unistd.h>
-	#include <netinet/in.h>
-	#include <netinet/in.h>
-	#include <netinet/tcp.h>
-	#include <sys/ioctl.h>
 
+#if !OS_WINDOWS
 	typedef int SOCKET;
+#else
+	#include <WinSock2.h>
 #endif
 
 namespace Red
@@ -48,6 +40,9 @@ namespace Red
 
 		virtual bool Receive(unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) override;
 		virtual bool Receive(IP4Address& Source, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) override;
+
+		virtual bool JoinMulticastGroup(const IP4Address& GroupAddress) override;
+		virtual bool LeaveMulticastGroup(const IP4Address& GroupAddress) override;
 
 		virtual bool SetSendBufferSize(unsigned int Size) override;
 		virtual bool SetReceiveBufferSize(unsigned int Size) override;

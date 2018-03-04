@@ -6,10 +6,18 @@
 #if OS_WINDOWS
 	#pragma comment(lib, "Ws2_32.lib")
 
+	#include <Ws2tcpip.h>
+
 	#include <memory>
 
 	#define RED_INVALID_SOCKET INVALID_SOCKET
 #else
+	#include <sys/socket.h>
+	#include <arpa/inet.h>
+	#include <unistd.h>
+	#include <netinet/in.h>
+	#include <netinet/tcp.h>
+	#include <sys/ioctl.h>
 	#include <string.h>  // memset()
 
 	#define RED_INVALID_SOCKET -1
@@ -21,7 +29,25 @@ namespace Red
 	{
 		Description = InDescription;
 
-		SocketHandle = socket(AF_INET, InDescription.Protocol == SP_TCP ? SOCK_STREAM : SOCK_DGRAM, InDescription.Protocol == SP_TCP ? IPPROTO_TCP : IPPROTO_UDP);
+		int NativeType = 0;
+		int NativeProtocol = 0;
+		switch (InDescription.Protocol)
+		{
+		case SP_TCP:
+			NativeType = SOCK_STREAM;
+			NativeProtocol = IPPROTO_TCP;
+			break;
+		case SP_UDP:
+			NativeType = SOCK_DGRAM;
+			NativeProtocol = IPPROTO_UDP;
+			break;
+		case SP_IGMP:
+			NativeType = SOCK_DGRAM;
+			NativeProtocol = IPPROTO_IP;  // Automatically Determine Protocol
+			break;
+		}
+
+		SocketHandle = socket(AF_INET, NativeType, NativeProtocol);
 		if (SocketHandle == RED_INVALID_SOCKET)
 		{
 			return false;
@@ -208,6 +234,24 @@ namespace Red
 		return BytesReceived >= 0;
 	}
 
+	bool BSDSocket::JoinMulticastGroup(const IP4Address& GroupAddress)
+	{
+		ip_mreq Mreq;
+		Mreq.imr_interface.s_addr = INADDR_ANY;
+		Mreq.imr_multiaddr.s_addr = GroupAddress.Address;
+
+		return (setsockopt(SocketHandle, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&Mreq, sizeof(Mreq)) == 0);
+	}
+
+	bool BSDSocket::LeaveMulticastGroup(const IP4Address& GroupAddress)
+	{
+		ip_mreq Mreq;
+		Mreq.imr_interface.s_addr = INADDR_ANY;
+		Mreq.imr_multiaddr.s_addr = GroupAddress.Address;
+
+		return (setsockopt(SocketHandle, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&Mreq, sizeof(Mreq)) == 0);
+	}
+
 	bool BSDSocket::SetSendBufferSize(unsigned int Size)
 	{
 		return (setsockopt(SocketHandle, SOL_SOCKET, SO_SNDBUF, (char*)&Size, sizeof(Size)) == 0);
@@ -305,6 +349,18 @@ namespace Red
 
 					return false;
 				}
+			}
+		}
+
+		if (Description.Protocol == SP_IGMP)
+		{
+			// Disable Multicast Loopback
+			Value = 1;
+			if (setsockopt(SocketHandle, IPPROTO_IP, IP_MULTICAST_LOOP, (char*)&Value, sizeof(Value)) != 0)
+			{
+				Shutdown();
+
+				return false;
 			}
 		}
 
