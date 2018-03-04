@@ -97,6 +97,12 @@ namespace Red
 		{
 			return ((A == 10) || ((A == 172) && (B >= 16 && B <= 31)) || ((A == 192) && (B == 168)));
 		}
+
+		// Multicast: 224-239.X.X.X
+		bool IsMulticastAddress() const
+		{
+			return ((A >= 224) && (A <= 239));
+		}
 	};
 
 	struct IP4EndPoint
