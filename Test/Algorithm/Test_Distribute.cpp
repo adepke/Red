@@ -136,8 +136,6 @@ TEST(DistributeSuite, MoreChunksThanTotalAsInteger)
 	EXPECT_EQ(5, ReturnVector[9]);
 }
 
-// Disabled Until New Distribute Algorithm is Written
-/*
 TEST(DistributeSuite, MoreChunksThanTotalAsFloat)
 {
 	float* Return = new float[10];
@@ -158,4 +156,3 @@ TEST(DistributeSuite, MoreChunksThanTotalAsFloat)
 		EXPECT_EQ(0.5, Element);
 	}
 }
-*/
