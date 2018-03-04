@@ -21,7 +21,7 @@ namespace Red
 	{
 		Description = InDescription;
 
-		SocketHandle = socket(PF_INET, InDescription.Protocol == SP_TCP ? SOCK_STREAM : SOCK_DGRAM, InDescription.Protocol == SP_TCP ? IPPROTO_TCP : IPPROTO_UDP);
+		SocketHandle = socket(AF_INET, InDescription.Protocol == SP_TCP ? SOCK_STREAM : SOCK_DGRAM, InDescription.Protocol == SP_TCP ? IPPROTO_TCP : IPPROTO_UDP);
 		if (SocketHandle == RED_INVALID_SOCKET)
 		{
 			return false;
