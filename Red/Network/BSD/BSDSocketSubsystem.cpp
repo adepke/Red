@@ -5,6 +5,8 @@
 
 #if OS_WINDOWS
 	#include <WS2tcpip.h>
+#else
+	#include <unistd.h>
 #endif
 
 namespace Red
