@@ -249,7 +249,7 @@ namespace Red
 		Mreq.imr_interface.s_addr = INADDR_ANY;
 		Mreq.imr_multiaddr.s_addr = GroupAddress.Address;
 
-		return (setsockopt(SocketHandle, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&Mreq, sizeof(Mreq)) == 0);
+		return (setsockopt(SocketHandle, IPPROTO_IP, IP_DROP_MEMBERSHIP, (char*)&Mreq, sizeof(Mreq)) == 0);
 	}
 
 	bool BSDSocket::SetSendBufferSize(unsigned int Size)
