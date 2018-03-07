@@ -28,18 +28,25 @@ namespace Red
 		virtual bool Shutdown() override;
 
 		virtual bool Connect(const IP4EndPoint& EndPoint) override;
+		virtual void ConnectAsync(const AsyncArgs& Args, const IP4EndPoint& EndPoint) override;
 
 		virtual bool Bind(unsigned short Port) override;
 
 		virtual bool Listen(int MaxBacklog) override;
+		virtual void ListenAsync(const AsyncArgs& Args, int MaxBacklog) override;
 
 		virtual ISocket* Accept(IP4EndPoint& ClientAddress) override;
+		virtual void AcceptAsync(const AsyncArgs& Args, IP4EndPoint& ClientAddress) override;
 
 		virtual bool Send(const unsigned char* Data, unsigned int Length, int& BytesSent) override;
 		virtual bool Send(const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length, int& BytesSent) override;
+		virtual void SendAsync(const AsyncArgs& Args, const unsigned char* Data, unsigned int Length, int& BytesSent) override;
+		virtual void SendAsync(const AsyncArgs& Args, const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length, int& BytesSent) override;
 
 		virtual bool Receive(unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) override;
 		virtual bool Receive(IP4Address& Source, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) override;
+		virtual void ReceiveAsync(const AsyncArgs& Args, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) override;
+		virtual void ReceiveAsync(const AsyncArgs& Args, IP4Address& Source, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) override;
 
 		virtual bool JoinMulticastGroup(const IP4Address& GroupAddress) override;
 		virtual bool LeaveMulticastGroup(const IP4Address& GroupAddress) override;
