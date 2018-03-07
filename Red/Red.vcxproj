@@ -155,6 +155,7 @@
     <ClInclude Include="Math\Ray.h" />
     <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="Network\AsyncArgs.h" />
+    <ClInclude Include="Network\AsyncTask.h" />
     <ClInclude Include="Network\BSD\BSDSocket.h" />
     <ClInclude Include="Network\BSD\BSDSocketSubsystem.h" />
     <ClInclude Include="Network\IPv4.h" />

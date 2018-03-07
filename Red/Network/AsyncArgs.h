@@ -1,27 +1,36 @@
 #pragma once
 
-#include <future>
-#include <functional>
+#include <atomic>
 
 namespace Red
 {
+	// Used to Retrieve Data from an Asynchronous Function
+	template <typename CallbackType>
 	class AsyncArgs
 	{
 	protected:
-		template <typename Function>
-		Function CompletedCallback;
+		friend class ISocket;
 
 	public:
-		template <typename Function>
-		void SetCallback(Function Callback)
-		{
-			CompletedCallback = Callback;
-		}
+		AsyncArgs() = 0;
+		virtual ~AsyncArgs() {}
 
-		template <typename Function>
-		Function& GetCallback() const
+		CallbackType CompletedCallback;
+	};
+
+	template <typename CallbackType>
+	class AsyncConnectArgs : public AsyncArgs<CallbackType>
+	{
+	protected:
+		std::atomic<bool> Result;
+
+	public:
+		AsyncArgs() {}
+		virtual ~AsyncArgs() {}
+
+		bool GetResult()
 		{
-			return CompletedCallback;
+			return Result.load();
 		}
 	};
 }  // namespace Red

@@ -177,6 +177,9 @@
     <ClInclude Include="Network\AsyncArgs.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="Network\AsyncTask.h">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\BSD\BSDSocket.cpp">
