@@ -6,7 +6,7 @@ sudo: required
 # Don't Build Dev Branches
 branches:
   except:
-    - dev_*
+    - /dev_.*/
 
 env:
   global:
