@@ -278,7 +278,7 @@ namespace Red
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
 		{
-			unsigned char* DataTemp;
+			unsigned char* DataTemp = nullptr;
 			int BytesReceivedTemp;
 
 			Args->SetResult(Receive(DataTemp, MaxReceivingBytes, BytesReceivedTemp));
@@ -294,7 +294,7 @@ namespace Red
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
 		{
-			unsigned char* DataTemp;
+			unsigned char* DataTemp = nullptr;
 			int BytesReceivedTemp;
 			IP4Address SourceTemp;
 
