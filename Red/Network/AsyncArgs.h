@@ -1,9 +1,16 @@
 #pragma once
 
+#include "IPv4.h"
+
+// Fix for Atomic Alignment of IP4EndPoint Error.
+#define _ENABLE_ATOMIC_ALIGNMENT_FIX
+
 #include <atomic>
 
 namespace Red
 {
+	class ISocket;
+
 	// Used to Retrieve Data from an Asynchronous Function
 	template <typename CallbackType>
 	class AsyncArgs
@@ -21,8 +28,7 @@ namespace Red
 		std::atomic<bool> Result;
 
 	public:
-		AsyncArgs() {}
-		virtual ~AsyncArgs() {}
+		virtual ~AsyncConnectArgs() {}
 
 		void SetResult(bool Value)
 		{
@@ -42,8 +48,7 @@ namespace Red
 		std::atomic<bool> Result;
 
 	public:
-		AsyncArgs() {}
-		virtual ~AsyncArgs() {}
+		virtual ~AsyncListenArgs() {}
 
 		void SetResult(bool Value)
 		{
@@ -64,8 +69,7 @@ namespace Red
 		std::atomic<IP4EndPoint> ClientAddress;
 
 	public:
-		AsyncArgs() {}
-		virtual ~AsyncArgs() {}
+		virtual ~AsyncAcceptArgs() {}
 
 		void SetResult(ISocket* Value)
 		{
@@ -96,8 +100,7 @@ namespace Red
 		std::atomic<int> BytesSent;
 
 	public:
-		AsyncArgs() {}
-		virtual ~AsyncArgs() {}
+		virtual ~AsyncSendArgs() {}
 
 		void SetResult(bool Value)
 		{
@@ -129,8 +132,7 @@ namespace Red
 		std::atomic<int> BytesReceived;
 
 	public:
-		AsyncArgs() {}
-		virtual ~AsyncArgs() {}
+		virtual ~AsyncReceiveArgs() {}
 
 		void SetResult(bool Value)
 		{
@@ -173,8 +175,7 @@ namespace Red
 		std::atomic<IP4Address> Source;
 
 	public:
-		AsyncArgs() {}
-		virtual ~AsyncArgs() {}
+		virtual ~AsyncReceiveFromArgs() {}
 
 		void SetResult(bool Value)
 		{
