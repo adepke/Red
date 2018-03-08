@@ -98,7 +98,7 @@ namespace Red
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
 		{
-			Args->SetResult(Connect(EndPoint));
+			Args->Result.store(Connect(EndPoint));
 			Args->CompletedCallback();
 		}));
 
@@ -147,7 +147,7 @@ namespace Red
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
 		{
-			Args->SetResult(Listen(MaxBacklog));
+			Args->Result.store(Listen(MaxBacklog));
 			Args->CompletedCallback();
 		}));
 
@@ -200,8 +200,8 @@ namespace Red
 		{
 			IP4EndPoint ClientAddressTemp;
 
-			Args->SetResult(Accept(ClientAddressTemp));
-			Args->SetClientAddress(ClientAddressTemp);
+			Args->Result.store(Accept(ClientAddressTemp));
+			Args->ClientAddress.store(ClientAddressTemp);
 			Args->CompletedCallback();
 		}));
 
@@ -233,8 +233,8 @@ namespace Red
 		{
 			int BytesSentTemp;
 
-			Args->SetResult(Send(Data, Length, BytesSentTemp));
-			Args->SetBytesSent(BytesSentTemp);
+			Args->Result.store(Send(Data, Length, BytesSentTemp));
+			Args->BytesSent.store(BytesSentTemp);
 			Args->CompletedCallback();
 		}));
 
@@ -247,8 +247,8 @@ namespace Red
 		{
 			int BytesSentTemp;
 
-			Args->SetResult(Send(Destination, Data, Length, BytesSentTemp));
-			Args->SetBytesSent(BytesSentTemp);
+			Args->Result.store(Send(Destination, Data, Length, BytesSentTemp));
+			Args->BytesSent.store(BytesSentTemp);
 			Args->CompletedCallback();
 		}));
 
@@ -281,9 +281,9 @@ namespace Red
 			unsigned char* DataTemp = nullptr;
 			int BytesReceivedTemp;
 
-			Args->SetResult(Receive(DataTemp, MaxReceivingBytes, BytesReceivedTemp));
-			Args->SetData(DataTemp);
-			Args->SetBytesReceived(BytesReceivedTemp);
+			Args->Result.store(Receive(DataTemp, MaxReceivingBytes, BytesReceivedTemp));
+			Args->Data.store(DataTemp);
+			Args->BytesReceived.store(BytesReceivedTemp);
 			Args->CompletedCallback();
 		}));
 
@@ -298,10 +298,10 @@ namespace Red
 			int BytesReceivedTemp;
 			IP4Address SourceTemp;
 
-			Args->SetResult(Receive(SourceTemp, DataTemp, MaxReceivingBytes, BytesReceivedTemp));
-			Args->SetData(DataTemp);
-			Args->SetBytesReceived(BytesReceivedTemp);
-			Args->SetSource(SourceTemp);
+			Args->Result.store(Receive(SourceTemp, DataTemp, MaxReceivingBytes, BytesReceivedTemp));
+			Args->Data.store(DataTemp);
+			Args->BytesReceived.store(BytesReceivedTemp);
+			Args->Source.store(SourceTemp);
 			Args->CompletedCallback();
 		}));
 

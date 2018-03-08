@@ -10,30 +10,32 @@
 namespace Red
 {
 	class ISocket;
+	class BSDSocket;
 
 	// Used to Retrieve Data from an Asynchronous Function
 	template <typename CallbackType>
 	class AsyncArgs
 	{
-	public:
-		virtual ~AsyncArgs() = 0;
+	protected:
+		friend class BSDSocket;
 
 		CallbackType CompletedCallback;
+
+	public:
+		AsyncArgs(CallbackType Callback) : CompletedCallback(Callback) {}
+		virtual ~AsyncArgs() = 0;
 	};
 
 	template <typename CallbackType>
 	class AsyncConnectArgs : public AsyncArgs<CallbackType>
 	{
 	protected:
+		friend class BSDSocket;
+
 		std::atomic<bool> Result;
 
 	public:
 		virtual ~AsyncConnectArgs() {}
-
-		void SetResult(bool Value)
-		{
-			Result.store(Value);
-		}
 
 		bool GetResult()
 		{
@@ -45,15 +47,12 @@ namespace Red
 	class AsyncListenArgs : public AsyncArgs<CallbackType>
 	{
 	protected:
+		friend class BSDSocket;
+
 		std::atomic<bool> Result;
 
 	public:
 		virtual ~AsyncListenArgs() {}
-
-		void SetResult(bool Value)
-		{
-			Result.store(Value);
-		}
 
 		bool GetResult()
 		{
@@ -65,25 +64,17 @@ namespace Red
 	class AsyncAcceptArgs : public AsyncArgs<CallbackType>
 	{
 	protected:
+		friend class BSDSocket;
+
 		std::atomic<ISocket*> Result;
 		std::atomic<IP4EndPoint> ClientAddress;
 
 	public:
 		virtual ~AsyncAcceptArgs() {}
 
-		void SetResult(ISocket* Value)
-		{
-			Result.store(Value);
-		}
-
 		ISocket* GetResult()
 		{
 			return Result.load();
-		}
-
-		void SetClientAddress(IP4EndPoint Value)
-		{
-			ClientAddress.store(Value);
 		}
 
 		IP4EndPoint GetClientAddress()
@@ -96,25 +87,17 @@ namespace Red
 	class AsyncSendArgs : public AsyncArgs<CallbackType>
 	{
 	protected:
+		friend class BSDSocket;
+
 		std::atomic<bool> Result;
 		std::atomic<int> BytesSent;
 
 	public:
 		virtual ~AsyncSendArgs() {}
 
-		void SetResult(bool Value)
-		{
-			Result.store(Value);
-		}
-
 		bool GetResult()
 		{
 			return Result.load();
-		}
-
-		void SetBytesSent(int Value)
-		{
-			BytesSent.store(Value);
 		}
 
 		bool GetBytesSent()
@@ -127,6 +110,8 @@ namespace Red
 	class AsyncReceiveArgs : public AsyncArgs<CallbackType>
 	{
 	protected:
+		friend class BSDSocket;
+
 		std::atomic<bool> Result;
 		std::atomic<unsigned char*> Data;
 		std::atomic<int> BytesReceived;
@@ -134,29 +119,14 @@ namespace Red
 	public:
 		virtual ~AsyncReceiveArgs() {}
 
-		void SetResult(bool Value)
-		{
-			Result.store(Value);
-		}
-
 		bool GetResult()
 		{
 			return Result.load();
 		}
 
-		void SetData(unsigned char* Value)
-		{
-			Data.store(Value);
-		}
-
 		unsigned char* GetData()
 		{
 			return Data.load();
-		}
-
-		void SetBytesReceived(int Value)
-		{
-			BytesReceived.store(Value);
 		}
 
 		int GetBytesReceived()
@@ -169,6 +139,8 @@ namespace Red
 	class AsyncReceiveFromArgs : public AsyncArgs<CallbackType>
 	{
 	protected:
+		friend class BSDSocket;
+
 		std::atomic<bool> Result;
 		std::atomic<unsigned char*> Data;
 		std::atomic<int> BytesReceived;
@@ -177,19 +149,9 @@ namespace Red
 	public:
 		virtual ~AsyncReceiveFromArgs() {}
 
-		void SetResult(bool Value)
-		{
-			Result.store(Value);
-		}
-
 		bool GetResult()
 		{
 			return Result.load();
-		}
-
-		void SetData(unsigned char* Value)
-		{
-			Data.store(Value);
 		}
 
 		unsigned char* GetData()
@@ -197,19 +159,9 @@ namespace Red
 			return Data.load();
 		}
 
-		void SetBytesReceived(int Value)
-		{
-			BytesReceived.store(Value);
-		}
-
 		int GetBytesReceived()
 		{
 			return BytesReceived.load();
-		}
-
-		void SetSource(IP4Address Value)
-		{
-			Source.store(Value);
 		}
 
 		IP4Address GetSource()
