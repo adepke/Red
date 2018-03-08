@@ -32,30 +32,30 @@ namespace Red
 		virtual bool Bind(unsigned short Port) = 0;
 
 		virtual bool Listen(int MaxBacklog) = 0;
-		virtual AsyncTask* ListenAsync(AsyncArgs<std::function<void(void)>>* Args, int MaxBacklog) = 0;
+		virtual AsyncTask* ListenAsync(AsyncListenArgs<std::function<void(void)>>* Args, int MaxBacklog) = 0;
 
 		// Server: Accepts the first pending client in queue. The returned socket representing the connection to the client is heap-allocated. ClientAddress stores the connection's address.
 		virtual ISocket* Accept(IP4EndPoint& ClientAddress) = 0;
 		// Server: Asynchronously accepts the first pending client in queue. The returned socket representing the connection to the client is heap-allocated. ClientAddress stores the connection's address.
-		virtual AsyncTask* AcceptAsync(AsyncArgs<std::function<void(void)>>* Args, IP4EndPoint& ClientAddress) = 0;
+		virtual AsyncTask* AcceptAsync(AsyncAcceptArgs<std::function<void(void)>>* Args) = 0;
 
 		// Client/Server: Transmit a buffer to the connected socket.
 		virtual bool Send(const unsigned char* Data, unsigned int Length, int& BytesSent) = 0;
 		// Client/Server: Transmit a buffer to a specific client or server.
 		virtual bool Send(const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length, int& BytesSent) = 0;
 		// Client/Server: Asynchronously transmit a buffer to the connected socket.
-		virtual AsyncTask* SendAsync(AsyncArgs<std::function<void(void)>>* Args, const unsigned char* Data, unsigned int Length, int& BytesSent) = 0;
+		virtual AsyncTask* SendAsync(AsyncSendArgs<std::function<void(void)>>* Args, const unsigned char* Data, unsigned int Length) = 0;
 		// Client/Server: Asynchronously transmit a buffer to a specific client or server.
-		virtual AsyncTask* SendAsync(AsyncArgs<std::function<void(void)>>* Args, const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length, int& BytesSent) = 0;
+		virtual AsyncTask* SendAsync(AsyncSendArgs<std::function<void(void)>>* Args, const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length) = 0;
 
 		// Client/Server: Copy the socket's internal receiving buffer into Data.
 		virtual bool Receive(unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) = 0;
 		// Client/Server: Copy the socket's internal receiving buffer into Data. Output the data's source address to Source.
 		virtual bool Receive(IP4Address& Source, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) = 0;
 		// Client/Server: Asynchronously copy the socket's internal receiving buffer into Data.
-		virtual AsyncTask* ReceiveAsync(AsyncArgs<std::function<void(void)>>* Args, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) = 0;
+		virtual AsyncTask* ReceiveAsync(AsyncReceiveArgs<std::function<void(void)>>* Args, unsigned int MaxReceivingBytes) = 0;
 		// Client/Server: Asynchronously copy the socket's internal receiving buffer into Data. Output the data's source address to Source.
-		virtual AsyncTask* ReceiveAsync(AsyncArgs<std::function<void(void)>>* Args, IP4Address& Source, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) = 0;
+		virtual AsyncTask* ReceiveAsync(AsyncReceiveFromArgs<std::function<void(void)>>* Args, unsigned int MaxReceivingBytes) = 0;
 
 		// Client: Join the specified multicast group.
 		virtual bool JoinMulticastGroup(const IP4Address& GroupAddress) = 0;
