@@ -2,6 +2,8 @@
 
 #include "IPv4.h"
 
+#include <functional>
+
 // Fix for Atomic Alignment of IP4EndPoint Error.
 #define _ENABLE_ATOMIC_ALIGNMENT_FIX
 
@@ -13,21 +15,19 @@ namespace Red
 	class BSDSocket;
 
 	// Used to Retrieve Data from an Asynchronous Function
-	template <typename CallbackType>
 	class AsyncArgs
 	{
 	protected:
 		friend class BSDSocket;
 
-		CallbackType CompletedCallback;
+		std::function<void(void)> CompletedCallback;
 
 	public:
-		AsyncArgs(CallbackType Callback) : CompletedCallback(Callback) {}
+		AsyncArgs(std::function<void(void)> Callback) : CompletedCallback(Callback) { }
 		virtual ~AsyncArgs() = 0;
 	};
 
-	template <typename CallbackType>
-	class AsyncConnectArgs : public AsyncArgs<CallbackType>
+	class AsyncConnectArgs : public AsyncArgs
 	{
 	protected:
 		friend class BSDSocket;
@@ -43,8 +43,7 @@ namespace Red
 		}
 	};
 
-	template <typename CallbackType>
-	class AsyncListenArgs : public AsyncArgs<CallbackType>
+	class AsyncListenArgs : public AsyncArgs
 	{
 	protected:
 		friend class BSDSocket;
@@ -60,8 +59,7 @@ namespace Red
 		}
 	};
 
-	template <typename CallbackType>
-	class AsyncAcceptArgs : public AsyncArgs<CallbackType>
+	class AsyncAcceptArgs : public AsyncArgs
 	{
 	protected:
 		friend class BSDSocket;
@@ -83,8 +81,7 @@ namespace Red
 		}
 	};
 
-	template <typename CallbackType>
-	class AsyncSendArgs : public AsyncArgs<CallbackType>
+	class AsyncSendArgs : public AsyncArgs
 	{
 	protected:
 		friend class BSDSocket;
@@ -106,8 +103,7 @@ namespace Red
 		}
 	};
 
-	template <typename CallbackType>
-	class AsyncReceiveArgs : public AsyncArgs<CallbackType>
+	class AsyncReceiveArgs : public AsyncArgs
 	{
 	protected:
 		friend class BSDSocket;
@@ -135,8 +131,7 @@ namespace Red
 		}
 	};
 
-	template <typename CallbackType>
-	class AsyncReceiveFromArgs : public AsyncArgs<CallbackType>
+	class AsyncReceiveFromArgs : public AsyncArgs
 	{
 	protected:
 		friend class BSDSocket;

@@ -94,7 +94,7 @@ namespace Red
 		return false;
 	}
 
-	AsyncTask* BSDSocket::ConnectAsync(AsyncConnectArgs<std::function<void(void)>>* Args, const IP4EndPoint& EndPoint)
+	AsyncTask* BSDSocket::ConnectAsync(AsyncConnectArgs* Args, const IP4EndPoint& EndPoint)
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
 		{
@@ -143,7 +143,7 @@ namespace Red
 		return false;
 	}
 
-	AsyncTask* BSDSocket::ListenAsync(AsyncListenArgs<std::function<void(void)>>* Args, int MaxBacklog)
+	AsyncTask* BSDSocket::ListenAsync(AsyncListenArgs* Args, int MaxBacklog)
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
 		{
@@ -194,7 +194,7 @@ namespace Red
 		return nullptr;
 	}
 
-	AsyncTask* BSDSocket::AcceptAsync(AsyncAcceptArgs<std::function<void(void)>>* Args)
+	AsyncTask* BSDSocket::AcceptAsync(AsyncAcceptArgs* Args)
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
 		{
@@ -227,7 +227,7 @@ namespace Red
 		return BytesSent >= 0;
 	}
 
-	AsyncTask* BSDSocket::SendAsync(AsyncSendArgs<std::function<void(void)>>* Args, const unsigned char* Data, unsigned int Length)
+	AsyncTask* BSDSocket::SendAsync(AsyncSendArgs* Args, const unsigned char* Data, unsigned int Length)
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
 		{
@@ -241,7 +241,7 @@ namespace Red
 		return Task;
 	}
 
-	AsyncTask* BSDSocket::SendAsync(AsyncSendArgs<std::function<void(void)>>* Args, const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length)
+	AsyncTask* BSDSocket::SendAsync(AsyncSendArgs* Args, const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length)
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
 		{
@@ -274,7 +274,7 @@ namespace Red
 		return BytesReceived >= 0;
 	}
 
-	AsyncTask* BSDSocket::ReceiveAsync(AsyncReceiveArgs<std::function<void(void)>>* Args, unsigned int MaxReceivingBytes)
+	AsyncTask* BSDSocket::ReceiveAsync(AsyncReceiveArgs* Args, unsigned int MaxReceivingBytes)
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
 		{
@@ -290,7 +290,7 @@ namespace Red
 		return Task;
 	}
 
-	AsyncTask* BSDSocket::ReceiveAsync(AsyncReceiveFromArgs<std::function<void(void)>>* Args, unsigned int MaxReceivingBytes)
+	AsyncTask* BSDSocket::ReceiveAsync(AsyncReceiveFromArgs* Args, unsigned int MaxReceivingBytes)
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
 		{
