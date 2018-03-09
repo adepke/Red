@@ -35,6 +35,9 @@ namespace Red
 		std::atomic<bool> Result;
 
 	public:
+		// Inherit AsyncArgs' Ctor
+		using AsyncArgs::AsyncArgs;
+
 		virtual ~AsyncConnectArgs() {}
 
 		bool GetResult()
@@ -51,6 +54,9 @@ namespace Red
 		std::atomic<bool> Result;
 
 	public:
+		// Inherit AsyncArgs' Ctor
+		using AsyncArgs::AsyncArgs;
+
 		virtual ~AsyncListenArgs() {}
 
 		bool GetResult()
@@ -68,6 +74,9 @@ namespace Red
 		std::atomic<IP4EndPoint> ClientAddress;
 
 	public:
+		// Inherit AsyncArgs' Ctor
+		using AsyncArgs::AsyncArgs;
+
 		virtual ~AsyncAcceptArgs() {}
 
 		ISocket* GetResult()
@@ -90,6 +99,9 @@ namespace Red
 		std::atomic<int> BytesSent;
 
 	public:
+		// Inherit AsyncArgs' Ctor
+		using AsyncArgs::AsyncArgs;
+
 		virtual ~AsyncSendArgs() {}
 
 		bool GetResult()
@@ -113,6 +125,9 @@ namespace Red
 		std::atomic<int> BytesReceived;
 
 	public:
+		// Inherit AsyncArgs' Ctor
+		using AsyncArgs::AsyncArgs;
+
 		virtual ~AsyncReceiveArgs() {}
 
 		bool GetResult()
@@ -142,6 +157,9 @@ namespace Red
 		std::atomic<IP4Address> Source;
 
 	public:
+		// Inherit AsyncArgs' Ctor
+		using AsyncArgs::AsyncArgs;
+
 		virtual ~AsyncReceiveFromArgs() {}
 
 		bool GetResult()
