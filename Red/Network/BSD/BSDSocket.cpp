@@ -143,17 +143,6 @@ namespace Red
 		return false;
 	}
 
-	AsyncTask* BSDSocket::ListenAsync(AsyncListenArgs* Args, int MaxBacklog)
-	{
-		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
-		{
-			Args->Result.store(Listen(MaxBacklog));
-			Args->CompletedCallback(Args);
-		}));
-
-		return Task;
-	}
-
 	ISocket* BSDSocket::Accept(IP4EndPoint& ClientAddress)
 	{
 		SOCKET ClientHandle;

@@ -34,26 +34,6 @@ namespace Red
 		}
 	};
 
-	class AsyncListenArgs
-	{
-	protected:
-		friend class BSDSocket;
-
-		std::function<void(AsyncListenArgs*)> CompletedCallback;
-
-		std::atomic<bool> Result;
-
-	public:
-		AsyncListenArgs(std::function<void(AsyncListenArgs*)> Callback) : CompletedCallback(Callback) { }
-
-		virtual ~AsyncListenArgs() {}
-
-		bool GetResult()
-		{
-			return Result.load();
-		}
-	};
-
 	class AsyncAcceptArgs
 	{
 	protected:

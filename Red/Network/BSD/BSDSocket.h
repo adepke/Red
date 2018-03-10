@@ -33,7 +33,6 @@ namespace Red
 		virtual bool Bind(unsigned short Port) override;
 
 		virtual bool Listen(int MaxBacklog) override;
-		virtual AsyncTask* ListenAsync(AsyncListenArgs* Args, int MaxBacklog) override;
 
 		virtual ISocket* Accept(IP4EndPoint& ClientAddress) override;
 		virtual AsyncTask* AcceptAsync(AsyncAcceptArgs* Args) override;

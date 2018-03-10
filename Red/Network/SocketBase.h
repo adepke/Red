@@ -32,7 +32,6 @@ namespace Red
 		virtual bool Bind(unsigned short Port) = 0;
 
 		virtual bool Listen(int MaxBacklog) = 0;
-		virtual AsyncTask* ListenAsync(AsyncListenArgs* Args, int MaxBacklog) = 0;
 
 		// Server: Accepts the first pending client in queue. The returned socket representing the connection to the client is heap-allocated. ClientAddress stores the connection's address.
 		virtual ISocket* Accept(IP4EndPoint& ClientAddress) = 0;
