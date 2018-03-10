@@ -3,6 +3,11 @@ language: cpp
 dist: trusty
 sudo: required
 
+# Don't Build Dev Branches
+branches:
+  except:
+    - /dev_.*/
+
 env:
   global:
     - CODECOV_TOKEN="c57773e7-bd57-474c-be2c-551d66ba421b"

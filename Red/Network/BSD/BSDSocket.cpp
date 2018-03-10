@@ -87,19 +87,22 @@ namespace Red
 
 			if (connect(SocketHandle, (sockaddr*)&SocketAddress, sizeof(SocketAddress)) == 0)
 			{
-				unsigned long Value = Description.ThreadBlocking ? 0 : 1;
-
-#if OS_WINDOWS
-				ioctlsocket(SocketHandle, FIONBIO, &Value);
-#else
-				ioctl(SocketHandle, FIONBIO, &Value);
-#endif
-
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	AsyncTask* BSDSocket::ConnectAsync(AsyncConnectArgs* Args, const IP4EndPoint& EndPoint)
+	{
+		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
+		{
+			Args->Result.store(Connect(EndPoint));
+			Args->CompletedCallback(Args);
+		}));
+
+		return Task;
 	}
 
 	bool BSDSocket::Bind(unsigned short Port)
@@ -133,14 +136,6 @@ namespace Red
 		{
 			if (listen(SocketHandle, MaxBacklog) == 0)
 			{
-				unsigned long Value = Description.ThreadBlocking ? 0 : 1;
-
-#if OS_WINDOWS
-				ioctlsocket(SocketHandle, FIONBIO, &Value);
-#else
-				ioctl(SocketHandle, FIONBIO, &Value);
-#endif
-
 				return true;
 			}
 		}
@@ -161,11 +156,7 @@ namespace Red
 #endif
 		if (ClientHandle != RED_INVALID_SOCKET)
 		{
-#if OS_WINDOWS
-			if (getpeername(ClientHandle, (sockaddr*)&SocketAddress, &SizeSmall) == 0)
-#else
 			if (getpeername(ClientHandle, (sockaddr*)&SocketAddress, (socklen_t*)&SizeSmall) == 0)
-#endif
 			{
 				BSDSocket* ClientSocket = new BSDSocket();
 
@@ -180,16 +171,30 @@ namespace Red
 
 				return ClientSocket;
 			}
+
+			// Manually kill the created socket.
+#if OS_WINDOWS
+			closesocket(ClientHandle);
+#else
+			close(ClientHandle);
+#endif
 		}
 
-		// Manually kill the created socket.
-#if OS_WINDOWS
-		closesocket(ClientHandle);
-#else
-		close(ClientHandle);
-#endif
-
 		return nullptr;
+	}
+
+	AsyncTask* BSDSocket::AcceptAsync(AsyncAcceptArgs* Args)
+	{
+		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
+		{
+			IP4EndPoint ClientAddressTemp;
+
+			Args->Result.store(Accept(ClientAddressTemp));
+			Args->ClientAddress.store(ClientAddressTemp);
+			Args->CompletedCallback(Args);
+		}));
+
+		return Task;
 	}
 
 	bool BSDSocket::Send(const unsigned char* Data, unsigned int Length, int& BytesSent)
@@ -211,6 +216,34 @@ namespace Red
 		return BytesSent >= 0;
 	}
 
+	AsyncTask* BSDSocket::SendAsync(AsyncSendArgs* Args, const unsigned char* Data, unsigned int Length)
+	{
+		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
+		{
+			int BytesSentTemp;
+
+			Args->Result.store(Send(Data, Length, BytesSentTemp));
+			Args->BytesSent.store(BytesSentTemp);
+			Args->CompletedCallback(Args);
+		}));
+
+		return Task;
+	}
+
+	AsyncTask* BSDSocket::SendAsync(AsyncSendArgs* Args, const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length)
+	{
+		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
+		{
+			int BytesSentTemp;
+
+			Args->Result.store(Send(Destination, Data, Length, BytesSentTemp));
+			Args->BytesSent.store(BytesSentTemp);
+			Args->CompletedCallback(Args);
+		}));
+
+		return Task;
+	}
+
 	bool BSDSocket::Receive(unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived)
 	{
 		BytesReceived = recv(SocketHandle, (char*)Data, MaxReceivingBytes, 0);
@@ -223,15 +256,45 @@ namespace Red
 		sockaddr_in ClientAddress;
 		int Size = sizeof(ClientAddress);
 
-#if OS_WINDOWS
-		BytesReceived = recvfrom(SocketHandle, (char*)Data, MaxReceivingBytes, 0, (sockaddr*)&ClientAddress, &Size);
-#else
 		BytesReceived = recvfrom(SocketHandle, (char*)Data, MaxReceivingBytes, 0, (sockaddr*)&ClientAddress, (socklen_t*)&Size);
-#endif
 
 		Source.Address = ntohl(ClientAddress.sin_addr.s_addr);
 
 		return BytesReceived >= 0;
+	}
+
+	AsyncTask* BSDSocket::ReceiveAsync(AsyncReceiveArgs* Args, unsigned int MaxReceivingBytes)
+	{
+		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
+		{
+			unsigned char* DataTemp = nullptr;
+			int BytesReceivedTemp;
+
+			Args->Result.store(Receive(DataTemp, MaxReceivingBytes, BytesReceivedTemp));
+			Args->Data.store(DataTemp);
+			Args->BytesReceived.store(BytesReceivedTemp);
+			Args->CompletedCallback(Args);
+		}));
+
+		return Task;
+	}
+
+	AsyncTask* BSDSocket::ReceiveAsync(AsyncReceiveFromArgs* Args, unsigned int MaxReceivingBytes)
+	{
+		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
+		{
+			unsigned char* DataTemp = nullptr;
+			int BytesReceivedTemp;
+			IP4Address SourceTemp;
+
+			Args->Result.store(Receive(SourceTemp, DataTemp, MaxReceivingBytes, BytesReceivedTemp));
+			Args->Data.store(DataTemp);
+			Args->BytesReceived.store(BytesReceivedTemp);
+			Args->Source.store(SourceTemp);
+			Args->CompletedCallback(Args);
+		}));
+
+		return Task;
 	}
 
 	bool BSDSocket::JoinMulticastGroup(const IP4Address& GroupAddress)
