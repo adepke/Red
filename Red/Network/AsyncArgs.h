@@ -14,29 +14,17 @@ namespace Red
 	class ISocket;
 	class BSDSocket;
 
-	// Used to Retrieve Data from an Asynchronous Function
-	class AsyncArgs
+	class AsyncConnectArgs
 	{
 	protected:
 		friend class BSDSocket;
 
-		std::function<void(void)> CompletedCallback;
-
-	public:
-		AsyncArgs(std::function<void(void)> Callback) : CompletedCallback(Callback) { }
-		virtual ~AsyncArgs() = 0 { }
-	};
-
-	class AsyncConnectArgs : public AsyncArgs
-	{
-	protected:
-		friend class BSDSocket;
+		std::function<void(AsyncConnectArgs*)> CompletedCallback;
 
 		std::atomic<bool> Result;
 
 	public:
-		// Inherit AsyncArgs' Ctor
-		using AsyncArgs::AsyncArgs;
+		AsyncConnectArgs(std::function<void(AsyncConnectArgs*)> Callback) : CompletedCallback(Callback) { }
 
 		virtual ~AsyncConnectArgs() {}
 
@@ -46,16 +34,17 @@ namespace Red
 		}
 	};
 
-	class AsyncListenArgs : public AsyncArgs
+	class AsyncListenArgs
 	{
 	protected:
 		friend class BSDSocket;
 
+		std::function<void(AsyncListenArgs*)> CompletedCallback;
+
 		std::atomic<bool> Result;
 
 	public:
-		// Inherit AsyncArgs' Ctor
-		using AsyncArgs::AsyncArgs;
+		AsyncListenArgs(std::function<void(AsyncListenArgs*)> Callback) : CompletedCallback(Callback) { }
 
 		virtual ~AsyncListenArgs() {}
 
@@ -65,17 +54,18 @@ namespace Red
 		}
 	};
 
-	class AsyncAcceptArgs : public AsyncArgs
+	class AsyncAcceptArgs
 	{
 	protected:
 		friend class BSDSocket;
 
+		std::function<void(AsyncAcceptArgs*)> CompletedCallback;
+
 		std::atomic<ISocket*> Result;
-		std::atomic<IP4EndPoint> ClientAddress;
+		std::atomic<IP4EndPoint> ClientAddress{ IP4EndPoint() };
 
 	public:
-		// Inherit AsyncArgs' Ctor
-		using AsyncArgs::AsyncArgs;
+		AsyncAcceptArgs(std::function<void(AsyncAcceptArgs*)> Callback) : CompletedCallback(Callback) { }
 
 		virtual ~AsyncAcceptArgs() {}
 
@@ -90,17 +80,18 @@ namespace Red
 		}
 	};
 
-	class AsyncSendArgs : public AsyncArgs
+	class AsyncSendArgs
 	{
 	protected:
 		friend class BSDSocket;
+
+		std::function<void(AsyncSendArgs*)> CompletedCallback;
 
 		std::atomic<bool> Result;
 		std::atomic<int> BytesSent;
 
 	public:
-		// Inherit AsyncArgs' Ctor
-		using AsyncArgs::AsyncArgs;
+		AsyncSendArgs(std::function<void(AsyncSendArgs*)> Callback) : CompletedCallback(Callback) { }
 
 		virtual ~AsyncSendArgs() {}
 
@@ -115,18 +106,19 @@ namespace Red
 		}
 	};
 
-	class AsyncReceiveArgs : public AsyncArgs
+	class AsyncReceiveArgs
 	{
 	protected:
 		friend class BSDSocket;
+
+		std::function<void(AsyncReceiveArgs*)> CompletedCallback;
 
 		std::atomic<bool> Result;
 		std::atomic<unsigned char*> Data;
 		std::atomic<int> BytesReceived;
 
 	public:
-		// Inherit AsyncArgs' Ctor
-		using AsyncArgs::AsyncArgs;
+		AsyncReceiveArgs(std::function<void(AsyncReceiveArgs*)> Callback) : CompletedCallback(Callback) { }
 
 		virtual ~AsyncReceiveArgs() {}
 
@@ -146,19 +138,20 @@ namespace Red
 		}
 	};
 
-	class AsyncReceiveFromArgs : public AsyncArgs
+	class AsyncReceiveFromArgs
 	{
 	protected:
 		friend class BSDSocket;
 
+		std::function<void(AsyncReceiveFromArgs*)> CompletedCallback;
+
 		std::atomic<bool> Result;
 		std::atomic<unsigned char*> Data;
 		std::atomic<int> BytesReceived;
-		std::atomic<IP4Address> Source;
+		std::atomic<IP4Address> Source{ IP4Address() };
 
 	public:
-		// Inherit AsyncArgs' Ctor
-		using AsyncArgs::AsyncArgs;
+		AsyncReceiveFromArgs(std::function<void(AsyncReceiveFromArgs*)> Callback) : CompletedCallback(Callback) { }
 
 		virtual ~AsyncReceiveFromArgs() {}
 

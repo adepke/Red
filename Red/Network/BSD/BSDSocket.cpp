@@ -99,7 +99,7 @@ namespace Red
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
 			Args->Result.store(Connect(EndPoint));
-			Args->CompletedCallback();
+			Args->CompletedCallback(Args);
 		}));
 
 		return Task;
@@ -148,7 +148,7 @@ namespace Red
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
 			Args->Result.store(Listen(MaxBacklog));
-			Args->CompletedCallback();
+			Args->CompletedCallback(Args);
 		}));
 
 		return Task;
@@ -202,7 +202,7 @@ namespace Red
 
 			Args->Result.store(Accept(ClientAddressTemp));
 			Args->ClientAddress.store(ClientAddressTemp);
-			Args->CompletedCallback();
+			Args->CompletedCallback(Args);
 		}));
 
 		return Task;
@@ -235,7 +235,7 @@ namespace Red
 
 			Args->Result.store(Send(Data, Length, BytesSentTemp));
 			Args->BytesSent.store(BytesSentTemp);
-			Args->CompletedCallback();
+			Args->CompletedCallback(Args);
 		}));
 
 		return Task;
@@ -249,7 +249,7 @@ namespace Red
 
 			Args->Result.store(Send(Destination, Data, Length, BytesSentTemp));
 			Args->BytesSent.store(BytesSentTemp);
-			Args->CompletedCallback();
+			Args->CompletedCallback(Args);
 		}));
 
 		return Task;
@@ -284,7 +284,7 @@ namespace Red
 			Args->Result.store(Receive(DataTemp, MaxReceivingBytes, BytesReceivedTemp));
 			Args->Data.store(DataTemp);
 			Args->BytesReceived.store(BytesReceivedTemp);
-			Args->CompletedCallback();
+			Args->CompletedCallback(Args);
 		}));
 
 		return Task;
@@ -302,7 +302,7 @@ namespace Red
 			Args->Data.store(DataTemp);
 			Args->BytesReceived.store(BytesReceivedTemp);
 			Args->Source.store(SourceTemp);
-			Args->CompletedCallback();
+			Args->CompletedCallback(Args);
 		}));
 
 		return Task;
