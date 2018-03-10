@@ -42,7 +42,7 @@ namespace Red
 		std::function<void(AsyncAcceptArgs*)> CompletedCallback;
 
 		std::atomic<ISocket*> Result;
-		std::atomic<IP4EndPoint> ClientAddress{ IP4EndPoint() };
+		std::atomic<IP4EndPoint> ClientAddress{ { IP4EndPoint() } };
 
 	public:
 		AsyncAcceptArgs(std::function<void(AsyncAcceptArgs*)> Callback) : CompletedCallback(Callback) { }
@@ -128,7 +128,7 @@ namespace Red
 		std::atomic<bool> Result;
 		std::atomic<unsigned char*> Data;
 		std::atomic<int> BytesReceived;
-		std::atomic<IP4Address> Source{ IP4Address() };
+		std::atomic<IP4Address> Source{ { IP4Address() } };
 
 	public:
 		AsyncReceiveFromArgs(std::function<void(AsyncReceiveFromArgs*)> Callback) : CompletedCallback(Callback) { }
