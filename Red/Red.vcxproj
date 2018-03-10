@@ -191,6 +191,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Hardware\Windows\WindowsHardware.cpp" />
+    <ClCompile Include="Network\AsyncTask.cpp" />
     <ClCompile Include="Network\BSD\BSDSocket.cpp" />
     <ClCompile Include="Network\BSD\BSDSocketSubsystem.cpp" />
     <ClCompile Include="Thread\POSIX\POSIXCriticalSection.cpp">

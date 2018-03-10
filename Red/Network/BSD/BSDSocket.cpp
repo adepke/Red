@@ -100,7 +100,7 @@ namespace Red
 		{
 			Args->Result.store(Connect(EndPoint));
 			Args->CompletedCallback(Args);
-		}));
+		}), this);
 
 		return Task;
 	}
@@ -192,7 +192,7 @@ namespace Red
 			Args->Result.store(Accept(ClientAddressTemp));
 			Args->ClientAddress.store(ClientAddressTemp);
 			Args->CompletedCallback(Args);
-		}));
+		}), this);
 
 		return Task;
 	}
@@ -225,7 +225,7 @@ namespace Red
 			Args->Result.store(Send(Data, Length, BytesSentTemp));
 			Args->BytesSent.store(BytesSentTemp);
 			Args->CompletedCallback(Args);
-		}));
+		}), this);
 
 		return Task;
 	}
@@ -239,7 +239,7 @@ namespace Red
 			Args->Result.store(Send(Destination, Data, Length, BytesSentTemp));
 			Args->BytesSent.store(BytesSentTemp);
 			Args->CompletedCallback(Args);
-		}));
+		}), this);
 
 		return Task;
 	}
@@ -274,7 +274,7 @@ namespace Red
 			Args->Data.store(DataTemp);
 			Args->BytesReceived.store(BytesReceivedTemp);
 			Args->CompletedCallback(Args);
-		}));
+		}), this);
 
 		return Task;
 	}
@@ -292,7 +292,7 @@ namespace Red
 			Args->BytesReceived.store(BytesReceivedTemp);
 			Args->Source.store(SourceTemp);
 			Args->CompletedCallback(Args);
-		}));
+		}), this);
 
 		return Task;
 	}

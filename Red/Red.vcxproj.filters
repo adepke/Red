@@ -200,5 +200,8 @@
     <ClCompile Include="Hardware\Linux\LinuxHardware.cpp">
       <Filter>Hardware\Linux</Filter>
     </ClCompile>
+    <ClCompile Include="Network\AsyncTask.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

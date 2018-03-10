@@ -5,14 +5,18 @@
 
 namespace Red
 {
+	// Forward Declare the Socket Interface
+	class ISocket;
+
 	// Used to Manipulate and Query an Asynchronous Function
 	class AsyncTask
 	{
 	protected:
 		std::future<void> Handle;
+		ISocket* Sock;
 
 	public:
-		AsyncTask(std::future<void> InHandle) { Handle = std::move(InHandle); }
+		AsyncTask(std::future<void> InHandle, ISocket* InSock) : Sock(InSock) { Handle = std::move(InHandle); }
 
 		void WaitForCompletion()
 		{
@@ -24,9 +28,7 @@ namespace Red
 			return Handle.wait_for(std::chrono::seconds(0)) == std::future_status::ready;
 		}
 
-		void Abort()
-		{
-
-		}
+		// Immediately Cancel the Task. This Will Result in the Socket being Shutdown.
+		void Abort();
 	};
 }  // namespace Red
