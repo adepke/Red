@@ -1,6 +1,6 @@
 image:
   - Visual Studio 2017
-  - ubuntu
+# - Ubuntu
   
 # Don't Build Dev Branches
 branches:
@@ -16,7 +16,10 @@ platform:
   - x64
  
 install:
-  - nuget.exe restore Red.sln
+  # Install NuGet on Ubuntu
+# - sh: sudo apt install nuget
+  # Update the NuGet Packages
+  - nuget restore Red.sln
 
 build:
   project: Red.sln
