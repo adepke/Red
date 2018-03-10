@@ -24,7 +24,7 @@ namespace Red
 
 	public:
 		AsyncArgs(std::function<void(void)> Callback) : CompletedCallback(Callback) { }
-		virtual ~AsyncArgs() = 0;
+		virtual ~AsyncArgs() = 0 { }
 	};
 
 	class AsyncConnectArgs : public AsyncArgs
