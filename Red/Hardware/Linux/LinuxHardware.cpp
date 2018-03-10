@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2018 Andrew Depke
+	Copyright (c) 2017-2018 Andrew Depke
 */
 #include "LinuxHardware.h"
 
