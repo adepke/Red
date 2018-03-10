@@ -96,7 +96,7 @@ namespace Red
 
 	AsyncTask* BSDSocket::ConnectAsync(AsyncConnectArgs* Args, const IP4EndPoint& EndPoint)
 	{
-		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
+		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
 			Args->Result.store(Connect(EndPoint));
 			Args->CompletedCallback();
@@ -145,7 +145,7 @@ namespace Red
 
 	AsyncTask* BSDSocket::ListenAsync(AsyncListenArgs* Args, int MaxBacklog)
 	{
-		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
+		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
 			Args->Result.store(Listen(MaxBacklog));
 			Args->CompletedCallback();
@@ -196,7 +196,7 @@ namespace Red
 
 	AsyncTask* BSDSocket::AcceptAsync(AsyncAcceptArgs* Args)
 	{
-		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
+		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
 			IP4EndPoint ClientAddressTemp;
 
@@ -229,7 +229,7 @@ namespace Red
 
 	AsyncTask* BSDSocket::SendAsync(AsyncSendArgs* Args, const unsigned char* Data, unsigned int Length)
 	{
-		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
+		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
 			int BytesSentTemp;
 
@@ -243,7 +243,7 @@ namespace Red
 
 	AsyncTask* BSDSocket::SendAsync(AsyncSendArgs* Args, const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length)
 	{
-		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
+		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
 			int BytesSentTemp;
 
@@ -276,7 +276,7 @@ namespace Red
 
 	AsyncTask* BSDSocket::ReceiveAsync(AsyncReceiveArgs* Args, unsigned int MaxReceivingBytes)
 	{
-		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
+		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
 			unsigned char* DataTemp = nullptr;
 			int BytesReceivedTemp;
@@ -292,7 +292,7 @@ namespace Red
 
 	AsyncTask* BSDSocket::ReceiveAsync(AsyncReceiveFromArgs* Args, unsigned int MaxReceivingBytes)
 	{
-		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [&]
+		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
 			unsigned char* DataTemp = nullptr;
 			int BytesReceivedTemp;
