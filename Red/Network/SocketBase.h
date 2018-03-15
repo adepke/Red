@@ -64,6 +64,9 @@ namespace Red
 		virtual bool SetSendBufferSize(unsigned int Size) = 0;
 		virtual bool SetReceiveBufferSize(unsigned int Size) = 0;
 
+		virtual bool SetSendTimeout(unsigned int TimeoutMs) = 0;
+		virtual bool SetReceiveTimeout(unsigned int TimeoutMs) = 0;
+
 		virtual bool SetBroadcastsEnabled(bool Value) = 0;
 
 		// Server: Return the public endpoint the socket is bound to.

@@ -325,6 +325,16 @@ namespace Red
 		return (setsockopt(SocketHandle, SOL_SOCKET, SO_RCVBUF, (char*)&Size, sizeof(Size)) == 0);
 	}
 
+	bool BSDSocket::SetSendTimeout(unsigned int TimeoutMs)
+	{
+		return (setsockopt(SocketHandle, SOL_SOCKET, SO_SNDTIMEO, (char*)&TimeoutMs, sizeof(TimeoutMs)) == 0);
+	}
+
+	bool BSDSocket::SetReceiveTimeout(unsigned int TimeoutMs)
+	{
+		return (setsockopt(SocketHandle, SOL_SOCKET, SO_RCVTIMEO, (char*)&TimeoutMs, sizeof(TimeoutMs)) == 0);
+	}
+
 	bool BSDSocket::SetBroadcastsEnabled(bool Value)
 	{
 		return (setsockopt(SocketHandle, SOL_SOCKET, SO_BROADCAST, (char*)&Value, sizeof(Value)) == 0);

@@ -53,6 +53,9 @@ namespace Red
 		virtual bool SetSendBufferSize(unsigned int Size) override;
 		virtual bool SetReceiveBufferSize(unsigned int Size) override;
 
+		virtual bool SetSendTimeout(unsigned int TimeoutMs) override;
+		virtual bool SetReceiveTimeout(unsigned int TimeoutMs) override;
+
 		virtual bool SetBroadcastsEnabled(bool Value) override;
 
 		virtual IP4EndPoint GetAddress() override;
