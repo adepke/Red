@@ -394,7 +394,7 @@ namespace Red
 			{
 				linger Linger;
 				Linger.l_onoff = true;
-				Linger.l_linger = Description.LingerTimeMs;
+				Linger.l_linger = Description.LingerTimeMs / 1000;
 
 				if (setsockopt(SocketHandle, SOL_SOCKET, SO_LINGER, (char*)&Linger, sizeof(Linger)) != 0)
 				{
