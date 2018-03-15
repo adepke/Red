@@ -64,6 +64,8 @@ namespace Red
 		virtual bool SetSendBufferSize(unsigned int Size) = 0;
 		virtual bool SetReceiveBufferSize(unsigned int Size) = 0;
 
+		virtual bool SetBroadcastsEnabled(bool Value) = 0;
+
 		// Server: Return the public endpoint the socket is bound to.
 		virtual IP4EndPoint GetAddress() = 0;
 		// Client/Server: Return the address the socket is connected to.

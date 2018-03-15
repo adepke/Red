@@ -325,6 +325,11 @@ namespace Red
 		return (setsockopt(SocketHandle, SOL_SOCKET, SO_RCVBUF, (char*)&Size, sizeof(Size)) == 0);
 	}
 
+	bool BSDSocket::SetBroadcastsEnabled(bool Value)
+	{
+		return (setsockopt(SocketHandle, SOL_SOCKET, SO_BROADCAST, (char*)&Value, sizeof(Value)) == 0);
+	}
+
 	IP4EndPoint BSDSocket::GetAddress()
 	{
 		sockaddr_in Address;
