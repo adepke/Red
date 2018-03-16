@@ -129,6 +129,12 @@ namespace Red
 	// Modulus
 	REDINLINE int Modulus(int TargetA, int TargetB) noexcept
 	{
+		// Prevent SEH Exception
+		if (TargetB == 0)
+		{
+			return 0;
+		}
+
 		return TargetA % TargetB;
 	}
 
