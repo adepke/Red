@@ -46,6 +46,15 @@
     <Filter Include="System">
       <UniqueIdentifier>{6b1dc812-1544-4754-95cf-b844195ebc08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{91fc8471-a08c-4093-8102-8c4afd867fce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug\Windows">
+      <UniqueIdentifier>{64c7a31a-4303-4ff2-9e4d-329642ac41e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug\Linux">
+      <UniqueIdentifier>{78ffffe6-87fc-422d-9105-5a99e596af8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithm\Algorithm.h">
@@ -180,6 +189,21 @@
     <ClInclude Include="Network\AsyncTask.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="Debug\Debug.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug\StackTrace.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug\Windows\WindowsStackTrace.h">
+      <Filter>Debug\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug\Linux\LinuxStackTrace.h">
+      <Filter>Debug\Linux</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug\StackTraceBase.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\BSD\BSDSocket.cpp">
@@ -202,6 +226,12 @@
     </ClCompile>
     <ClCompile Include="Network\AsyncTask.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\Windows\WindowsStackTrace.cpp">
+      <Filter>Debug\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\Linux\LinuxStackTrace.cpp">
+      <Filter>Debug\Linux</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
