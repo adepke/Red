@@ -8,5 +8,8 @@
 
 namespace Red
 {
+	bool CaptureStackTrace(int MaxDepth, std::vector<StackFrame>* Output)
+	{
 
+	}
 }  // namespace Red

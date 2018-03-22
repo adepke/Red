@@ -9,7 +9,8 @@ namespace Red
 {
 	struct StackFrame
 	{
-		unsigned int Address;
+		std::string Address;
+		std::string Module;
 		std::string File;
 		std::string Function;
 		std::string Line;
