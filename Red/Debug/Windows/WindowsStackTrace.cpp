@@ -37,7 +37,7 @@ namespace Red
 			StackFrame Frame;
 
 			char FrameAddressBuffer[64];
-			snprintf(FrameAddressBuffer, sizeof(FrameAddressBuffer), "0x%016X", FrameDWORD64);
+			snprintf(FrameAddressBuffer, sizeof(FrameAddressBuffer), "0x%016X", static_cast<unsigned int>(FrameDWORD64));
 
 			Frame.Address = FrameAddressBuffer;
 
