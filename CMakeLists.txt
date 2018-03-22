@@ -62,6 +62,7 @@ set(${PROJECT_NAME}_WINDOWSSOURCE
 	"Red/Network/BSD/BSDSocketSubsystem.cpp"
 	"Red/Thread/Windows/WindowsCriticalSection.cpp"
 	"Red/Debug/Windows/WindowsStackTrace.cpp"
+	"Red/Debug/Windows/WindowsProcess.cpp"
 )
 
 # Unix Specific Source Files
@@ -71,6 +72,7 @@ set(${PROJECT_NAME}_UNIXSOURCE
 	"Red/Network/BSD/BSDSocketSubsystem.cpp"
 	"Red/Thread/POSIX/POSIXCriticalSection.cpp"
 	"Red/Debug/Linux/LinuxStackTrace.cpp"
+	"Red/Debug/Linux/LinuxProcess.cpp"
 )
 
 # Fill Master Source File List
