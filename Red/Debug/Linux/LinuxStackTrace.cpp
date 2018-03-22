@@ -78,5 +78,7 @@ namespace Red
 			Frame.Function = FrameString.substr(FunctionNameStart, FunctionNameEnd - FunctionNameStart);
 #endif
 		}
+
+		return true;
 	}
 }  // namespace Red
