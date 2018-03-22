@@ -38,9 +38,19 @@ file(GLOB_RECURSE ${PROJECT_NAME}_SOURCE
 	"${CMAKE_CURRENT_SOURCE_DIR}/Red/*.h"
 )
 
-# Remove Windows Window Headers Manually Until Platform-Specific Files are Moved to Source Files
+# Remove Windows Headers Manually. Really Need a Better Solution to This
 foreach(ITEM ${${PROJECT_NAME}_SOURCE})
-	if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/Window/Windows/WindowsWindow.h")
+	if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/Window/Windows/*.h")
+		list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
+	endif()
+endforeach()
+foreach(ITEM ${${PROJECT_NAME}_SOURCE})
+	if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/Thread/Windows/*.h")
+		list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
+	endif()
+endforeach()
+foreach(ITEM ${${PROJECT_NAME}_SOURCE})
+	if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/Debug/Windows/*.h")
 		list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
 	endif()
 endforeach()
@@ -51,6 +61,7 @@ set(${PROJECT_NAME}_WINDOWSSOURCE
 	"Red/Network/BSD/BSDSocket.cpp"
 	"Red/Network/BSD/BSDSocketSubsystem.cpp"
 	"Red/Thread/Windows/WindowsCriticalSection.cpp"
+	"Red/Debug/Windows/WindowsStackTrace.cpp"
 )
 
 # Unix Specific Source Files
@@ -59,6 +70,7 @@ set(${PROJECT_NAME}_UNIXSOURCE
 	"Red/Network/BSD/BSDSocket.cpp"
 	"Red/Network/BSD/BSDSocketSubsystem.cpp"
 	"Red/Thread/POSIX/POSIXCriticalSection.cpp"
+	"Red/Debug/Linux/LinuxStackTrace.cpp"
 )
 
 # Fill Master Source File List
