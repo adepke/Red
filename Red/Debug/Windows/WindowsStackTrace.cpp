@@ -3,6 +3,8 @@
 */
 #include "WindowsStackTrace.h"
 
+#include "../../Math/MathCore.h"
+
 #include <Windows.h>
 #include <DbgHelp.h>
 #include <utility>
@@ -27,7 +29,7 @@ namespace Red
 		PVOID RawStackTrace[128];
 
 		// Requires Frame Pointer Omission (/Oy)
-		Frames = RtlCaptureStackBackTrace(0, MaxDepth, RawStackTrace, NULL);
+		Frames = RtlCaptureStackBackTrace(0, Min(MaxDepth, 128), RawStackTrace, NULL);
 
 		if (Frames <= 0)
 		{
