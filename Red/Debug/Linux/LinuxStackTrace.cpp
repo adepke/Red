@@ -38,7 +38,7 @@ namespace Red
 			StackFrame Frame;
 
 			char FrameAddressBuffer[64];
-			snprintf(FrameAddressBuffer, sizeof(FrameAddressBuffer), "0x%016llX", RawStackTrace[Iter]);  // Assume 64 Bit Addresses.
+			snprintf(FrameAddressBuffer, sizeof(FrameAddressBuffer), "0x%016llX", (unsigned long long int)RawStackTrace[Iter]);  // Assume 64 Bit Addresses.
 
 			Frame.Address = FrameAddressBuffer;
 
