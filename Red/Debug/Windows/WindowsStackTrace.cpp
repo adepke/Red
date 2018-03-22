@@ -16,6 +16,11 @@ namespace Red
 
 	bool CaptureStackTrace(int MaxDepth, std::vector<StackFrame>* Output)
 	{
+		if (!Output || MaxDepth <= 0)
+		{
+			return false;
+		}
+
 		Initialize();
 
 		short int Frames = 0;
