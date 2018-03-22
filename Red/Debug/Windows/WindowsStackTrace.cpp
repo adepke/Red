@@ -36,15 +36,19 @@ namespace Red
 
 			StackFrame Frame;
 
-			char FrameBuffer[sizeof(IMAGEHLP_SYMBOL64) + 128] = { 0 };
+			char FrameAddressBuffer[64];
+			snprintf(FrameAddressBuffer, sizeof(FrameAddressBuffer), "0x%016X", FrameDWORD64);
+
+			Frame.Address = FrameAddressBuffer;
+
+			char FrameBuffer[sizeof(IMAGEHLP_SYMBOL64) + 1024] = { 0 };
 
 			IMAGEHLP_SYMBOL64* FrameBufferSymbol = (IMAGEHLP_SYMBOL64*)FrameBuffer;
 			FrameBufferSymbol->SizeOfStruct = sizeof(FrameBuffer);
-			FrameBufferSymbol->MaxNameLength = 128;
+			FrameBufferSymbol->MaxNameLength = 1024;
 
 			if (SymGetSymFromAddr64(Process, FrameDWORD64, nullptr, FrameBufferSymbol))
 			{
-				Frame.Address = std::to_string(FrameBufferSymbol->Address);
 				Frame.Function = FrameBufferSymbol->Name;
 			}
 
@@ -59,7 +63,8 @@ namespace Red
 			IMAGEHLP_LINE64 FrameBufferFileLine = { 0 };
 			FrameBufferFileLine.SizeOfStruct = sizeof(FrameBufferFileLine);
 
-			if (SymGetLineFromAddr64(Process, FrameDWORD64, nullptr, &FrameBufferFileLine))
+			DWORD Displacement;
+			if (SymGetLineFromAddr64(Process, FrameDWORD64, &Displacement, &FrameBufferFileLine))
 			{
 				Frame.File = FrameBufferFileLine.FileName;
 				Frame.Line = std::to_string(FrameBufferFileLine.LineNumber);
