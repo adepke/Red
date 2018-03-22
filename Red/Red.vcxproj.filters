@@ -204,6 +204,18 @@
     <ClInclude Include="Debug\StackTraceBase.h">
       <Filter>Debug</Filter>
     </ClInclude>
+    <ClInclude Include="Debug\ProcessBase.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug\Process.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug\Windows\WindowsProcess.h">
+      <Filter>Debug\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug\Linux\LinuxProcess.h">
+      <Filter>Debug\Linux</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\BSD\BSDSocket.cpp">
@@ -231,6 +243,12 @@
       <Filter>Debug\Windows</Filter>
     </ClCompile>
     <ClCompile Include="Debug\Linux\LinuxStackTrace.cpp">
+      <Filter>Debug\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\Windows\WindowsProcess.cpp">
+      <Filter>Debug\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\Linux\LinuxProcess.cpp">
       <Filter>Debug\Linux</Filter>
     </ClCompile>
   </ItemGroup>

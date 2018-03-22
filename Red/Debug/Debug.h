@@ -4,3 +4,4 @@
 #pragma once
 
 #include "StackTrace.h"
+#include "Process.h"

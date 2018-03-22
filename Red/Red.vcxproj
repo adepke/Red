@@ -136,14 +136,18 @@
     <ClInclude Include="Core\Definitions.h" />
     <ClInclude Include="Core\Platform.h" />
     <ClInclude Include="Debug\Debug.h" />
+    <ClInclude Include="Debug\Linux\LinuxProcess.h" />
     <ClInclude Include="Debug\Linux\LinuxStackTrace.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Debug\Process.h" />
+    <ClInclude Include="Debug\ProcessBase.h" />
     <ClInclude Include="Debug\StackTrace.h" />
     <ClInclude Include="Debug\StackTraceBase.h" />
+    <ClInclude Include="Debug\Windows\WindowsProcess.h" />
     <ClInclude Include="Debug\Windows\WindowsStackTrace.h" />
     <ClInclude Include="Function\Function.h" />
     <ClInclude Include="Hardware\Hardware.h" />
@@ -196,12 +200,14 @@
     <ClInclude Include="Window\Windows\WindowsWindowState.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Debug\Linux\LinuxProcess.cpp" />
     <ClCompile Include="Debug\Linux\LinuxStackTrace.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Debug\Windows\WindowsProcess.cpp" />
     <ClCompile Include="Debug\Windows\WindowsStackTrace.cpp" />
     <ClCompile Include="Hardware\Linux\LinuxHardware.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

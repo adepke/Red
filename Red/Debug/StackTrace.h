@@ -18,5 +18,3 @@
 #elif OS_IOS
 	#include "Linux/LinuxStackTrace.h"
 #endif
-
-// StackTrace is a typedef to the platform specific implementation of a stack tracer.
