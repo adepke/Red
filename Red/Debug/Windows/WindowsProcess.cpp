@@ -10,6 +10,11 @@ namespace Red
 {
 	bool GetProcessModules(std::vector<ProcessModule>* Output)
 	{
+		if (!Output)
+		{
+			return false;
+		}
+
 		HMODULE Modules[1024];
 		HANDLE Process = GetCurrentProcess();
 		DWORD BytesNeeded;
