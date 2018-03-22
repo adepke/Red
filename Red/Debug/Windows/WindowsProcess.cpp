@@ -25,7 +25,7 @@ namespace Red
 			{
 				char ModuleName[MAX_PATH];
 
-				if (GetModuleFileNameA(Modules[Iter], ModuleName, (sizeof(ModuleName) / sizeof(sizeof(TCHAR)))))
+				if (GetModuleFileNameA(Modules[Iter], ModuleName, sizeof(ModuleName)))
 				{
 					ProcessModule Module;
 					Module.Name = ModuleName;
