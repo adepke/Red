@@ -3,10 +3,12 @@
 */
 #pragma once
 
+#include <string>
+
 namespace Red
 {
 	struct ProcessModule
 	{
-
+		std::string Name;
 	};
 }  // namespace Red
