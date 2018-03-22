@@ -23,18 +23,12 @@ namespace Red
 		{
 			for (int Iter = 0; Iter < (BytesNeeded / sizeof(HMODULE)); ++Iter)
 			{
-				TCHAR ModuleName[MAX_PATH];
+				char ModuleName[MAX_PATH];
 
-				if (GetModuleFileName(Modules[Iter], ModuleName, (sizeof(ModuleName) / sizeof(sizeof(TCHAR)))))
+				if (GetModuleFileNameA(Modules[Iter], ModuleName, (sizeof(ModuleName) / sizeof(sizeof(TCHAR)))))
 				{
-					int StringSize = WideCharToMultiByte(CP_UTF8, 0, ModuleName, MAX_PATH, NULL, 0, NULL, NULL);
-
-					std::string ModuleNameMB(StringSize, 0);
-
-					WideCharToMultiByte(CP_UTF8, 0, ModuleName, MAX_PATH, &ModuleNameMB[0], StringSize, NULL, NULL);
-
 					ProcessModule Module;
-					Module.Name = ModuleNameMB;
+					Module.Name = ModuleName;
 
 					Output->push_back(Module);
 				}
