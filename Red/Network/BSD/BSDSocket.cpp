@@ -45,6 +45,10 @@ namespace Red
 			NativeType = SOCK_DGRAM;
 			NativeProtocol = IPPROTO_IP;  // Automatically Determine Protocol
 			break;
+		default:
+			NativeType = SOCK_RAW;
+			NativeProtocol = IPPROTO_IP;
+			break;
 		}
 
 		SocketHandle = socket(AF_INET, NativeType, NativeProtocol);
