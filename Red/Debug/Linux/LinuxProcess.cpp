@@ -12,7 +12,7 @@ namespace Red
 		ProcessModule Module;
 		Module.Name = Info->dlpi_name;
 
-		static_cast<std::vector<ProcessModule>*>(Data)->push_back(Module);
+		reinterpret_cast<std::vector<ProcessModule>*>(Data)->push_back(Module);
 	}
 
 	bool GetProcessModules(std::vector<ProcessModule>* Output)
@@ -22,7 +22,7 @@ namespace Red
 			return false;
 		}
 
-		dl_iterate_phdr(&ProcessModuleCallback, Output);
+		dl_iterate_phdr(&ProcessModuleCallback, reinterpret_cast<void*>(Output));
 
 		return true;
 	}
