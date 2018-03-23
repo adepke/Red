@@ -33,53 +33,62 @@ endif()
 message(STATUS "System Name: ${CMAKE_SYSTEM}")
 message(STATUS "System Processor: ${CMAKE_SYSTEM_PROCESSOR}")
 
-# Project's Header Files
+# Grab All Headers
 file(GLOB_RECURSE ${PROJECT_NAME}_SOURCE
 	"${CMAKE_CURRENT_SOURCE_DIR}/Red/*.h"
 )
 
-# Remove Windows Headers Manually. Really Need a Better Solution to This
+# Remove Headers Not Corresponding to Our Platform
 foreach(ITEM ${${PROJECT_NAME}_SOURCE})
-	if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/Window/Windows/*.h")
-		list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
-	endif()
-endforeach()
-foreach(ITEM ${${PROJECT_NAME}_SOURCE})
-	if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/Thread/Windows/*.h")
-		list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
-	endif()
-endforeach()
-foreach(ITEM ${${PROJECT_NAME}_SOURCE})
-	if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/Debug/Windows/*.h")
-		list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
+	if (WIN32)
+		if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/**/Linux/*.h" OR ${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/**/Darwin/*.h" OR ${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/**/POSIX/*.h")
+			list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
+		endif()
+	else if (APPLE)
+		if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/**/Windows/*.h")
+			list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
+		endif()
+		
+		# Some Linux Headers Are Not Compatible, Exclude These
+		if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/Debug/Linux/*.h")
+			list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
+		endif()
+	else
+		if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/**/Windows/*.h" OR ${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/**/Darwin/*.h")
+			list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
+		endif()
 	endif()
 endforeach()
 
 # Windows Specific Source Files
 set(${PROJECT_NAME}_WINDOWSSOURCE
-	"Red/Hardware/Windows/WindowsHardware.cpp"
-	"Red/Network/BSD/BSDSocket.cpp"
-	"Red/Network/BSD/BSDSocketSubsystem.cpp"
-	"Red/Thread/Windows/WindowsCriticalSection.cpp"
-	"Red/Debug/Windows/WindowsStackTrace.cpp"
-	"Red/Debug/Windows/WindowsProcess.cpp"
+	"Red/**/Windows/*.cpp"
+	"Red/Network/BSD/*.cpp"
 )
 
-# Unix Specific Source Files
-set(${PROJECT_NAME}_UNIXSOURCE
-	"Red/Hardware/Linux/LinuxHardware.cpp"
-	"Red/Network/BSD/BSDSocket.cpp"
-	"Red/Network/BSD/BSDSocketSubsystem.cpp"
-	"Red/Thread/POSIX/POSIXCriticalSection.cpp"
-	"Red/Debug/Linux/LinuxStackTrace.cpp"
-	"Red/Debug/Linux/LinuxProcess.cpp"
+# Darwin Specific Source Files
+set(${PROJECT_NAME}_DARWINSOURCE
+	"Red/**/Darwin/*.cpp"
+	"Red/**/BSD/*.cpp"
+	"Red/**/POSIX/*.cpp"
+	# Some Linux Sources Are Compatible, Include These
+	"Red/Hardware/Linux/*.cpp"
+)
+
+# Linux Specific Source Files
+set(${PROJECT_NAME}_LINUXSOURCE
+	"Red/**/Linux/*.cpp"
+	"Red/**/BSD/*.cpp"
+	"Red/**/POSIX/*.cpp"
 )
 
 # Fill Master Source File List
-if(UNIX)
-	list(APPEND ${PROJECT_NAME}_SOURCE ${${PROJECT_NAME}_UNIXSOURCE})
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+if(WIN32)
 	list(APPEND ${PROJECT_NAME}_SOURCE ${${PROJECT_NAME}_WINDOWSSOURCE})
+elseif(APPLE)
+	list(APPEND ${PROJECT_NAME}_SOURCE ${${PROJECT_NAME}_DARWINSOURCE})
+else
+	list(APPEND ${PROJECT_NAME}_SOURCE ${${PROJECT_NAME}_LINUXSOURCE})
 endif()
 
 add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCE})
@@ -117,10 +126,9 @@ file(GLOB_RECURSE TEST_SOURCE
 	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*.cpp"
 )
 
+# Manually Remove Windows Unit Tests
 foreach(ITEM ${TEST_SOURCE})
-	if(${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/Hardware/Windows/Test_WindowsHardware.cpp" OR
-	   ${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/Thread/Windows/Test_WindowsCriticalSection.cpp" OR
-	   ${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/Window/Windows/Test_WindowsWindow.cpp")
+	if(${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/**/Windows/*.cpp")
 		list(REMOVE_ITEM TEST_SOURCE ${ITEM})
 	endif()
 endforeach()
