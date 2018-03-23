@@ -55,6 +55,9 @@
     <Filter Include="Debug\Linux">
       <UniqueIdentifier>{78ffffe6-87fc-422d-9105-5a99e596af8d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Debug\Darwin">
+      <UniqueIdentifier>{6c1639fc-5297-4b55-aafa-e916ebb28b1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithm\Algorithm.h">
@@ -216,6 +219,9 @@
     <ClInclude Include="Debug\Linux\LinuxProcess.h">
       <Filter>Debug\Linux</Filter>
     </ClInclude>
+    <ClInclude Include="Debug\Darwin\DarwinProcess.h">
+      <Filter>Debug\Darwin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\BSD\BSDSocket.cpp">
@@ -250,6 +256,9 @@
     </ClCompile>
     <ClCompile Include="Debug\Linux\LinuxProcess.cpp">
       <Filter>Debug\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\Darwin\DarwinProcess.cpp">
+      <Filter>Debug\Darwin</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

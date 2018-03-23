@@ -8,7 +8,7 @@
 #if OS_WINDOWS
 	#include "Windows/WindowsProcess.h"
 #elif OS_MACINTOSH
-	//#include "Linux/LinuxProcess.h"  // Not Yet Supported on Darwin
+	#include "Darwin/DarwinProcess.h"
 #elif OS_LINUX
 	#include "Linux/LinuxProcess.h"
 #elif OS_BSD
@@ -16,5 +16,5 @@
 #elif OS_ANDROID
 	#include "Linux/LinuxProcess.h"
 #elif OS_IOS
-	#include "Linux/LinuxProcess.h"
+	#include "Darwin/DarwinProcess.h"
 #endif
