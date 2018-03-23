@@ -46,7 +46,7 @@ namespace Red
 			size_t AddressStart = FrameString.find('[') + 1;
 			size_t AddressEnd = FrameString.find(']') - 1;
 
-			if (strcasecmp(Frame.Address.c_str(), FrameString.substr().c_str()) != 0)
+			if (strcasecmp(Frame.Address.c_str(), FrameString.substr(AddressStart, AddressEnd - AddressStart).c_str()) != 0)
 			{
 				throw("LINUX STACKTRACE ADDRESS MISMATCH!");
 			}
