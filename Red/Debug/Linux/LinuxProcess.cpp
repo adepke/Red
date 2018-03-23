@@ -13,6 +13,8 @@ namespace Red
 		Module.Name = Info->dlpi_name;
 
 		reinterpret_cast<std::vector<ProcessModule>*>(Data)->push_back(Module);
+		
+		return 0;
 	}
 
 	bool GetProcessModules(std::vector<ProcessModule>* Output)
