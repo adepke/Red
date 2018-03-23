@@ -16,7 +16,7 @@ protected:
 		{
 			for (int Column = 0; Column < 5; ++Column)
 			{
-				Normal.Data[Row][Column] = Row - Column;
+				Normal.Data[Row][Column] = static_cast<float>(Row - Column);
 			}
 		}
 
