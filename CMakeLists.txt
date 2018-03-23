@@ -43,36 +43,26 @@ set(${PROJECT_NAME}_SOURCE_PLATFORM "")
 
 if(WIN32)
 	# Windows Platform
-	set(${PROJECT_NAME}_SOURCE_PLATFORM
-		"Red/*/Windows/*.h"
-		"Red/*/Windows/*.cpp"
-		"Red/Network/BSD/*.h"
-		"Red/Network/BSD/*.cpp"
+	file(GLOB ${PROJECT_NAME}_SOURCE_PLATFORM
+		"${CMAKE_CURRENT_SOURCE_DIR}/Red/*/Windows/*.*"
+		"${CMAKE_CURRENT_SOURCE_DIR}/Red/Network/BSD/*.*"
 	)
 elseif(APPLE)
 	# Darwin Platform
-	set(${PROJECT_NAME}_SOURCE_PLATFORM
-		"Red/*/Darwin/*.h"
-		"Red/*/Darwin/*.cpp"
-		"Red/*/BSD/*.h"
-		"Red/*/BSD/*.cpp"
-		"Red/*/POSIX/*.h"
-		"Red/*/POSIX/*.cpp"
+	file(GLOB ${PROJECT_NAME}_SOURCE_PLATFORM
+		"${CMAKE_CURRENT_SOURCE_DIR}/Red/*/Darwin/*.*"
+		"${CMAKE_CURRENT_SOURCE_DIR}/Red/*/BSD/*.*"
+		"${CMAKE_CURRENT_SOURCE_DIR}/Red/*/POSIX/*.*"
 		# Some Linux Sources Are Compatible, Include These
-		"Red/Hardware/Linux/*.h"
-		"Red/Hardware/Linux/*.cpp"
-		"Red/Debug/Linux/LinuxStackTrace.h"
-		"Red/Debug/Linux/LinuxStackTrace.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/Red/Hardware/Linux/*.*"
+		"${CMAKE_CURRENT_SOURCE_DIR}/Red/Debug/Linux/LinuxStackTrace.*"
 	)
 else(UNIX)
 	# Linux Platform
-	set(${PROJECT_NAME}_SOURCE_PLATFORM
-		"Red/*/Linux/*.h"
-		"Red/*/Linux/*.cpp"
-		"Red/*/BSD/*.h"
-		"Red/*/BSD/*.cpp"
-		"Red/*/POSIX/*.h"
-		"Red/*/POSIX/*.cpp"
+	file(GLOB ${PROJECT_NAME}_SOURCE_PLATFORM
+		"${CMAKE_CURRENT_SOURCE_DIR}/Red/*/Linux/*.*"
+		"${CMAKE_CURRENT_SOURCE_DIR}/Red/*/BSD/*.*"
+		"${CMAKE_CURRENT_SOURCE_DIR}/Red/*/POSIX/*.*"
 	)
 endif()
 
