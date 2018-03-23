@@ -926,54 +926,54 @@ namespace Red
 	REDINLINE void Clamp(Vector2* Result, const Vector2& Target, VEC_MEMBER MinX, VEC_MEMBER MinY, VEC_MEMBER MaxX, VEC_MEMBER MaxY)
 	{
 		*Result = (
-			((Target.X > MinX) ? ((Target.X < MaxX) ? Target.X : MaxX) : MinX),
-			((Target.Y > MinY) ? ((Target.Y < MaxY) ? Target.Y : MaxY) : MinY)
+			Max(Min(Target.X, MaxX), MinX),
+			Max(Min(Target.Y, MaxY), MinY)
 			);
 	}
 
 	REDINLINE void Clamp(Vector2* Result, const Vector2& Target, const Vector2& Min, const Vector2& Max)
 	{
 		*Result = (
-			((Target.X > Min.X) ? ((Target.X < Max.X) ? Target.X : Max.X) : Min.X),
-			((Target.Y > Min.Y) ? ((Target.Y < Max.Y) ? Target.Y : Max.Y) : Min.Y)
+			Max(Min(Target.X, Max.X), Min.X),
+			Max(Min(Target.Y, Max.Y), Min.Y)
 			);
 	}
 
 	REDINLINE void Clamp(Vector3* Result, const Vector3& Target, VEC_MEMBER MinX, VEC_MEMBER MinY, VEC_MEMBER MinZ, VEC_MEMBER MaxX, VEC_MEMBER MaxY, VEC_MEMBER MaxZ)
 	{
 		*Result = (
-			((Target.X > MinX) ? ((Target.X < MaxX) ? Target.X : MaxX) : MinX),
-			((Target.Y > MinY) ? ((Target.Y < MaxY) ? Target.Y : MaxY) : MinY),
-			((Target.Z > MinZ) ? ((Target.Z < MaxZ) ? Target.Z : MaxZ) : MinZ)
+			Max(Min(Target.X, MaxX), MinX),
+			Max(Min(Target.Y, MaxY), MinY),
+			Max(Min(Target.Z, MaxZ), MinZ)
 			);
 	}
 
 	REDINLINE void Clamp(Vector3* Result, const Vector3& Target, const Vector3& Min, const Vector3& Max)
 	{
 		*Result = (
-			((Target.X > Min.X) ? ((Target.X < Max.X) ? Target.X : Max.X) : Min.X),
-			((Target.Y > Min.Y) ? ((Target.Y < Max.Y) ? Target.Y : Max.Y) : Min.Y),
-			((Target.Z > Min.Z) ? ((Target.Z < Max.Z) ? Target.Z : Max.Z) : Min.Z)
+			Max(Min(Target.X, Max.X), Min.X),
+			Max(Min(Target.Y, Max.Y), Min.Y),
+			Max(Min(Target.Z, Max.Z), Min.Z)
 			);
 	}
 
 	REDINLINE void Clamp(Vector4* Result, const Vector4& Target, VEC_MEMBER MinX, VEC_MEMBER MinY, VEC_MEMBER MinZ, VEC_MEMBER MinW, VEC_MEMBER MaxX, VEC_MEMBER MaxY, VEC_MEMBER MaxZ, VEC_MEMBER MaxW)
 	{
 		*Result = (
-			((Target.X > MinX) ? ((Target.X < MaxX) ? Target.X : MaxX) : MinX),
-			((Target.Y > MinY) ? ((Target.Y < MaxY) ? Target.Y : MaxY) : MinY),
-			((Target.Z > MinZ) ? ((Target.Z < MaxZ) ? Target.Z : MaxZ) : MinZ),
-			((Target.W > MinW) ? ((Target.W < MaxW) ? Target.W : MaxW) : MinW)
+			Max(Min(Target.X, MaxX), MinX),
+			Max(Min(Target.Y, MaxY), MinY),
+			Max(Min(Target.Z, MaxZ), MinZ),
+			Max(Min(Target.W, MaxW), MinW)
 			);
 	}
 
 	REDINLINE void Clamp(Vector4* Result, const Vector4& Target, const Vector4& Min, const Vector4& Max)
 	{
 		*Result = (
-			((Target.X > Min.X) ? ((Target.X < Max.X) ? Target.X : Max.X) : Min.X),
-			((Target.Y > Min.Y) ? ((Target.Y < Max.Y) ? Target.Y : Max.Y) : Min.Y),
-			((Target.Z > Min.Z) ? ((Target.Z < Max.Z) ? Target.Z : Max.Z) : Min.Z),
-			((Target.W > Min.W) ? ((Target.W < Max.W) ? Target.W : Max.W) : Min.W)
+			Max(Min(Target.X, Max.X), Min.X),
+			Max(Min(Target.Y, Max.Y), Min.Y),
+			Max(Min(Target.Z, Max.Z), Min.Z),
+			Max(Min(Target.W, Max.W), Min.W)
 			);
 	}
 
