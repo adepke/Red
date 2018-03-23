@@ -33,65 +33,43 @@ endif()
 message(STATUS "System Name: ${CMAKE_SYSTEM}")
 message(STATUS "System Processor: ${CMAKE_SYSTEM_PROCESSOR}")
 
-# Grab All Headers
-file(GLOB_RECURSE ${PROJECT_NAME}_SOURCE
-	"${CMAKE_CURRENT_SOURCE_DIR}/Red/*.h"
+# Grab All Base Source Files. Don't Recursively Search
+file(GLOB ${PROJECT_NAME}_SOURCE_BASE
+	"${CMAKE_CURRENT_SOURCE_DIR}/Red/*/*.h"
 )
 
-# Remove Headers Not Corresponding to Our Platform
-foreach(ITEM ${${PROJECT_NAME}_SOURCE})
-	if (WIN32)
-		if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/**/Linux/*.h" OR ${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/**/Darwin/*.h" OR ${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/**/POSIX/*.h")
-			list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
-		endif()
-	elseif (APPLE)
-		if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/**/Windows/*.h")
-			list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
-		endif()
-		
-		# Some Linux Headers Are Not Compatible, Exclude These
-		if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/Debug/Linux/*.h")
-			list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
-		endif()
-	else (UNIX)
-		if(${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/**/Windows/*.h" OR ${ITEM} MATCHES "${PROJECT_NAME}_SOURCE/Red/**/Darwin/*.h")
-			list(REMOVE_ITEM ${PROJECT_NAME}_SOURCE ${ITEM})
-		endif()
-	endif()
-endforeach()
+# Declare Platform-Specific Source File Variable
+set(${PROJECT_NAME}_SOURCE_PLATFORM "")
 
-# Windows Specific Source Files
-set(${PROJECT_NAME}_WINDOWSSOURCE
-	"Red/**/Windows/*.cpp"
-	"Red/Network/BSD/*.cpp"
-)
-
-# Darwin Specific Source Files
-set(${PROJECT_NAME}_DARWINSOURCE
-	"Red/**/Darwin/*.cpp"
-	"Red/**/BSD/*.cpp"
-	"Red/**/POSIX/*.cpp"
-	# Some Linux Sources Are Compatible, Include These
-	"Red/Hardware/Linux/*.cpp"
-)
-
-# Linux Specific Source Files
-set(${PROJECT_NAME}_LINUXSOURCE
-	"Red/**/Linux/*.cpp"
-	"Red/**/BSD/*.cpp"
-	"Red/**/POSIX/*.cpp"
-)
-
-# Fill Master Source File List
 if(WIN32)
-	list(APPEND ${PROJECT_NAME}_SOURCE ${${PROJECT_NAME}_WINDOWSSOURCE})
+	# Windows Platform
+	set(${PROJECT_NAME}_SOURCE_PLATFORM
+		"Red/*/Windows/*.*"
+		"Red/Network/BSD/*.*"
+	)
 elseif(APPLE)
-	list(APPEND ${PROJECT_NAME}_SOURCE ${${PROJECT_NAME}_DARWINSOURCE})
-else (UNIX)
-	list(APPEND ${PROJECT_NAME}_SOURCE ${${PROJECT_NAME}_LINUXSOURCE})
+	# Darwin Platform
+	set(${PROJECT_NAME}_SOURCE_PLATFORM
+		"Red/*/Darwin/*.*"
+		"Red/*/BSD/*.*"
+		"Red/*/POSIX/*.*"
+		# Some Linux Sources Are Compatible, Include These
+		"Red/Hardware/Linux/*.*"
+		"Red/Debug/Linux/LinuxStackTrace.*"
+	)
+else(UNIX)
+	# Linux Platform
+	set(${PROJECT_NAME}_SOURCE_PLATFORM
+		"Red/*/Linux/*.*"
+		"Red/*/BSD/*.*"
+		"Red/*/POSIX/*.*"
+	)
 endif()
 
-add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCE})
+# Combine Source File Lists
+list(APPEND ${PROJECT_NAME}_SOURCE_BASE ${${PROJECT_NAME}_SOURCE_PLATFORM})
+
+add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCE_BASE})
 
 add_custom_target(
 	Update3rdParty
