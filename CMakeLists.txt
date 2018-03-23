@@ -44,25 +44,35 @@ set(${PROJECT_NAME}_SOURCE_PLATFORM "")
 if(WIN32)
 	# Windows Platform
 	set(${PROJECT_NAME}_SOURCE_PLATFORM
-		"Red/*/Windows/*.*"
-		"Red/Network/BSD/*.*"
+		"Red/*/Windows/*.h"
+		"Red/*/Windows/*.cpp"
+		"Red/Network/BSD/*.h"
+		"Red/Network/BSD/*.cpp"
 	)
 elseif(APPLE)
 	# Darwin Platform
 	set(${PROJECT_NAME}_SOURCE_PLATFORM
-		"Red/*/Darwin/*.*"
-		"Red/*/BSD/*.*"
-		"Red/*/POSIX/*.*"
+		"Red/*/Darwin/*.h"
+		"Red/*/Darwin/*.cpp"
+		"Red/*/BSD/*.h"
+		"Red/*/BSD/*.cpp"
+		"Red/*/POSIX/*.h"
+		"Red/*/POSIX/*.cpp"
 		# Some Linux Sources Are Compatible, Include These
-		"Red/Hardware/Linux/*.*"
-		"Red/Debug/Linux/LinuxStackTrace.*"
+		"Red/Hardware/Linux/*.h"
+		"Red/Hardware/Linux/*.cpp"
+		"Red/Debug/Linux/LinuxStackTrace.h"
+		"Red/Debug/Linux/LinuxStackTrace.cpp"
 	)
 else(UNIX)
 	# Linux Platform
 	set(${PROJECT_NAME}_SOURCE_PLATFORM
-		"Red/*/Linux/*.*"
-		"Red/*/BSD/*.*"
-		"Red/*/POSIX/*.*"
+		"Red/*/Linux/*.h"
+		"Red/*/Linux/*.cpp"
+		"Red/*/BSD/*.h"
+		"Red/*/BSD/*.cpp"
+		"Red/*/POSIX/*.h"
+		"Red/*/POSIX/*.cpp"
 	)
 endif()
 
