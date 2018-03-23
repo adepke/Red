@@ -99,17 +99,12 @@ add_library(googletest ${GTEST_SOURCE})
 
 add_dependencies(googletest Update3rdParty)
 
-# Find all Unit Tests
-file(GLOB_RECURSE TEST_SOURCE
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*.cpp"
+# Find All Base Unit Tests. Don't Recursively Search
+file(GLOB TEST_SOURCE
+	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*/*.cpp"
 )
 
-# Manually Remove Windows Unit Tests
-foreach(ITEM ${TEST_SOURCE})
-	if(${ITEM} MATCHES "${CMAKE_CURRENT_SOURCE_DIR}/Test/**/Windows/*.cpp")
-		list(REMOVE_ITEM TEST_SOURCE ${ITEM})
-	endif()
-endforeach()
+# TODO: Add Implementation-Specific Unit Tests Here
 
 add_executable(Test ${TEST_SOURCE})
 
