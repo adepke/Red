@@ -46,7 +46,7 @@ TEST(DistributeSuite, Remainder)
 
 	ASSERT_NO_THROW(Distribute(&ReturnVector, 21, 5));
 	EXPECT_EQ(5, ReturnVector.size());
-	for (int Iter = 0; Iter < ReturnVector.size() - 1; ++Iter)
+	for (size_t Iter = 0; Iter < ReturnVector.size() - 1; ++Iter)
 	{
 		EXPECT_EQ(4, ReturnVector[Iter]);
 	}
