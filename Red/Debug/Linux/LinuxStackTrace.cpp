@@ -40,26 +40,35 @@ namespace Red
 
 			Frame.Address = FrameAddressBuffer;
 
-			size_t ModuleNameEnd = FrameString.find('(') - 1;
+			size_t ModuleNameEnd = FrameString.find('(');
 			Frame.Module = FrameString.substr(0, ModuleNameEnd);
 
 			size_t FunctionNameStart = FrameString.find('(') + 1;
-			size_t FunctionNameEnd = FrameString.find('+') - 1;
+			size_t FunctionNameEnd = FrameString.find("+0x") - 1;
 
-			int OperationStatus = 0;
-
-			char* DemangledName = abi::__cxa_demangle(FrameString.substr(FunctionNameStart, FunctionNameEnd - FunctionNameStart).c_str(), nullptr, nullptr, &OperationStatus);
-			
-			if (OperationStatus == 0)
+			// Don't Try to Demangle if There's No Function Signature
+			if (FunctionNameEnd != std::string::npos)
 			{
-				Frame.Function = DemangledName;
+				int OperationStatus = 0;
 
-				free(DemangledName);
+				char* DemangledName = abi::__cxa_demangle(FrameString.substr(FunctionNameStart, FunctionNameEnd - FunctionNameStart).c_str(), nullptr, nullptr, &OperationStatus);
+			
+				if (OperationStatus == 0)
+				{
+					Frame.Function = DemangledName;
+
+					free(DemangledName);
+				}
+
+				else
+				{
+					Frame.Function = FrameString.substr(FunctionNameStart, FunctionNameEnd - FunctionNameStart);
+				}
 			}
-
+			
 			else
 			{
-				Frame.Function = FrameString.substr(FunctionNameStart, FunctionNameEnd - FunctionNameStart);
+				Frame.Function = "";
 			}
 			
 			Output->push_back(Frame);
