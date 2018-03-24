@@ -46,7 +46,6 @@ namespace Red
 			size_t FunctionNameStart = FrameString.find('(') + 1;
 			size_t FunctionNameEnd = FrameString.find('+') - 1;
 
-#ifdef HAVE_CXA_DEMANGLE
 			int OperationStatus = 0;
 
 			char* DemangledName = abi::__cxa_demangle(FrameString.substr(FunctionNameStart, FunctionNameEnd - FunctionNameStart).c_str(), nullptr, nullptr, &OperationStatus);
@@ -62,9 +61,6 @@ namespace Red
 			{
 				Frame.Function = FrameString.substr(FunctionNameStart, FunctionNameEnd - FunctionNameStart);
 			}
-#else
-			Frame.Function = FrameString.substr(FunctionNameStart, FunctionNameEnd - FunctionNameStart);
-#endif
 			
 			Output->push_back(Frame);
 		}
