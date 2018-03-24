@@ -8,6 +8,8 @@
 #include <cxxabi.h>
 #include <execinfo.h>
 
+#include <stdlib.h>  // Darwin Doesn't Have free() By Default, Include it Here
+
 namespace Red
 {
 	bool CaptureStackTrace(int MaxDepth, std::vector<StackFrame>* Output)
@@ -46,8 +48,8 @@ namespace Red
 			size_t FunctionNameStart = FrameString.find('(') + 1;
 			size_t FunctionNameEnd = FrameString.find("+0x") - 1;
 
-			// Don't Try to Demangle if There's No Function Signature
-			if (FunctionNameEnd != std::string::npos)
+			// Don't Try to Demangle if There's No Function Signature. Note: std::string::npos Wasn't Working on Ubuntu Linux With gcc
+			if (FunctionNameEnd > 1024)
 			{
 				int OperationStatus = 0;
 
