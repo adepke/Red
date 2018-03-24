@@ -52,7 +52,7 @@ namespace Red
 			}
 
 			size_t FunctionNameStart = FrameString.find('(') + 1;
-			size_t FunctionNameEnd = FrameString.find("+0x") - 1;
+			size_t FunctionNameEnd = FrameString.find("+0x");
 
 			// Don't Try to Demangle if There's No Function Signature. Note: std::string::npos Wasn't Working on Ubuntu Linux With gcc
 			if (FunctionNameEnd < 1024)
