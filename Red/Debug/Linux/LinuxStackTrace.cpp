@@ -8,8 +8,6 @@
 #include <cxxabi.h>
 #include <execinfo.h>
 
-#include <strings.h>  // TEMPORARY FOR STACK TRACE ADDRESS TESTING
-
 namespace Red
 {
 	bool CaptureStackTrace(int MaxDepth, std::vector<StackFrame>* Output)
@@ -41,16 +39,6 @@ namespace Red
 			snprintf(FrameAddressBuffer, sizeof(FrameAddressBuffer), "0x%016llX", (unsigned long long int)RawStackTrace[Iter]);  // Assume 64 Bit Addresses.
 
 			Frame.Address = FrameAddressBuffer;
-
-			// -- TEMPORARY FOR TESTING
-			size_t AddressStart = FrameString.find('[') + 1;
-			size_t AddressEnd = FrameString.find(']') - 1;
-
-			if (strcasecmp(Frame.Address.c_str(), FrameString.substr(AddressStart, AddressEnd - AddressStart).c_str()) != 0)
-			{
-				throw("LINUX STACKTRACE ADDRESS MISMATCH!");
-			}
-			// --
 
 			size_t ModuleNameEnd = FrameString.find('(') - 1;
 			Frame.Module = FrameString.substr(0, ModuleNameEnd);
