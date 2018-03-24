@@ -74,7 +74,7 @@ namespace Red
 			if (SymGetLineFromAddr64(Process, FrameDWORD64, &Displacement, &FrameBufferFileLine))
 			{
 				Frame.File = FrameBufferFileLine.FileName;
-				Frame.Line = std::to_string(FrameBufferFileLine.LineNumber);
+				Frame.Line = static_cast<int>(FrameBufferFileLine.LineNumber);
 			}
 
 			Output->push_back(Frame);

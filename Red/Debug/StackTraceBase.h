@@ -13,6 +13,6 @@ namespace Red
 		std::string Module;
 		std::string File;
 		std::string Function;
-		std::string Line;
+		int Line;
 	};
 }  // namespace Red
