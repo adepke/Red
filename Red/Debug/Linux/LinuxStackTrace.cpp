@@ -65,6 +65,8 @@ namespace Red
 #else
 			Frame.Function = FrameString.substr(FunctionNameStart, FunctionNameEnd - FunctionNameStart);
 #endif
+			
+			Output->push_back(Frame);
 		}
 
 		return true;
