@@ -44,6 +44,12 @@ namespace Red
 
 			size_t ModuleNameEnd = FrameString.find('(');
 			Frame.Module = FrameString.substr(0, ModuleNameEnd);
+			
+			// Isolate the Module Name in the Case of "./<ModuleName>"
+			if (Frame.Module[0] == '.' && Frame.Module[1] == '/')
+			{
+				Frame.Module = Frame.Module.substr(2);
+			}
 
 			size_t FunctionNameStart = FrameString.find('(') + 1;
 			size_t FunctionNameEnd = FrameString.find("+0x") - 1;
