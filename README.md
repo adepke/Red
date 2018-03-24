@@ -36,3 +36,5 @@ Changes whether or not code coverage data should be included in the build.
 
 ## Contributing
 This is an open source project that is open to any public submissions that fall within the loosely held style guide of the project. Until an official guide is written, potential contributors can look over the code provided and do their best to get a sense of the structure and style. As for work environments, Microsoft Visual Studio is the native development suite for work on the library and will always be supported. It is unknown whether or not other IDEs will be natively supported in the future.
+#### Note
+When contributing, make sure to submit your line endings as LF. This can be done in Windows by setting your configuration variable `core.autocrlf` to `auto`. For non-DOS systems that natively use LF line endings, set it to input.
