@@ -9,6 +9,7 @@ namespace Red
 {
 	struct ProcessModule
 	{
+		std::string BaseAddress;
 		std::string Name;
 	};
 }  // namespace Red

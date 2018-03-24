@@ -23,15 +23,28 @@ namespace Red
 		{
 			for (int Iter = 0; Iter < (BytesNeeded / sizeof(HMODULE)); ++Iter)
 			{
+				ProcessModule Module;
+
 				char ModuleName[MAX_PATH];
 
 				if (GetModuleFileNameA(Modules[Iter], ModuleName, sizeof(ModuleName)))
 				{
-					ProcessModule Module;
 					Module.Name = ModuleName;
-
-					Output->push_back(Module);
 				}
+
+				MODULEINFO Info;
+
+				if (GetModuleInformation(GetCurrentProcess(), Modules[Iter], &Info, sizeof(Info)))
+				{
+					DWORD64* AddressDWORD64 = static_cast<DWORD64*>(Info.lpBaseOfDll);
+
+					char AddressBuffer[64];
+					snprintf(AddressBuffer, sizeof(AddressBuffer), "0x%016llX", static_cast<unsigned long long>(*AddressDWORD64));
+
+					Module.BaseAddress = AddressBuffer;
+				}
+
+				Output->push_back(Module);
 			}
 		}
 		
