@@ -11,5 +11,6 @@ namespace Red
 	{
 		std::string BaseAddress;
 		std::string Name;
+		long long int FileSize;  // In Bytes
 	};
 }  // namespace Red

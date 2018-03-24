@@ -44,6 +44,17 @@ namespace Red
 					Module.BaseAddress = AddressBuffer;
 				}
 
+				WIN32_FILE_ATTRIBUTE_DATA FileInfo;
+
+				if (GetFileAttributesExA(ModuleName, GetFileExInfoStandard, &FileInfo))
+				{
+					LARGE_INTEGER FileSizeBytes;
+					FileSizeBytes.HighPart = FileInfo.nFileSizeHigh;
+					FileSizeBytes.LowPart = FileInfo.nFileSizeLow;
+					
+					Module.FileSize = FileSizeBytes.QuadPart;
+				}
+
 				Output->push_back(Module);
 			}
 		}
