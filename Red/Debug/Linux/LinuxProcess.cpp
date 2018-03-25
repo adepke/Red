@@ -4,13 +4,26 @@
 #include "LinuxProcess.h"
 
 #include <link.h>
+#include <sys/stat.h>
 
 namespace Red
 {
 	int ProcessModuleCallback(dl_phdr_info* Info, size_t Size, void* Data)
 	{
 		ProcessModule Module;
+
+		char[64] AddressBuffer;
+		snprintf(AddressBuffer, sizeof(AddressBuffer), "0x%016llX", static_cast<unsigned long long>(Info->dlpi_addr));
+
+		Module.BaseAddress = AddressBuffer;
 		Module.Name = Info->dlpi_name;
+
+		stat FileInfo;
+
+		if (stat(Info->dlpi_name, &FileInfo) != -1)
+		{
+			Module.FileSize = FileInfo.st_size;
+		}
 
 		reinterpret_cast<std::vector<ProcessModule>*>(Data)->push_back(Module);
 		
