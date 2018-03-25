@@ -21,7 +21,7 @@ namespace Red
 
 		if (EnumProcessModules(Process, Modules, sizeof(Modules), &BytesNeeded))
 		{
-			for (int Iter = 0; Iter < (BytesNeeded / sizeof(HMODULE)); ++Iter)
+			for (unsigned int Iter = 0; Iter < (BytesNeeded / sizeof(HMODULE)); ++Iter)
 			{
 				ProcessModule Module;
 
