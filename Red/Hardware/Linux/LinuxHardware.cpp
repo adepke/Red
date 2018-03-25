@@ -136,15 +136,16 @@ namespace Red
 
 	unsigned long int LinuxSystemHardware::GetDiskSpaceAvailable()
 	{
-		char Directory[1024];
+		char Directory[PATH_MAX];
 
-		getcwd(Directory, sizeof(Directory));
-
-		struct statfs FileSystemStats = { 0 };
-
-		if (statfs(Directory, &FileSystemStats) == 0)
+		if (getcwd(Directory, sizeof(Directory)))
 		{
-			return (FileSystemStats.f_bavail * FileSystemStats.f_bsize / 1024);
+			struct statfs FileSystemStats = { 0 };
+
+			if (statfs(Directory, &FileSystemStats) == 0)
+			{
+				return (FileSystemStats.f_bavail * FileSystemStats.f_bsize / 1024);
+			}
 		}
 
 		return 0;
