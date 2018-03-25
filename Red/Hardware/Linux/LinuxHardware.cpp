@@ -3,6 +3,8 @@
 */
 #include "LinuxHardware.h"
 
+#include "../../Core/Platform.h"
+
 #include <cstring>  // std::memcpy()
 #include <unistd.h>
 #include <cpuid.h>
@@ -13,7 +15,15 @@ namespace Red
 {
 	std::string LinuxSystemHardware::GetOSName()
 	{
+#if OS_LINUX
 		return "Linux";
+#elif OS_ANDROID
+		return "Android";
+#elif OS_BSD
+		return "BSD";
+#else
+		return "Unknown";
+#endif
 	}
 
 	uint8_t LinuxSystemHardware::GetArchitecture()
