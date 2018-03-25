@@ -18,7 +18,7 @@ namespace Red
 		Module.BaseAddress = AddressBuffer;
 		Module.Name = Info->dlpi_name;
 
-		stat FileInfo;
+		struct stat FileInfo;
 
 		if (stat(Info->dlpi_name, &FileInfo) != -1)
 		{
