@@ -58,6 +58,9 @@
     <Filter Include="Debug\Darwin">
       <UniqueIdentifier>{6c1639fc-5297-4b55-aafa-e916ebb28b1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Hardware\Darwin">
+      <UniqueIdentifier>{a6a7445c-f253-4b11-8e78-5a9a47cca1dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithm\Algorithm.h">
@@ -222,6 +225,9 @@
     <ClInclude Include="Debug\Darwin\DarwinProcess.h">
       <Filter>Debug\Darwin</Filter>
     </ClInclude>
+    <ClInclude Include="Hardware\Darwin\DarwinHardware.h">
+      <Filter>Hardware\Darwin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\BSD\BSDSocket.cpp">
@@ -259,6 +265,9 @@
     </ClCompile>
     <ClCompile Include="Debug\Darwin\DarwinProcess.cpp">
       <Filter>Debug\Darwin</Filter>
+    </ClCompile>
+    <ClCompile Include="Hardware\Darwin\DarwinHardware.cpp">
+      <Filter>Hardware\Darwin</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -161,6 +161,9 @@
     <ClInclude Include="Debug\Windows\WindowsProcess.h" />
     <ClInclude Include="Debug\Windows\WindowsStackTrace.h" />
     <ClInclude Include="Function\Function.h" />
+    <ClInclude Include="Hardware\Darwin\DarwinHardware.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Hardware\Hardware.h" />
     <ClInclude Include="Hardware\Linux\LinuxHardware.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -231,6 +234,9 @@
     </ClCompile>
     <ClCompile Include="Debug\Windows\WindowsProcess.cpp" />
     <ClCompile Include="Debug\Windows\WindowsStackTrace.cpp" />
+    <ClCompile Include="Hardware\Darwin\DarwinHardware.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Hardware\Linux\LinuxHardware.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
