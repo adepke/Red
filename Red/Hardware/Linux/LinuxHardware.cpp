@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <cpuid.h>
 #include <thread>
+#include <sys/vfs.h>
 
 namespace Red
 {
@@ -104,5 +105,33 @@ namespace Red
 	unsigned long int LinuxSystemHardware::GetPhysicalMemory()
 	{
 		return (sysconf(_SC_PHYS_PAGES) * sysconf(_SC_PAGE_SIZE));
+	}
+
+	unsigned long int LinuxSystemHardware::GetDiskSpace()
+	{
+		char Directory[1024];
+
+		getcwd(Directory, sizeof(Directory));
+
+		statfs FileSystemStats = { 0 };
+
+		if (statfs(Directory, &FileSystemStats) == 0)
+		{
+			return (FileSystemStats.f_blocks * FileSystemStats.f_bsize / 1024);
+		}
+
+		return 0;
+	}
+
+	unsigned long int LinuxSystemHardware::GetDiskSpaceAvailable()
+	{
+		statfs FileSystemStats = { 0 };
+
+		if (statfs(FILEPATH, &FileSystemStats) == 0)
+		{
+			return (FileSystemStats.f_bavail * FileSystemStats.f_bsize / 1024);
+		}
+
+		return 0;
 	}
 }  // namespace Red

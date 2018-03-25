@@ -17,6 +17,10 @@ namespace Red
 		static unsigned int GetCPUCoreCount();
 		// Returns Physical Memory Size in Megabytes
 		static unsigned long int GetPhysicalMemory();
+		// Returns Disk Space of the Disk Where the Executable is Housed in Megabytes
+		static unsigned long int GetDiskSpace();
+		// Returns Usable Disk Space of the Disk Where the Executable is Housed in Megabytes
+		static unsigned long int GetDiskSpaceAvailable();
 	};
 
 	struct LinuxExternalHardware
