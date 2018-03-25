@@ -12,7 +12,7 @@ namespace Red
 	{
 		ProcessModule Module;
 
-		char[64] AddressBuffer;
+		char AddressBuffer[64];
 		snprintf(AddressBuffer, sizeof(AddressBuffer), "0x%016llX", static_cast<unsigned long long>(Info->dlpi_addr));
 
 		Module.BaseAddress = AddressBuffer;
