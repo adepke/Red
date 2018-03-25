@@ -119,7 +119,7 @@ namespace Red
 
 	unsigned long int LinuxSystemHardware::GetDiskSpace()
 	{
-		char Directory[PATH_MAX];
+		char Directory[1024];
 
 		if (getcwd(Directory, sizeof(Directory)))
 		{
@@ -136,7 +136,7 @@ namespace Red
 
 	unsigned long int LinuxSystemHardware::GetDiskSpaceAvailable()
 	{
-		char Directory[PATH_MAX];
+		char Directory[1024];
 
 		if (getcwd(Directory, sizeof(Directory)))
 		{
