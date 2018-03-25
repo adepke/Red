@@ -56,7 +56,6 @@ elseif(APPLE)
 		"${CMAKE_CURRENT_SOURCE_DIR}/Red/*/BSD/*.*"
 		"${CMAKE_CURRENT_SOURCE_DIR}/Red/*/POSIX/*.*"
 		# Some Linux Sources Are Compatible, Include These
-		"${CMAKE_CURRENT_SOURCE_DIR}/Red/Hardware/Linux/*.*"
 		"${CMAKE_CURRENT_SOURCE_DIR}/Red/Debug/Linux/LinuxStackTrace.*"
 	)
 else(UNIX)
