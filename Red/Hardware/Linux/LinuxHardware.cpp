@@ -113,7 +113,7 @@ namespace Red
 
 		getcwd(Directory, sizeof(Directory));
 
-		statfs FileSystemStats = { 0 };
+		struct statfs FileSystemStats = { 0 };
 
 		if (statfs(Directory, &FileSystemStats) == 0)
 		{
@@ -125,9 +125,13 @@ namespace Red
 
 	unsigned long int LinuxSystemHardware::GetDiskSpaceAvailable()
 	{
-		statfs FileSystemStats = { 0 };
+		char Directory[1024];
 
-		if (statfs(FILEPATH, &FileSystemStats) == 0)
+		getcwd(Directory, sizeof(Directory));
+
+		struct statfs FileSystemStats = { 0 };
+
+		if (statfs(Directory, &FileSystemStats) == 0)
 		{
 			return (FileSystemStats.f_bavail * FileSystemStats.f_bsize / 1024);
 		}
