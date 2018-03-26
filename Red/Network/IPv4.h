@@ -5,8 +5,11 @@
 
 #include "../Core/Platform.h"
 
-#include <vector>
-#include <sstream>
+#if OS_WINDOWS
+	#include <Ws2tcpip.h>  // inet_pton()
+#else
+	#include <arpa/inet.h>  // inet_pton()
+#endif
 
 namespace Red
 {
@@ -49,26 +52,16 @@ namespace Red
 
 		IP4Address(const char* InAddress)
 		{
-			std::stringstream AddressStream(InAddress);
-			std::string Component;
-			std::vector<unsigned char> ComponentList;
+			unsigned int NetworkAddress;
 
-			while (std::getline(AddressStream, Component, '.'))
+			if (inet_pton(AF_INET, InAddress, &NetworkAddress) == 1)
 			{
-				ComponentList.push_back((unsigned char)std::atoi(Component.c_str()));
-			}
-
-			if (ComponentList.size() > 4)
-			{
-				Address = 0;
+				Address = ntohl(NetworkAddress);
 			}
 
 			else
 			{
-				A = ComponentList[0];
-				B = ComponentList[1];
-				C = ComponentList[2];
-				D = ComponentList[3];
+				Address = 0;
 			}
 		}
 

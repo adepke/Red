@@ -192,6 +192,7 @@
     <ClInclude Include="Network\BSD\BSDSocket.h" />
     <ClInclude Include="Network\BSD\BSDSocketSubsystem.h" />
     <ClInclude Include="Network\IPv4.h" />
+    <ClInclude Include="Network\IPv6.h" />
     <ClInclude Include="Network\Network.h" />
     <ClInclude Include="Network\Socket.h" />
     <ClInclude Include="Network\SocketBase.h" />
