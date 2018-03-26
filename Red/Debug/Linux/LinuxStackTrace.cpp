@@ -7,6 +7,7 @@
 
 #include <cxxabi.h>
 #include <execinfo.h>
+#include <dlfcn.h>
 
 #include <stdlib.h>  // Darwin Doesn't Have free() By Default, Include it Here
 
@@ -42,26 +43,28 @@ namespace Red
 
 			Frame.Address = FrameAddressBuffer;
 
+			// Note: Module Name Can Also Be Obtained From dladdr()
 			size_t ModuleNameEnd = FrameString.find('(');
 			Frame.Module = FrameString.substr(0, ModuleNameEnd);
 			
 			// Isolate the Module Name in the Case of "./<ModuleName>"
-			if (Frame.Module[0] == '.' && Frame.Module[1] == '/')
+			if (sizeof(Frame.Module) / sizeof(Frame.Module[0]) > 2)
 			{
-				Frame.Module = Frame.Module.substr(2);
+				if (Frame.Module[0] == '.' && Frame.Module[1] == '/')
+				{
+					Frame.Module = Frame.Module.substr(2);
+				}
 			}
 
-			size_t FunctionNameStart = FrameString.find('(') + 1;
-			size_t FunctionNameEnd = FrameString.find("+0x");
+			Dl_info Info;
 
-			// Don't Try to Demangle if There's No Function Signature. Note: std::string::npos Wasn't Working on Ubuntu Linux With gcc
-			if (FunctionNameEnd < 1024)
+			if (dladdr(RawStackTrace[Iter], &Info) && Info.dli_sname)
 			{
-				int OperationStatus = 0;
+				int OperationStatus;
 
-				char* DemangledName = abi::__cxa_demangle(FrameString.substr(FunctionNameStart, FunctionNameEnd - FunctionNameStart).c_str(), nullptr, nullptr, &OperationStatus);
-			
-				if (OperationStatus == 0)
+				char* DemangledName = abi::__cxa_demangle(Info.dli_sname, nullptr, 0, &OperationStatus);
+
+				if (OperationStatus == 0 && DemangledName)
 				{
 					Frame.Function = DemangledName;
 
@@ -70,16 +73,16 @@ namespace Red
 
 				else
 				{
-					Frame.Function = FrameString.substr(FunctionNameStart, FunctionNameEnd - FunctionNameStart);
+					Frame.Function == Info.dli_sname;
 				}
 			}
 			
-			else
-			{
-				Frame.Function = "";
-			}
-			
 			Output->push_back(Frame);
+		}
+
+		if (StackTrace)
+		{
+			free(StackTrace);
 		}
 
 		return true;
