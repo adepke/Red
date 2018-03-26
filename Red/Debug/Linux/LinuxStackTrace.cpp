@@ -7,6 +7,7 @@
 
 #include <cxxabi.h>
 #include <execinfo.h>
+#include <dlfcn.h>
 
 #include <stdlib.h>  // Darwin Doesn't Have free() By Default, Include it Here
 
@@ -80,6 +81,11 @@ namespace Red
 			}
 			
 			Output->push_back(Frame);
+		}
+
+		if (StackTrace)
+		{
+			free(StackTrace);
 		}
 
 		return true;
