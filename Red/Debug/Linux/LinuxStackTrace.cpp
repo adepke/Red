@@ -43,6 +43,7 @@ namespace Red
 
 			Frame.Address = FrameAddressBuffer;
 
+			// Note: Module Name Can Also Be Obtained From dladdr()
 			size_t ModuleNameEnd = FrameString.find('(');
 			Frame.Module = FrameString.substr(0, ModuleNameEnd);
 			
@@ -55,17 +56,15 @@ namespace Red
 				}
 			}
 
-			size_t FunctionNameStart = FrameString.find('(') + 1;
-			size_t FunctionNameEnd = FrameString.find("+0x");
+			Dl_info Info;
 
-			// Don't Try to Demangle if There's No Function Signature. Note: std::string::npos Wasn't Working on Ubuntu Linux With gcc
-			if (FunctionNameEnd < 1024)
+			if (dladdr(RawStackTrace[Iter], &Info) && Info.dli_sname)
 			{
-				int OperationStatus = 0;
+				int OperationStatus;
 
-				char* DemangledName = abi::__cxa_demangle(FrameString.substr(FunctionNameStart, FunctionNameEnd - FunctionNameStart).c_str(), nullptr, nullptr, &OperationStatus);
-			
-				if (OperationStatus == 0)
+				char* DemangledName = abi::__cxa_demangle(Info.dli_sname, nullptr, 0, &OperationStatus);
+
+				if (OperationStatus == 0 && DemangledName)
 				{
 					Frame.Function = DemangledName;
 
@@ -74,13 +73,8 @@ namespace Red
 
 				else
 				{
-					Frame.Function = FrameString.substr(FunctionNameStart, FunctionNameEnd - FunctionNameStart);
+					Frame.Function == Info.dli_sname;
 				}
-			}
-			
-			else
-			{
-				Frame.Function = "";
 			}
 			
 			Output->push_back(Frame);
