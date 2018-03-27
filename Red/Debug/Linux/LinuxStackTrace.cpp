@@ -73,7 +73,7 @@ namespace Red
 
 				else
 				{
-					Frame.Function == Info.dli_sname;
+					Frame.Function = Info.dli_sname;
 				}
 			}
 			
