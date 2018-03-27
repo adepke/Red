@@ -86,8 +86,8 @@ TEST(MathCoreSuite, ModulusGeneral)
 {
 	EXPECT_EQ(-5, Modulus(-5, 9));
 	EXPECT_FLOAT_EQ(1.8f, Modulus(9.0f, 2.4f));
-	EXPECT_FLOAT_EQ(0.1, Modulus(5.20, 1.02));
-	EXPECT_FLOAT_EQ((long double)170.84, Modulus((long double)597695.0, (long double)214.32));
+	EXPECT_EQ(0.1, Modulus(5.20, 1.02));
+	EXPECT_EQ((long double)170.84, Modulus((long double)597695.0, (long double)214.32));
 }
 
 TEST(MathCoreSuite, ModulusSpecialCases)
