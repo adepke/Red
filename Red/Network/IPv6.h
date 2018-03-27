@@ -59,6 +59,7 @@ namespace Red
 		}
 
 	public:
+		// @todo: Need a Better Way to Handle This
 		/*
 		bool IsLoopbackAddress() const
 		{
