@@ -100,6 +100,18 @@ namespace Red
 		{
 			return ((A >= 224) && (A <= 239));
 		}
+
+		virtual operator std::string() const override
+		{
+			char AddressString[64];
+
+			in_addr InAddress;
+			InAddress.S_un.S_addr = htonl(Address);
+
+			inet_ntop(AF_INET, &InAddress, AddressString, sizeof(AddressString));
+
+			return std::string(AddressString);
+		}
 	};
 
 	struct IP4EndPoint : public IPEndPoint
@@ -122,6 +134,22 @@ namespace Red
 		bool operator!=(const IP4EndPoint& Target) const
 		{
 			return (Address != Target.Address || Port != Target.Port);
+		}
+
+		virtual operator std::string() const override
+		{
+			char AddressString[64];
+
+			in_addr InAddress;
+			InAddress.S_un.S_addr = htonl(Address.Address);
+
+			inet_ntop(AF_INET, &InAddress, AddressString, sizeof(AddressString));
+
+			std::string AddressStringType(AddressString);
+
+			AddressStringType += ":" + Port;
+
+			return AddressStringType;
 		}
 	};
 }  // namespace Red

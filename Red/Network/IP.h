@@ -3,6 +3,8 @@
 */
 #pragma once
 
+#include <string>
+
 namespace Red
 {
 	struct IPAddress
@@ -23,9 +25,6 @@ namespace Red
 		virtual ~IPEndPoint() = 0;
 
 	public:
-		virtual bool operator==(const IPEndPoint& Target) const = 0;
-		virtual bool operator!=(const IPEndPoint& Target) const = 0;
-
 		virtual operator std::string() const = 0;
 	};
 }  // namespace Red

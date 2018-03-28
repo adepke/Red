@@ -64,7 +64,7 @@ namespace Red
 
 	public:
 		// Loopback: ::1
-		bool IsLoopbackAddress() const
+		virtual bool IsLoopbackAddress() const override
 		{
 			static const in6_addr LoopbackAddress = { { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } };
 
@@ -72,14 +72,25 @@ namespace Red
 		}
 
 		// @todo: Need a Better Way to Handle This
-		/*
-		bool IsMulticastAddress() const
+		virtual bool IsMulticastAddress() const override
 		{
+			/*
 			static in6_addr MulticastAddress = { { 0xff, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } };
 
 			return memcmp(Address.sin6_addr, MulticastAddress, sizeof(Address.sin6_addr)) == 0;
+			*/
+
+			return false;
 		}
-		*/
+
+		virtual operator std::string() const override
+		{
+			char AddressString[64];
+
+			inet_ntop(AF_INET6, &Address.sin6_addr, AddressString, sizeof(AddressString));
+
+			return std::string(AddressString);
+		}
 	};
 
 	struct IP6EndPoint : public IPEndPoint
@@ -102,6 +113,19 @@ namespace Red
 		bool operator!=(const IP6EndPoint& Target) const
 		{
 			return (Address != Target.Address || Port != Target.Port);
+		}
+
+		virtual operator std::string() const override
+		{
+			char AddressString[64];
+
+			inet_ntop(AF_INET6, &Address.Address.sin6_addr, AddressString, sizeof(AddressString));
+
+			std::string AddressStringType(AddressString);
+
+			AddressStringType += ":" + Port;
+
+			return AddressStringType;
 		}
 	};
 }  // namespace Red
