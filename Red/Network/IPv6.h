@@ -49,6 +49,8 @@ namespace Red
 			}
 		}
 
+		virtual ~IP6Address() {}
+
 	public:
 		bool operator==(const IP6Address& Target) const
 		{
@@ -89,6 +91,8 @@ namespace Red
 	public:
 		constexpr IP6EndPoint() noexcept : Port(0) {}
 		IP6EndPoint(const IP6Address& InAddress, unsigned short InPort) : Address(InAddress), Port(InPort) {}
+
+		virtual ~IP6EndPoint() {}
 
 		bool operator==(const IP6EndPoint& Target) const
 		{

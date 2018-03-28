@@ -7,11 +7,11 @@ namespace Red
 {
 	struct IPAddress
 	{
-
+		virtual ~IPAddress() = 0;
 	};
 
 	struct IPEndPoint
 	{
-
+		virtual ~IPEndPoint() = 0;
 	};
 }  // namespace Red

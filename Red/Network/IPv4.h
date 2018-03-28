@@ -67,6 +67,8 @@ namespace Red
 			}
 		}
 
+		virtual ~IP4Address() {}
+
 	public:
 		bool operator==(const IP4Address& Target) const
 		{
@@ -109,6 +111,8 @@ namespace Red
 	public:
 		constexpr IP4EndPoint() noexcept : Port(0) {}
 		IP4EndPoint(const IP4Address& InAddress, unsigned short InPort) : Address(InAddress), Port(InPort) {}
+
+		virtual ~IP4EndPoint() {}
 
 		bool operator==(const IP4EndPoint& Target) const
 		{
