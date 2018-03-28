@@ -5,6 +5,8 @@
 
 #include "../Core/Platform.h"
 
+#include "IP.h"
+
 #if OS_WINDOWS
 	#include <WS2tcpip.h>  // sockaddr_in6
 	#include <cstring>  // memset(), memcmp()
@@ -16,7 +18,7 @@
 namespace Red
 {
 	// Wrapper Around sockaddr_in6
-	struct IP6Address
+	struct IP6Address : public IPAddress
 	{
 	public:
 		sockaddr_in6 Address;
@@ -78,7 +80,7 @@ namespace Red
 		*/
 	};
 
-	struct IP6EndPoint
+	struct IP6EndPoint : public IPEndPoint
 	{
 	public:
 		IP6Address Address;

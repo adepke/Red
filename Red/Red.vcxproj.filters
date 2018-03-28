@@ -231,6 +231,9 @@
     <ClInclude Include="Network\IPv6.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="Network\IP.h">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\BSD\BSDSocket.cpp">

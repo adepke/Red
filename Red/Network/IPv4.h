@@ -5,6 +5,8 @@
 
 #include "../Core/Platform.h"
 
+#include "IP.h"
+
 #if OS_WINDOWS
 	#include <Ws2tcpip.h>  // inet_pton()
 #else
@@ -13,7 +15,7 @@
 
 namespace Red
 {
-	struct IP4Address
+	struct IP4Address : public IPAddress
 	{
 	public:
 		union
@@ -98,7 +100,7 @@ namespace Red
 		}
 	};
 
-	struct IP4EndPoint
+	struct IP4EndPoint : public IPEndPoint
 	{
 	public:
 		IP4Address Address;
