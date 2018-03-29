@@ -106,7 +106,7 @@ namespace Red
 			char AddressString[64];
 
 			in_addr InAddress;
-			InAddress.S_un.S_addr = htonl(Address);
+			InAddress.s_addr = htonl(Address);
 
 			inet_ntop(AF_INET, &InAddress, AddressString, sizeof(AddressString));
 
@@ -141,7 +141,7 @@ namespace Red
 			char AddressString[64];
 
 			in_addr InAddress;
-			InAddress.S_un.S_addr = htonl(Address.Address);
+			InAddress.s_addr = htonl(Address.Address);
 
 			inet_ntop(AF_INET, &InAddress, AddressString, sizeof(AddressString));
 
