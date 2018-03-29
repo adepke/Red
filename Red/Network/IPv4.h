@@ -82,7 +82,7 @@ namespace Red
 
 	public:
 		// Loopback: 127.X.X.X
-		bool IsLoopbackAddress() const
+		virtual bool IsLoopbackAddress() const override
 		{
 			return (A == 127);
 		}
@@ -96,7 +96,7 @@ namespace Red
 		}
 
 		// Multicast: 224-239.X.X.X
-		bool IsMulticastAddress() const
+		virtual bool IsMulticastAddress() const override
 		{
 			return ((A >= 224) && (A <= 239));
 		}
