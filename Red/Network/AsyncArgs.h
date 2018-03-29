@@ -4,27 +4,39 @@
 #pragma once
 
 #include "IPv4.h"
+#include "IPv6.h"
 
 #include <functional>
+#include <cstring>  // memcpy()
 
-// Fix for Atomic Alignment of IP4EndPoint Error.
-#define _ENABLE_ATOMIC_ALIGNMENT_FIX
-
-#include <atomic>
+#include "../Thread/CriticalSection.h"
 
 namespace Red
 {
 	class ISocket;
 	class BSDSocket;
 
+	// The "*Args" Classes Are RAII-Based Wrappers With Thread Protection for Managing Data Flow Between Async Operations
+
 	class AsyncConnectArgs
 	{
 	protected:
 		friend class BSDSocket;
 
+		CriticalSection Lock;
+
 		std::function<void(AsyncConnectArgs*)> CompletedCallback;
 
-		std::atomic<bool> Result;
+		bool Result;
+
+		void SetResult(bool Value)
+		{
+			Lock.Lock();
+
+			Result = Value;
+
+			Lock.Unlock();
+		}
 
 	public:
 		AsyncConnectArgs(std::function<void(AsyncConnectArgs*)> Callback) : CompletedCallback(Callback) { }
@@ -33,7 +45,13 @@ namespace Red
 
 		bool GetResult()
 		{
-			return Result.load();
+			Lock.Lock();
+
+			auto ResultImage = Result;
+
+			Lock.Unlock();
+
+			return ResultImage;
 		}
 	};
 
@@ -42,24 +60,83 @@ namespace Red
 	protected:
 		friend class BSDSocket;
 
+		CriticalSection Lock;
+
 		std::function<void(AsyncAcceptArgs*)> CompletedCallback;
 
-		std::atomic<ISocket*> Result;
-		std::atomic<IP4EndPoint> ClientAddress{ IP4EndPoint() };
+		ISocket* Result;
+		IPEndPoint* ClientAddress;  // Internally Managed Buffer
+
+		void SetResult(ISocket* Value)
+		{
+			Lock.Lock();
+
+			Result = Value;
+
+			Lock.Unlock();
+		}
+
+		void SetClientAddress(IP4EndPoint Value)
+		{
+			Lock.Lock();
+
+			if (!ClientAddress)
+			{
+				ClientAddress = new IP4EndPoint;
+			}
+
+			*ClientAddress = Value;
+
+			Lock.Unlock();
+		}
+
+		void SetClientAddress(IP6EndPoint Value)
+		{
+			Lock.Lock();
+
+			if (!ClientAddress)
+			{
+				ClientAddress = new IP6EndPoint;
+			}
+
+			*ClientAddress = Value;
+
+			Lock.Unlock();
+		}
 
 	public:
 		AsyncAcceptArgs(std::function<void(AsyncAcceptArgs*)> Callback) : CompletedCallback(Callback) { }
 
-		virtual ~AsyncAcceptArgs() {}
+		virtual ~AsyncAcceptArgs()
+		{
+			if (ClientAddress)
+			{
+				delete ClientAddress;
+
+				ClientAddress = nullptr;
+			}
+		}
 
 		ISocket* GetResult()
 		{
-			return Result.load();
+			Lock.Lock();
+
+			auto ResultImage = Result;
+
+			Lock.Unlock();
+
+			return ResultImage;
 		}
 
-		IP4EndPoint GetClientAddress()
+		IPEndPoint* GetClientAddress()
 		{
-			return ClientAddress.load();
+			Lock.Lock();
+
+			auto ClientAddressImage = ClientAddress;
+
+			Lock.Unlock();
+
+			return ClientAddressImage;
 		}
 	};
 
@@ -68,10 +145,30 @@ namespace Red
 	protected:
 		friend class BSDSocket;
 
+		CriticalSection Lock;
+
 		std::function<void(AsyncSendArgs*)> CompletedCallback;
 
-		std::atomic<bool> Result;
-		std::atomic<int> BytesSent;
+		bool Result;
+		int BytesSent;
+
+		void SetResult(bool Value)
+		{
+			Lock.Lock();
+
+			Result = Value;
+
+			Lock.Unlock();
+		}
+
+		void SetBytesSent(int Value)
+		{
+			Lock.Lock();
+
+			BytesSent = Value;
+
+			Lock.Unlock();
+		}
 
 	public:
 		AsyncSendArgs(std::function<void(AsyncSendArgs*)> Callback) : CompletedCallback(Callback) { }
@@ -80,12 +177,24 @@ namespace Red
 
 		bool GetResult()
 		{
-			return Result.load();
+			Lock.Lock();
+
+			auto ResultImage = Result;
+
+			Lock.Unlock();
+
+			return ResultImage;
 		}
 
 		bool GetBytesSent()
 		{
-			return BytesSent.load();
+			Lock.Lock();
+
+			auto BytesSentImage = BytesSent;
+
+			Lock.Unlock();
+
+			return BytesSentImage;
 		}
 	};
 
@@ -94,30 +203,90 @@ namespace Red
 	protected:
 		friend class BSDSocket;
 
+		CriticalSection Lock;
+
 		std::function<void(AsyncReceiveArgs*)> CompletedCallback;
 
-		std::atomic<bool> Result;
-		std::atomic<unsigned char*> Data;
-		std::atomic<int> BytesReceived;
+		bool Result;
+		unsigned char* Data;  // Internally Managed Buffer
+		int BytesReceived;
+
+		void SetResult(bool Value)
+		{
+			Lock.Lock();
+
+			Result = Value;
+
+			Lock.Unlock();
+		}
+
+		void SetData(unsigned char* Value, int Size)
+		{
+			Lock.Lock();
+
+			if (!Data)
+			{
+				Data = new unsigned char[Size];
+			}
+
+			std::memcpy(Data, Value, Size);
+
+			Lock.Unlock();
+		}
+
+		void SetBytesReceived(int Value)
+		{
+			Lock.Lock();
+
+			BytesReceived = Value;
+
+			Lock.Unlock();
+		}
 
 	public:
 		AsyncReceiveArgs(std::function<void(AsyncReceiveArgs*)> Callback) : CompletedCallback(Callback) { }
 
-		virtual ~AsyncReceiveArgs() {}
+		virtual ~AsyncReceiveArgs()
+		{
+			if (Data)
+			{
+				delete Data;
+
+				Data = nullptr;
+			}
+		}
 
 		bool GetResult()
 		{
-			return Result.load();
+			Lock.Lock();
+
+			auto ResultImage = Result;
+
+			Lock.Unlock();
+
+			return ResultImage;
 		}
 
 		unsigned char* GetData()
 		{
-			return Data.load();
+			Lock.Lock();
+
+			auto DataImage = Data;
+
+			Lock.Unlock();
+
+			return DataImage;
 		}
 
 		int GetBytesReceived()
 		{
-			return BytesReceived.load();
+			Lock.Lock();
+
+			auto BytesReceivedImage = BytesReceived;
+
+			Lock.Unlock();
+
+			return BytesReceivedImage;
 		}
 	};
 
@@ -126,36 +295,133 @@ namespace Red
 	protected:
 		friend class BSDSocket;
 
+		CriticalSection Lock;
+
 		std::function<void(AsyncReceiveFromArgs*)> CompletedCallback;
 
-		std::atomic<bool> Result;
-		std::atomic<unsigned char*> Data;
-		std::atomic<int> BytesReceived;
-		std::atomic<IP4Address> Source{ IP4Address() };
+		bool Result;
+		unsigned char* Data;  // Internally Managed Buffer
+		int BytesReceived;
+		IPAddress* Source;  // Internally Managed Buffer
+
+		void SetResult(bool Value)
+		{
+			Lock.Lock();
+
+			Lock.Unlock();
+		}
+
+		void SetData(unsigned char* Value, int Size)
+		{
+			Lock.Lock();
+
+			if (!Data)
+			{
+				Data = new unsigned char[Size];
+			}
+
+			std::memcpy(Data, Value, Size);
+
+			Lock.Unlock();
+		}
+
+		void SetBytesReceived(int Value)
+		{
+			Lock.Lock();
+
+			Lock.Unlock();
+		}
+
+		void SetSource(IP4Address Value)
+		{
+			Lock.Lock();
+
+			if (!Source)
+			{
+				Source = new IP4Address;
+			}
+
+			*Source = Value;
+
+			Lock.Unlock();
+		}
+
+		void SetSource(IP6Address Value)
+		{
+			Lock.Lock();
+
+			if (!Source)
+			{
+				Source = new IP6Address;
+			}
+
+			*Source = Value;
+
+			Lock.Unlock();
+		}
 
 	public:
 		AsyncReceiveFromArgs(std::function<void(AsyncReceiveFromArgs*)> Callback) : CompletedCallback(Callback) { }
 
-		virtual ~AsyncReceiveFromArgs() {}
+		virtual ~AsyncReceiveFromArgs()
+		{
+			if (Data)
+			{
+				delete Data;
+
+				Data = nullptr;
+			}
+
+			if (Source)
+			{
+				delete Source;
+
+				Source = nullptr;
+			}
+		}
 
 		bool GetResult()
 		{
-			return Result.load();
+			Lock.Lock();
+
+			auto ResultImage = Result;
+
+			Lock.Unlock();
+
+			return ResultImage;
 		}
 
 		unsigned char* GetData()
 		{
-			return Data.load();
+			Lock.Lock();
+
+			auto DataImage = Data;
+
+			Lock.Unlock();
+
+			return DataImage;
 		}
 
 		int GetBytesReceived()
 		{
-			return BytesReceived.load();
+			Lock.Lock();
+
+			auto BytesReceivedImage = BytesReceived;
+
+			Lock.Unlock();
+
+			return BytesReceivedImage;
 		}
 
-		IP4Address GetSource()
+		IPAddress* GetSource()
 		{
-			return Source.load();
+			Lock.Lock();
+
+			auto SourceImage = Source;
+
+			Lock.Unlock();
+
+			return SourceImage;
 		}
 	};
 }  // namespace Red
