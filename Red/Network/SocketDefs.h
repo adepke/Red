@@ -5,6 +5,12 @@
 
 namespace Red
 {
+	enum SocketVersion
+	{
+		SV_IPv4,
+		SV_IPv6,
+	};
+
 	enum SocketType
 	{
 		ST_Unknown,
@@ -24,6 +30,7 @@ namespace Red
 	struct SocketDescription
 	{
 	public:
+		SocketVersion Version = SV_IPv4;
 		SocketType Type = ST_Unknown;
 		SocketProtocol Protocol = SP_Unknown;
 		bool ReuseAddress = true;
