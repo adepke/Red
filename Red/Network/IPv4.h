@@ -35,7 +35,7 @@ namespace Red
 		};
 
 	public:
-		constexpr IP4Address() noexcept : Address(0) {}
+		IP4Address() : Address(0) {}
 		IP4Address(unsigned char InA, unsigned char InB, unsigned char InC, unsigned char InD) :
 #if PLATFORM_BIGENDIAN
 			A(InA),
@@ -121,7 +121,7 @@ namespace Red
 		unsigned short Port;
 
 	public:
-		constexpr IP4EndPoint() noexcept : Port(0) {}
+		IP4EndPoint() : Port(0) {}
 		IP4EndPoint(const IP4Address& InAddress, unsigned short InPort) : Address(InAddress), Port(InPort) {}
 
 		virtual ~IP4EndPoint() {}

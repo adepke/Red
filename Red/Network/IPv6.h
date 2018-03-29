@@ -24,7 +24,7 @@ namespace Red
 		sockaddr_in6 Address;
 
 	public:
-		constexpr IP6Address() noexcept : Address()
+		IP6Address()
 		{
 #if OS_WINDOWS
 			std::memset(&Address, 0, sizeof(Address));
@@ -100,7 +100,7 @@ namespace Red
 		unsigned short Port;
 
 	public:
-		constexpr IP6EndPoint() noexcept : Port(0) {}
+		IP6EndPoint() : Port(0) {}
 		IP6EndPoint(const IP6Address& InAddress, unsigned short InPort) : Address(InAddress), Port(InPort) {}
 
 		virtual ~IP6EndPoint() {}
