@@ -123,7 +123,7 @@ namespace Red
 
 			std::string AddressStringType(AddressString);
 
-			AddressStringType += ":" + Port;
+			AddressStringType += ":" + std::to_string(Port);
 
 			return AddressStringType;
 		}
