@@ -261,7 +261,7 @@ namespace Red
 		{
 			if (Data)
 			{
-				delete Data;
+				delete[] Data;
 
 				Data = nullptr;
 			}
@@ -382,7 +382,7 @@ namespace Red
 		{
 			if (Data)
 			{
-				delete Data;
+				delete[] Data;
 
 				Data = nullptr;
 			}
