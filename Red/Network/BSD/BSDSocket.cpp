@@ -122,7 +122,7 @@ namespace Red
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
-			Args->Result.store(Connect(EndPoint));
+			Args->SetResult(Connect(EndPoint));
 			Args->CompletedCallback(Args);
 		}), this);
 
