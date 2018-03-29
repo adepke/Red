@@ -3,11 +3,18 @@
 */
 #pragma once
 
+#include "../Core/Platform.h"
+
 #include "IPv4.h"
 #include "IPv6.h"
 
 #include <functional>
-#include <cstring>  // memcpy()
+
+#if OS_WINDOWS
+	#include <cstring>  // memcpy()
+#else
+	#include <string.h>
+#endif
 
 #include "../Thread/CriticalSection.h"
 
@@ -229,7 +236,11 @@ namespace Red
 				Data = new unsigned char[Size];
 			}
 
+#if OS_WINDOWS
 			std::memcpy(Data, Value, Size);
+#else
+			memcpy(Data, Value, Size);
+#endif
 
 			Lock.Unlock();
 		}
@@ -320,7 +331,11 @@ namespace Red
 				Data = new unsigned char[Size];
 			}
 
+#if OS_WINDOWS
 			std::memcpy(Data, Value, Size);
+#else
+			memcpy(Data, Value, Size);
+#endif
 
 			Lock.Unlock();
 		}
