@@ -54,7 +54,7 @@ namespace Red
 	public:
 		bool operator==(const IP6Address& Target) const
 		{
-			return memcmp((void*)&Address, (void*)&Target.Address, sizeof(Address)) == 0;
+			return (memcmp((void*)&Address, (void*)&Target.Address, sizeof(Address)) == 0);
 		}
 
 		bool operator!=(const IP6Address& Target) const
@@ -68,7 +68,7 @@ namespace Red
 		{
 			static const in6_addr LoopbackAddress{ { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } };
 
-			return memcmp((void*)&Address.sin6_addr, (void*)&LoopbackAddress, sizeof(Address.sin6_addr)) == 0;
+			return (memcmp((void*)&Address.sin6_addr, (void*)&LoopbackAddress, sizeof(Address.sin6_addr)) == 0);
 		}
 
 		// @todo: Need a Better Way to Handle This
