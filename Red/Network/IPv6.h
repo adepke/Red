@@ -54,7 +54,7 @@ namespace Red
 	public:
 		bool operator==(const IP6Address& Target) const
 		{
-			return memcmp(Address, Target.Address, sizeof(Address)) == 0;
+			return memcmp((void*)&Address, (void*)&Target.Address, sizeof(Address)) == 0;
 		}
 
 		bool operator!=(const IP6Address& Target) const
@@ -66,7 +66,7 @@ namespace Red
 		// Loopback: ::1
 		virtual bool IsLoopbackAddress() const override
 		{
-			static const in6_addr LoopbackAddress = { { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } };
+			static const in6_addr LoopbackAddress{ { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } };
 
 			return memcmp(Address.sin6_addr, LoopbackAddress, sizeof(Address.sin6_addr)) == 0;
 		}
