@@ -38,6 +38,7 @@ message(STATUS "System Processor: ${CMAKE_SYSTEM_PROCESSOR}")
 # Grab All Base Source Files. Don't Recursively Search
 file(GLOB ${PROJECT_NAME}_SOURCE_BASE
 	"${CMAKE_CURRENT_SOURCE_DIR}/Red/*/*.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Red/*/*.cpp"
 )
 
 # Declare Platform-Specific Source File Variable
