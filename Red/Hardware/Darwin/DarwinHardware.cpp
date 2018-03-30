@@ -137,46 +137,4 @@ namespace Red
 
 		return PhysicalMemory;
 	}
-
-	unsigned long int DarwinSystemHardware::GetDiskSpace()
-	{
-		static unsigned long int DiskSpace = NULL;
-		if (DiskSpace == 0)
-		{
-			char Directory[1024];
-
-			if (getcwd(Directory, sizeof(Directory)))
-			{
-				struct statfs FileSystemStats = { 0 };
-
-				if (statfs(Directory, &FileSystemStats) == 0)
-				{
-					DiskSpace = (FileSystemStats.f_blocks * FileSystemStats.f_bsize / 1024);
-				}
-			}
-		}
-
-		return DiskSpace;
-	}
-
-	unsigned long int DarwinSystemHardware::GetDiskSpaceAvailable()
-	{
-		static unsigned long int DiskSpaceAvailable = NULL;
-		if (DiskSpaceAvailable == 0)
-		{
-			char Directory[1024];
-
-			if (getcwd(Directory, sizeof(Directory)))
-			{
-				struct statfs FileSystemStats = { 0 };
-
-				if (statfs(Directory, &FileSystemStats) == 0)
-				{
-					DiskSpaceAvailable = (FileSystemStats.f_bavail * FileSystemStats.f_bsize / 1024);
-				}
-			}
-		}
-
-		return DiskSpaceAvailable;
-	}
 }  // namespace Red
