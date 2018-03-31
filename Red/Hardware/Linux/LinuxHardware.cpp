@@ -9,7 +9,6 @@
 #include <unistd.h>
 #include <cpuid.h>
 #include <thread>
-#include <sys/vfs.h>
 #include <sys/statvfs.h>  // POSIX Compliant Filesystem Stats
 
 namespace Red
