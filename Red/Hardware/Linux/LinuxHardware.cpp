@@ -10,6 +10,7 @@
 #include <cpuid.h>
 #include <thread>
 #include <sys/vfs.h>
+#include <sys/statvfs.h>  // POSIX Compliant Filesystem Stats
 
 namespace Red
 {
@@ -150,9 +151,9 @@ namespace Red
 
 			if (getcwd(Directory, sizeof(Directory)))
 			{
-				struct statfs FileSystemStats = { 0 };
+				struct statvfs FileSystemStats = { 0 };
 
-				if (statfs(Directory, &FileSystemStats) == 0)
+				if (statvfs(Directory, &FileSystemStats) == 0)
 				{
 					DiskSpace = (FileSystemStats.f_blocks * FileSystemStats.f_bsize / 1024);
 				}
@@ -171,9 +172,9 @@ namespace Red
 
 			if (getcwd(Directory, sizeof(Directory)))
 			{
-				struct statfs FileSystemStats = { 0 };
+				struct statvfs FileSystemStats = { 0 };
 
-				if (statfs(Directory, &FileSystemStats) == 0)
+				if (statvfs(Directory, &FileSystemStats) == 0)
 				{
 					DiskSpaceAvailable = (FileSystemStats.f_bavail * FileSystemStats.f_bsize / 1024);
 				}
