@@ -121,7 +121,7 @@ namespace Red
 
 	unsigned int LinuxSystemHardware::GetCPUCoreCount()
 	{
-		static unsigned int CPUCoreCount = NULL;
+		static unsigned int CPUCoreCount = 0;
 		if (CPUCoreCount == 0)
 		{
 			CPUCoreCount = std::thread::hardware_concurrency();
@@ -132,7 +132,7 @@ namespace Red
 
 	unsigned long int LinuxSystemHardware::GetPhysicalMemory()
 	{
-		static unsigned long int PhysicalMemory = NULL;
+		static unsigned long int PhysicalMemory = 0;
 		if (PhysicalMemory == 0)
 		{
 			PhysicalMemory = (sysconf(_SC_PHYS_PAGES) * sysconf(_SC_PAGE_SIZE));
@@ -143,7 +143,7 @@ namespace Red
 
 	unsigned long int LinuxSystemHardware::GetDiskSpace()
 	{
-		static unsigned long int DiskSpace = NULL;
+		static unsigned long int DiskSpace = 0;
 		if (DiskSpace == 0)
 		{
 			char Directory[1024];
@@ -164,7 +164,7 @@ namespace Red
 
 	unsigned long int LinuxSystemHardware::GetDiskSpaceAvailable()
 	{
-		static unsigned long int DiskSpaceAvailable = NULL;
+		static unsigned long int DiskSpaceAvailable = 0;
 		if (DiskSpaceAvailable == 0)
 		{
 			char Directory[1024];

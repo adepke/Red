@@ -83,7 +83,7 @@ namespace Red
 
 	uint16_t WindowsSystemHardware::GetCPUModel()
 	{
-		static uint16_t CPUModel = NULL;
+		static uint16_t CPUModel = 0;
 		if (CPUModel == 0)
 		{
 			SYSTEM_INFO SystemInfo;
@@ -97,7 +97,7 @@ namespace Red
 
 	unsigned int WindowsSystemHardware::GetCPUCoreCount()
 	{
-		static unsigned int CPUCoreCount = NULL;
+		static unsigned int CPUCoreCount = 0;
 		if (CPUCoreCount == 0)
 		{
 			CPUCoreCount = std::thread::hardware_concurrency();
@@ -108,7 +108,7 @@ namespace Red
 
 	int WindowsSystemHardware::GetCPUClockSpeed()
 	{
-		static int CPUClockSpeed = NULL;
+		static int CPUClockSpeed = 0;
 		if (CPUClockSpeed == 0)
 		{
 			int Value;
@@ -132,7 +132,7 @@ namespace Red
 
 	unsigned long int WindowsSystemHardware::GetPhysicalMemory()
 	{
-		static unsigned long int PhysicalMemory = NULL;
+		static unsigned long int PhysicalMemory = 0;
 		if (PhysicalMemory == 0)
 		{
 			MEMORYSTATUSEX Status;
@@ -147,7 +147,7 @@ namespace Red
 
 	unsigned long int WindowsSystemHardware::GetVirtualMemory()
 	{
-		static unsigned long int VirtualMemory = NULL;
+		static unsigned long int VirtualMemory = 0;
 		if (VirtualMemory == 0)
 		{
 			MEMORYSTATUSEX Status;
@@ -162,7 +162,7 @@ namespace Red
 
 	unsigned long int WindowsSystemHardware::GetPhysicalMemoryAvailable()
 	{
-		static unsigned long int PhysicalMemoryAvailable = NULL;
+		static unsigned long int PhysicalMemoryAvailable = 0;
 		if (PhysicalMemoryAvailable == 0)
 		{
 			MEMORYSTATUSEX Status;
@@ -177,7 +177,7 @@ namespace Red
 
 	unsigned long int WindowsSystemHardware::GetVirtualMemoryAvailable()
 	{
-		static unsigned long int VirtualMemoryAvailable = NULL;
+		static unsigned long int VirtualMemoryAvailable = 0;
 		if (VirtualMemoryAvailable == 0)
 		{
 			MEMORYSTATUSEX Status;
@@ -192,7 +192,7 @@ namespace Red
 
 	unsigned long int WindowsSystemHardware::GetDiskSpace()
 	{
-		static unsigned long int DiskSpace = NULL;
+		static unsigned long int DiskSpace = 0;
 		if (DiskSpace == 0)
 		{
 			const uint8_t Drive = static_cast<uint8_t>(_getdrive());
@@ -209,7 +209,7 @@ namespace Red
 
 	unsigned long int WindowsSystemHardware::GetDiskSpaceAvailable()
 	{
-		static unsigned long int DiskSpaceAvailable = NULL;
+		static unsigned long int DiskSpaceAvailable = 0;
 		if (DiskSpaceAvailable == 0)
 		{
 			const uint8_t Drive = static_cast<uint8_t>(_getdrive());
