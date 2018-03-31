@@ -27,6 +27,6 @@ namespace Red
 		SocketType Type = ST_Unknown;
 		SocketProtocol Protocol = SP_Unknown;
 		bool ReuseAddress = true;
-		unsigned int LingerTimeMs = 0;
+		unsigned int LingerTimeMs = 10000;
 	};
 }  // namespace Red
