@@ -121,9 +121,10 @@ namespace Red
 
 			inet_ntop(AF_INET6, &Address.Address.sin6_addr, AddressString, sizeof(AddressString));
 
-			std::string AddressStringType(AddressString);
+			std::string AddressStringType = "[";
 
-			AddressStringType += ":" + std::to_string(Port);
+			AddressStringType += AddressString;
+			AddressStringType += "]:" + std::to_string(Port);
 
 			return AddressStringType;
 		}
