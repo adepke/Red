@@ -10,7 +10,7 @@ namespace Red
 	struct IPAddress
 	{
 	public:
-		virtual ~IPAddress() = 0;
+		virtual ~IPAddress() {}
 
 	public:
 		virtual bool IsLoopbackAddress() const = 0;
@@ -22,7 +22,7 @@ namespace Red
 	struct IPEndPoint
 	{
 	public:
-		virtual ~IPEndPoint() = 0;
+		virtual ~IPEndPoint() {}
 
 	public:
 		virtual operator std::string() const = 0;
