@@ -28,4 +28,6 @@ namespace Red
 
 		virtual std::string GetHostName() const override;
 	};
+
+	typedef BSDSocketSubsystem SocketSubsystem;
 }  // namespace Red
