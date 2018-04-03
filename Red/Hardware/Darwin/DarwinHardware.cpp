@@ -122,10 +122,40 @@ namespace Red
 		static unsigned int CPUCoreCount = 0;
 		if (CPUCoreCount == 0)
 		{
-			CPUCoreCount = std::thread::hardware_concurrency();
+#ifdef _SC_NPROCESSORS_ONLN
+			CPUCoreCount = sysconf(_SC_NPROCESSORS_ONLN);
+#else
+			int CoreCount;
+
+			int Flags[4] = { CTL_HW, HW_AVAILCPU, 0, 0 };
+			size_t Length = sizeof(CoreCount);
+
+			sysctl(Flags, 2, &CoreCount, &Length, NULL, 0);
+
+			// If Failed, Try HW_NCPU Flag Instead
+			if (CoreCount < 1)
+			{
+				Flags[1] = HW_NCPU;
+
+				sysctl(Flags, 2, &CoreCount, &Length, NULL, 0);
+			}
+
+			CPUCoreCount = CoreCount;
+#endif
 		}
 
 		return CPUCoreCount;
+	}
+
+	static unsigned int DarwinSystemHardware::GetCPULogicalCoreCount()
+	{
+		static unsigned int CPULogicalCoreCount = 0;
+		if (CPULogicalCoreCount == 0)
+		{
+			CPULogicalCoreCount = std::thread::hardware_concurrency();
+		}
+
+		return CPULogicalCoreCount;
 	}
 
 	unsigned long int DarwinSystemHardware::GetPhysicalMemory()
