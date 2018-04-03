@@ -147,7 +147,7 @@ namespace Red
 		return CPUCoreCount;
 	}
 
-	static unsigned int DarwinSystemHardware::GetCPULogicalCoreCount()
+	unsigned int DarwinSystemHardware::GetCPULogicalCoreCount()
 	{
 		static unsigned int CPULogicalCoreCount = 0;
 		if (CPULogicalCoreCount == 0)

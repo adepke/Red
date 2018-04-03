@@ -149,7 +149,7 @@ namespace Red
 		return CPUCoreCount;
 	}
 
-	static unsigned int LinuxSystemHardware::GetCPULogicalCoreCount()
+	unsigned int LinuxSystemHardware::GetCPULogicalCoreCount()
 	{
 		static unsigned int CPULogicalCoreCount = 0;
 		if (CPULogicalCoreCount == 0)

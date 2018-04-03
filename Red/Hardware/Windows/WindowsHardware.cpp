@@ -109,7 +109,7 @@ namespace Red
 		return CPUCoreCount;
 	}
 
-	static unsigned int WindowsSystemHardware::GetCPULogicalCoreCount()
+	unsigned int WindowsSystemHardware::GetCPULogicalCoreCount()
 	{
 		static unsigned int CPULogicalCoreCount = 0;
 		if (CPULogicalCoreCount == 0)
