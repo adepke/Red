@@ -14,6 +14,7 @@ namespace Red
 		static std::string GetCPUVendor();
 		static std::string GetCPUBrand();
 		static unsigned int GetCPUCoreCount();
+		static unsigned int GetCPULogicalCoreCount();
 		// Returns Physical Memory Size in Megabytes
 		static unsigned long int GetPhysicalMemory();
 		// Returns Disk Space of the Disk Where the Executable is Housed in Megabytes

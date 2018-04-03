@@ -100,10 +100,24 @@ namespace Red
 		static unsigned int CPUCoreCount = 0;
 		if (CPUCoreCount == 0)
 		{
-			CPUCoreCount = std::thread::hardware_concurrency();
+			SYSTEM_INFO Info;
+			GetSystemInfo(&Info);
+
+			CPUCoreCount = Info.dwNumberOfProcessors;
 		}
 
 		return CPUCoreCount;
+	}
+
+	unsigned int WindowsSystemHardware::GetCPULogicalCoreCount()
+	{
+		static unsigned int CPULogicalCoreCount = 0;
+		if (CPULogicalCoreCount == 0)
+		{
+			CPULogicalCoreCount = std::thread::hardware_concurrency();
+		}
+
+		return CPULogicalCoreCount;
 	}
 
 	int WindowsSystemHardware::GetCPUClockSpeed()

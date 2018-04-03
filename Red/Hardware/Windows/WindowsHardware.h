@@ -16,6 +16,7 @@ namespace Red
 		static std::string GetCPUBrand();
 		static uint16_t GetCPUModel();
 		static unsigned int GetCPUCoreCount();
+		static unsigned int GetCPULogicalCoreCount();
 		// Returns Speed in Megahertz
 		static int GetCPUClockSpeed();
 		// Returns Physical Memory Size in Megabytes
