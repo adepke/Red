@@ -10,20 +10,31 @@
 #include <cpuid.h>
 #include <thread>
 #include <sys/statvfs.h>  // POSIX Compliant Filesystem Stats
+#include <sys/utsname.h>
 
 namespace Red
 {
 	std::string LinuxSystemHardware::GetOSName()
 	{
+		utsname SystemName;
+		
+		if (uname(&SystemName) == 0)
+		{
+			return std::string(SystemName.sysname);
+		}
+		
+		else
+		{
 #if OS_LINUX
-		return "Linux";
+			return "Linux";
 #elif OS_ANDROID
-		return "Android";
+			return "Android";
 #elif OS_BSD
-		return "BSD";
+			return "BSD";
 #else
-		return "Unknown";
+			return "Unknown";
 #endif
+		}
 	}
 
 	uint8_t LinuxSystemHardware::GetArchitecture()
