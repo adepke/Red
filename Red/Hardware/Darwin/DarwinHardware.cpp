@@ -15,13 +15,23 @@ namespace Red
 {
 	std::string DarwinSystemHardware::GetOSName()
 	{
+		utsname SystemName;
+		
+		if (uname(&SystemName) == 0)
+		{
+			return std::string(SystemName.sysname);
+		}
+		
+		else
+		{
 #if OS_MACINTOSH
-		return "Macintosh";
+			return "Macintosh";
 #elif OS_IOS
-		return "iOS";
+			return "iOS";
 #else
-		return "Unknown";
+			return "Unknown";
 #endif
+		}
 	}
 
 	uint8_t DarwinSystemHardware::GetArchitecture()
