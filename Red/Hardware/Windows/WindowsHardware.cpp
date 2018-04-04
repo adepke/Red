@@ -100,10 +100,34 @@ namespace Red
 		static unsigned int CPUCoreCount = 0;
 		if (CPUCoreCount == 0)
 		{
-			SYSTEM_INFO Info;
-			GetSystemInfo(&Info);
+			DWORD BufferLength = 0;
 
-			CPUCoreCount = Info.dwNumberOfProcessors;
+			GetLogicalProcessorInformation(nullptr, &BufferLength);  // Get the Buffer Size Required
+
+			if (BufferLength == 0)
+			{
+				return 0;
+			}
+
+			const int Count = BufferLength / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
+
+			if (Count != 0)
+			{
+				SYSTEM_LOGICAL_PROCESSOR_INFORMATION* ProcessorInfoBuffer = new SYSTEM_LOGICAL_PROCESSOR_INFORMATION[Count];
+
+				if (GetLogicalProcessorInformation(ProcessorInfoBuffer, &BufferLength))
+				{
+					for (int Iter = 0; Iter < Count; ++Iter)
+					{
+						if (ProcessorInfoBuffer[Iter].Relationship == RelationProcessorCore)
+						{
+							++CPUCoreCount;
+						}
+					}
+				}
+
+				delete[] ProcessorInfoBuffer;
+			}
 		}
 
 		return CPUCoreCount;
