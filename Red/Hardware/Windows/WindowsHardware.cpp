@@ -29,7 +29,7 @@ namespace Red
 
 	std::string WindowsSystemHardware::GetCPUVendor()
 	{
-		static std::string CPUVendor = NULL;
+		static std::string CPUVendor;
 		if (CPUVendor.length() == 0)
 		{
 			int Data[4] = { 0 };
@@ -51,7 +51,7 @@ namespace Red
 
 	std::string WindowsSystemHardware::GetCPUBrand()
 	{
-		static std::string CPUBrand = NULL;
+		static std::string CPUBrand;
 		if (CPUBrand.length() == 0)
 		{
 			int Data[4] = { 0 };
