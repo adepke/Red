@@ -37,6 +37,18 @@ namespace Red
 		}
 	}
 
+	std::string LinuxSystemHardware::GetOSVersion()
+	{
+		utsname SystemName;
+
+		if (uname(&SystemName) == 0)
+		{
+			return std::string(SystemName.version);
+		}
+
+		return "";
+	}
+
 	uint8_t LinuxSystemHardware::GetArchitecture()
 	{
 #if defined(__x86_64__) || defined(__ppc64__)

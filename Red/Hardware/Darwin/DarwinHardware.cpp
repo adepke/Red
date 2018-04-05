@@ -35,6 +35,18 @@ namespace Red
 		}
 	}
 
+	std::string DarwinSystemHardware::GetOSVersion()
+	{
+		utsname SystemName;
+
+		if (uname(&SystemName) == 0)
+		{
+			return std::string(SystemName.version);
+		}
+
+		return "";
+	}
+
 	uint8_t DarwinSystemHardware::GetArchitecture()
 	{
 #if defined(__x86_64__) || defined(__ppc64__)
