@@ -11,11 +11,62 @@
 #include <Pdh.h>
 #include <direct.h>
 
+#pragma comment(lib, "version.lib")
+
 namespace Red
 {
 	std::string WindowsSystemHardware::GetOSName()
 	{
 		return "Windows";
+	}
+
+	std::string WindowsSystemHardware::GetOSVersion()
+	{
+		char KernelPath[MAX_PATH];
+
+		if (!GetSystemDirectoryA(KernelPath, sizeof(KernelPath)))
+		{
+			// This Might Fail on Windows Phone and Store Apps
+
+			return "";
+		}
+
+		strcat_s(KernelPath, "\\kernel32.dll");
+
+		DWORD Handle;
+		DWORD Length = GetFileVersionInfoSizeA(KernelPath, &Handle);
+
+		if (Length == 0)
+		{
+			return "";
+		}
+
+		BYTE* KernelVersionInfoBuffer = new BYTE[Length];
+
+		if (GetFileVersionInfoA(KernelPath, NULL, Length, KernelVersionInfoBuffer))
+		{
+			VS_FIXEDFILEINFO* FileInfo;
+			UINT FileInfoSize = 0;
+
+			if (VerQueryValueA(KernelVersionInfoBuffer, "\\", reinterpret_cast<LPVOID*>(&FileInfo), &FileInfoSize))
+			{
+				if (FileInfoSize)
+				{
+					char VersionBuffer[128];
+
+					sprintf_s(VersionBuffer, "%u.%u.%u.%u", HIWORD(FileInfo->dwFileVersionMS), LOWORD(FileInfo->dwFileVersionMS), HIWORD(FileInfo->dwFileVersionLS), LOWORD(FileInfo->dwFileVersionLS));
+
+					return std::string(VersionBuffer);
+				}
+			}
+		}
+
+		if (KernelVersionInfoBuffer)
+		{
+			delete[] KernelVersionInfoBuffer;
+		}
+
+		return "";
 	}
 
 	uint8_t WindowsSystemHardware::GetArchitecture()

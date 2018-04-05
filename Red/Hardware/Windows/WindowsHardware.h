@@ -11,6 +11,7 @@ namespace Red
 	struct WindowsSystemHardware
 	{
 		static std::string GetOSName();
+		static std::string GetOSVersion();
 		static uint8_t GetArchitecture();
 		static std::string GetCPUVendor();
 		static std::string GetCPUBrand();
