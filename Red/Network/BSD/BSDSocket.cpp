@@ -227,7 +227,10 @@ namespace Red
 					if (ClientAddress)
 					{
 						IP4EndPoint Result(ntohl(SocketAddress.sin_addr.s_addr), ntohs(SocketAddress.sin_port));
-						memcpy(static_cast<IP4EndPoint*>(ClientAddress), &Result, sizeof(Result));
+
+						IP4EndPoint* const ClientAddress4 = static_cast<IP4EndPoint*>(ClientAddress);
+
+						memcpy(ClientAddress4, &Result, sizeof(Result));
 					}
 
 					return ClientSocket;
@@ -266,7 +269,10 @@ namespace Red
 					if (ClientAddress)
 					{
 						IP6EndPoint Result(SocketAddress, ntohs(SocketAddress.sin6_port));
-						memcpy(static_cast<IP6EndPoint*>(ClientAddress), &Result, sizeof(Result));
+
+						IP6EndPoint* const ClientAddress6 = static_cast<IP6EndPoint*>(ClientAddress);
+
+						memcpy(ClientAddress6, &Result, sizeof(Result));
 					}
 					
 					return ClientSocket;
@@ -560,7 +566,10 @@ namespace Red
 			if (getsockname(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
 			{
 				IP4EndPoint Result(ntohl(Address.sin_addr.s_addr), ntohs(Address.sin_port));
-				memcpy(static_cast<IP4EndPoint*>(Output), &Result, sizeof(Result));
+
+				IP4EndPoint* const Output4 = static_cast<IP4EndPoint*>(Output);
+
+				memcpy(Output4, &Result, sizeof(Result));
 
 				return true;
 			}
@@ -574,7 +583,10 @@ namespace Red
 			if (getsockname(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
 			{
 				IP6EndPoint Result(Address, ntohs(Address.sin6_port));
-				memcpy(static_cast<IP6EndPoint*>(Output), &Result, sizeof(Result));
+
+				IP6EndPoint* const Output6 = static_cast<IP6EndPoint*>(Output);
+
+				memcpy(Output6, &Result, sizeof(Result));
 
 				return true;
 			}
@@ -598,7 +610,10 @@ namespace Red
 			if (getpeername(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
 			{
 				IP4EndPoint Result(ntohl(Address.sin_addr.s_addr), ntohs(Address.sin_port));
-				memcpy(static_cast<IP4EndPoint*>(Output), &Result, sizeof(Result));
+
+				IP4EndPoint* const Output4 = static_cast<IP4EndPoint*>(Output);
+
+				memcpy(Output4, &Result, sizeof(Result));
 
 				return true;
 			}
@@ -612,7 +627,10 @@ namespace Red
 			if (getpeername(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
 			{
 				IP6EndPoint Result(Address, ntohs(Address.sin6_port));
-				memcpy(static_cast<IP6EndPoint*>(Output), &Result, sizeof(Result));
+
+				IP6EndPoint* const Output6 = static_cast<IP6EndPoint*>(Output);
+
+				memcpy(Output6, &Result, sizeof(Result));
 
 				return true;
 			}
