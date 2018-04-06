@@ -676,11 +676,24 @@ namespace Red
 		{
 			// Disable Multicast Loopback
 			Value = 1;
-			if (setsockopt(SocketHandle, IPPROTO_IP, IP_MULTICAST_LOOP, (char*)&Value, sizeof(Value)) != 0)
+			if (Description.Version == SV_IPv4)
 			{
-				Shutdown();
+				if (setsockopt(SocketHandle, IPPROTO_IP, IP_MULTICAST_LOOP, (char*)&Value, sizeof(Value)) != 0)
+				{
+					Shutdown();
 
-				return false;
+					return false;
+				}
+			}
+
+			else
+			{
+				if (setsockopt(SocketHandle, IPPROTO_IP, IPV6_MULTICAST_LOOP, (char*)&Value, sizeof(Value)) != 0)
+				{
+					Shutdown();
+
+					return false;
+				}
 			}
 		}
 
