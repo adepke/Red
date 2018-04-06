@@ -240,7 +240,7 @@ namespace Red
 
 						IP4EndPoint* const ClientAddress4 = static_cast<IP4EndPoint*>(ClientAddress);
 
-						memcpy(ClientAddress4, &Result, sizeof(Result));
+						*ClientAddress4 = Result;
 					}
 
 					return ClientSocket;
@@ -282,7 +282,7 @@ namespace Red
 
 						IP6EndPoint* const ClientAddress6 = static_cast<IP6EndPoint*>(ClientAddress);
 
-						memcpy(ClientAddress6, &Result, sizeof(Result));
+						*ClientAddress6 = Result;
 					}
 					
 					return ClientSocket;
@@ -624,7 +624,7 @@ namespace Red
 
 				IP4EndPoint* const Output4 = static_cast<IP4EndPoint*>(Output);
 
-				memcpy(Output4, &Result, sizeof(Result));
+				*Output4 = Result;
 
 				return true;
 			}
@@ -646,7 +646,7 @@ namespace Red
 
 				IP6EndPoint* const Output6 = static_cast<IP6EndPoint*>(Output);
 
-				memcpy(Output6, &Result, sizeof(Result));
+				*Output6 = Result;
 
 				return true;
 			}
@@ -678,7 +678,7 @@ namespace Red
 
 				IP4EndPoint* const Output4 = static_cast<IP4EndPoint*>(Output);
 
-				memcpy(Output4, &Result, sizeof(Result));
+				*Output4 = Result;
 
 				return true;
 			}
@@ -700,7 +700,7 @@ namespace Red
 
 				IP6EndPoint* const Output6 = static_cast<IP6EndPoint*>(Output);
 
-				memcpy(Output6, &Result, sizeof(Result));
+				*Output6 = Result;
 
 				return true;
 			}
