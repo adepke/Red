@@ -24,7 +24,7 @@ namespace Red
 		sockaddr_in6 Address;
 
 	public:
-		IP6Address()
+		IP6Address() : IPAddress(IPv6)
 		{
 #if OS_WINDOWS
 			std::memset(&Address, 0, sizeof(Address));
@@ -35,9 +35,9 @@ namespace Red
 			Address.sin6_family = AF_INET6;
 		}
 
-		IP6Address(const sockaddr_in6& Target) : Address(Target) {}
+		IP6Address(const sockaddr_in6& Target) : IPAddress(IPv6), Address(Target) {}
 
-		IP6Address(const char* InAddress)
+		IP6Address(const char* InAddress) : IPAddress(IPv6)
 		{
 			if (inet_pton(AF_INET6, InAddress, &Address.sin6_addr) != 1)
 			{
@@ -100,8 +100,8 @@ namespace Red
 		unsigned short Port;
 
 	public:
-		IP6EndPoint() : Port(0) {}
-		IP6EndPoint(const IP6Address& InAddress, unsigned short InPort) : Address(InAddress), Port(InPort) {}
+		IP6EndPoint() : IPEndPoint(IPv6), Port(0) {}
+		IP6EndPoint(const IP6Address& InAddress, unsigned short InPort) : IPEndPoint(IPv6), Address(InAddress), Port(InPort) {}
 
 		virtual ~IP6EndPoint() {}
 

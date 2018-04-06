@@ -7,9 +7,24 @@
 
 namespace Red
 {
+	enum IPVersion
+	{
+		IPv4,
+		IPv6,
+	};
+
+	class BSDSocket;
+
 	struct IPAddress
 	{
+	protected:
+		friend class BSDSocket;
+
+		IPVersion Version;
+
 	public:
+		IPAddress(IPVersion InVersion) : Version(InVersion) {}
+
 		virtual ~IPAddress() {}
 
 	public:
@@ -21,7 +36,14 @@ namespace Red
 
 	struct IPEndPoint
 	{
+	protected:
+		friend class BSDSocket;
+
+		IPVersion Version;
+
 	public:
+		IPEndPoint(IPVersion InVersion) : Version(InVersion) {}
+
 		virtual ~IPEndPoint() {}
 
 	public:

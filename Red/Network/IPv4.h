@@ -35,8 +35,8 @@ namespace Red
 		};
 
 	public:
-		IP4Address() : Address(0) {}
-		IP4Address(unsigned char InA, unsigned char InB, unsigned char InC, unsigned char InD) :
+		IP4Address() : IPAddress(IPv4), Address(0) {}
+		IP4Address(unsigned char InA, unsigned char InB, unsigned char InC, unsigned char InD) : IPAddress(IPv4),
 #if PLATFORM_BIGENDIAN
 			A(InA),
 			B(InB),
@@ -50,9 +50,9 @@ namespace Red
 #endif
 		{}
 
-		IP4Address(unsigned int InAddress) : Address(InAddress) {}
+		IP4Address(unsigned int InAddress) : IPAddress(IPv4), Address(InAddress) {}
 
-		IP4Address(const char* InAddress)
+		IP4Address(const char* InAddress) : IPAddress(IPv4)
 		{
 			unsigned int NetworkAddress;
 
@@ -121,8 +121,8 @@ namespace Red
 		unsigned short Port;
 
 	public:
-		IP4EndPoint() : Port(0) {}
-		IP4EndPoint(const IP4Address& InAddress, unsigned short InPort) : Address(InAddress), Port(InPort) {}
+		IP4EndPoint() : IPEndPoint(IPv4), Port(0) {}
+		IP4EndPoint(const IP4Address& InAddress, unsigned short InPort) : IPEndPoint(IPv4), Address(InAddress), Port(InPort) {}
 
 		virtual ~IP4EndPoint() {}
 
