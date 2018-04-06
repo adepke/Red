@@ -218,7 +218,8 @@ namespace Red
 
 					if (ClientAddress)
 					{
-						*ClientAddress = IP4EndPoint(ntohl(SocketAddress.sin_addr.s_addr), ntohs(SocketAddress.sin_port));
+						IP4EndPoint Result(ntohl(SocketAddress.sin_addr.s_addr), ntohs(SocketAddress.sin_port));
+						memcpy(ClientAddress, &Result, sizeof(Result));
 					}
 
 					return ClientSocket;
@@ -259,7 +260,8 @@ namespace Red
 
 					if (ClientAddress)
 					{
-						*ClientAddress = IP6EndPoint(SocketAddress, ntohs(SocketAddress.sin6_port));
+						IP6EndPoint Result(SocketAddress, ntohs(SocketAddress.sin6_port));
+						memcpy(ClientAddress, &Result, sizeof(Result));
 					}
 					
 					return ClientSocket;
@@ -331,7 +333,7 @@ namespace Red
 			const IP6EndPoint* const EndPoint6 = static_cast<IP6EndPoint*>(Destination);
 
 			sockaddr_in6 SocketAddress;
-			SocketAddress.sin6_family = AF_INET;
+			SocketAddress.sin6_family = AF_INET6;
 			SocketAddress.sin6_addr = EndPoint6->Address.Address.sin6_addr;
 			SocketAddress.sin6_port = htons(EndPoint6->Port);
 
@@ -484,7 +486,7 @@ namespace Red
 			Mreq.ipv6mr_interface = INADDR_ANY;
 			Mreq.ipv6mr_multiaddr = Address6->Address.sin6_addr;
 
-			return (setsockopt(SocketHandle, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&Mreq, sizeof(Mreq)) == 0);
+			return (setsockopt(SocketHandle, IPPROTO_IP, IPV6_ADD_MEMBERSHIP, (char*)&Mreq, sizeof(Mreq)) == 0);
 		}
 	}
 
@@ -509,7 +511,7 @@ namespace Red
 			Mreq.ipv6mr_interface = INADDR_ANY;
 			Mreq.ipv6mr_multiaddr = Address6->Address.sin6_addr;
 
-			return (setsockopt(SocketHandle, IPPROTO_IP, IP_DROP_MEMBERSHIP, (char*)&Mreq, sizeof(Mreq)) == 0);
+			return (setsockopt(SocketHandle, IPPROTO_IP, IPV6_DROP_MEMBERSHIP, (char*)&Mreq, sizeof(Mreq)) == 0);
 		}
 	}
 
@@ -552,7 +554,8 @@ namespace Red
 
 			if (getsockname(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
 			{
-				*Output = IP4EndPoint(ntohl(Address.sin_addr.s_addr), ntohs(Address.sin_port));
+				IP4EndPoint Result(ntohl(Address.sin_addr.s_addr), ntohs(Address.sin_port));
+				memcpy(Output, &Result, sizeof(Result));
 
 				return true;
 			}
@@ -565,7 +568,8 @@ namespace Red
 
 			if (getsockname(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
 			{
-				*Output = IP6EndPoint(Address, ntohs(Address.sin6_port));
+				IP6EndPoint Result(Address, ntohs(Address.sin6_port));
+				memcpy(Output, &Result, sizeof(Result));
 
 				return true;
 			}
@@ -588,7 +592,8 @@ namespace Red
 
 			if (getpeername(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
 			{
-				*Output = IP4EndPoint(ntohl(Address.sin_addr.s_addr), ntohs(Address.sin_port));
+				IP4EndPoint Result(ntohl(Address.sin_addr.s_addr), ntohs(Address.sin_port));
+				memcpy(Output, &Result, sizeof(Result));
 
 				return true;
 			}
@@ -601,7 +606,8 @@ namespace Red
 
 			if (getpeername(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
 			{
-				*Output = IP6EndPoint(Address, ntohs(Address.sin6_port));
+				IP6EndPoint Result(Address, ntohs(Address.sin6_port));
+				memcpy(Output, &Result, sizeof(Result));
 
 				return true;
 			}
