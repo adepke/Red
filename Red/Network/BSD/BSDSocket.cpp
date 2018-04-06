@@ -163,7 +163,7 @@ namespace Red
 				memset(&SocketAddress, 0, sizeof(SocketAddress));
 #endif
 
-				SocketAddress.sin6_family = AF_INET;
+				SocketAddress.sin6_family = AF_INET6;
 				SocketAddress.sin6_addr = in6addr_any;  // Automatically determine the private IP.
 				SocketAddress.sin6_port = htons(Port);
 
