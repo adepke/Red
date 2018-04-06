@@ -23,6 +23,17 @@
 	#define RED_INVALID_SOCKET -1
 #endif
 
+// Darwin is Missing These Macros, Define Them Here
+#if !defined IPV6_ADD_MEMBERSHIP
+	#define IPV6_ADD_MEMBERSHIP IP_ADD_MEMBERSHIP
+#endif
+#if !defined IPV6_DROP_MEMBERSHIP
+	#define IPV6_DROP_MEMBERSHIP IP_DROP_MEMBERSHIP
+#endif
+#if !defined IPV6_MULTICAST_LOOP
+	#define IPV6_MULTICAST_LOOP IP_MULTICAST_LOOP
+#endif
+
 namespace Red
 {
 	bool BSDSocket::Initialize(const SocketDescription& InDescription)
