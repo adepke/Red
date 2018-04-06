@@ -23,6 +23,17 @@
 	#define RED_INVALID_SOCKET -1
 #endif
 
+// Darwin is Missing These Macros, Define Them Here
+#if !defined IPV6_ADD_MEMBERSHIP
+	#define IPV6_ADD_MEMBERSHIP IP_ADD_MEMBERSHIP
+#endif
+#if !defined IPV6_DROP_MEMBERSHIP
+	#define IPV6_DROP_MEMBERSHIP IP_DROP_MEMBERSHIP
+#endif
+#if !defined IPV6_MULTICAST_LOOP
+	#define IPV6_MULTICAST_LOOP IP_MULTICAST_LOOP
+#endif
+
 namespace Red
 {
 	bool BSDSocket::Initialize(const SocketDescription& InDescription)
@@ -51,7 +62,7 @@ namespace Red
 			break;
 		}
 
-		SocketHandle = socket(AF_INET, NativeType, NativeProtocol);
+		SocketHandle = socket(InDescription.Version == SV_IPv4 ? AF_INET : AF_INET6, NativeType, NativeProtocol);
 		if (SocketHandle == RED_INVALID_SOCKET)
 		{
 			return false;
@@ -80,29 +91,59 @@ namespace Red
 		return Result;
 	}
 
-	bool BSDSocket::Connect(const IP4EndPoint& EndPoint)
+	bool BSDSocket::Connect(IPEndPoint* const EndPoint)
 	{
 		if (SocketHandle != RED_INVALID_SOCKET)
 		{
-			sockaddr_in SocketAddress;
-			SocketAddress.sin_family = AF_INET;
-			SocketAddress.sin_addr.s_addr = htonl(EndPoint.Address.Address);
-			SocketAddress.sin_port = htons(EndPoint.Port);
-
-			if (connect(SocketHandle, (sockaddr*)&SocketAddress, sizeof(SocketAddress)) == 0)
+			if (Description.Version == SV_IPv4)
 			{
-				return true;
+				if (EndPoint->Version != IPv4)
+				{
+					return false;
+				}
+
+				const IP4EndPoint* const EndPoint4 = static_cast<IP4EndPoint*>(EndPoint);
+
+				sockaddr_in SocketAddress;
+				SocketAddress.sin_family = AF_INET;
+				SocketAddress.sin_addr.s_addr = htonl(EndPoint4->Address.Address);
+				SocketAddress.sin_port = htons(EndPoint4->Port);
+
+				if (connect(SocketHandle, (sockaddr*)&SocketAddress, sizeof(SocketAddress)) == 0)
+				{
+					return true;
+				}
+			}
+
+			else
+			{
+				if (EndPoint->Version != IPv6)
+				{
+					return false;
+				}
+
+				const IP6EndPoint* const EndPoint6 = static_cast<IP6EndPoint*>(EndPoint);
+
+				sockaddr_in6 SocketAddress;
+				SocketAddress.sin6_family = AF_INET6;
+				SocketAddress.sin6_addr = EndPoint6->Address.Address.sin6_addr;
+				SocketAddress.sin6_port = htons(EndPoint6->Port);
+
+				if (connect(SocketHandle, (sockaddr*)&SocketAddress, sizeof(SocketAddress)) == 0)
+				{
+					return true;
+				}
 			}
 		}
 
 		return false;
 	}
 
-	AsyncTask* BSDSocket::ConnectAsync(AsyncConnectArgs* Args, const IP4EndPoint& EndPoint)
+	AsyncTask* BSDSocket::ConnectAsync(AsyncConnectArgs* Args, IPEndPoint* const EndPoint)
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
-			Args->Result.store(Connect(EndPoint));
+			Args->SetResult(Connect(EndPoint));
 			Args->CompletedCallback(Args);
 		}), this);
 
@@ -113,21 +154,44 @@ namespace Red
 	{
 		if (SocketHandle != RED_INVALID_SOCKET)
 		{
-			sockaddr_in SocketAddress;
+			if (Description.Version == SV_IPv4)
+			{
+				sockaddr_in SocketAddress;
 
 #if OS_WINDOWS
-			std::memset(&SocketAddress, 0, sizeof(SocketAddress));
+				std::memset(&SocketAddress, 0, sizeof(SocketAddress));
 #else
-			memset(&SocketAddress, 0, sizeof(SocketAddress));
+				memset(&SocketAddress, 0, sizeof(SocketAddress));
 #endif
 
-			SocketAddress.sin_family = AF_INET;
-			SocketAddress.sin_addr.s_addr = INADDR_ANY;  // Automatically determine the private IP.
-			SocketAddress.sin_port = htons(Port);
+				SocketAddress.sin_family = AF_INET;
+				SocketAddress.sin_addr.s_addr = INADDR_ANY;  // Automatically determine the private IP.
+				SocketAddress.sin_port = htons(Port);
 
-			if (bind(SocketHandle, (sockaddr*)&SocketAddress, sizeof(SocketAddress)) == 0)
+				if (bind(SocketHandle, (sockaddr*)&SocketAddress, sizeof(SocketAddress)) == 0)
+				{
+					return true;
+				}
+			}
+
+			else
 			{
-				return true;
+				sockaddr_in6 SocketAddress;
+
+#if OS_WINDOWS
+				std::memset(&SocketAddress, 0, sizeof(SocketAddress));
+#else
+				memset(&SocketAddress, 0, sizeof(SocketAddress));
+#endif
+
+				SocketAddress.sin6_family = AF_INET6;
+				SocketAddress.sin6_addr = in6addr_any;  // Automatically determine the private IP.
+				SocketAddress.sin6_port = htons(Port);
+
+				if (bind(SocketHandle, (sockaddr*)&SocketAddress, sizeof(SocketAddress)) == 0)
+				{
+					return true;
+				}
 			}
 		}
 
@@ -147,41 +211,90 @@ namespace Red
 		return false;
 	}
 
-	ISocket* BSDSocket::Accept(IP4EndPoint& ClientAddress)
+	ISocket* BSDSocket::Accept(IPEndPoint* ClientAddress)
 	{
-		SOCKET ClientHandle;
-		sockaddr_in SocketAddress;
-		int SizeSmall = sizeof(SocketAddress);
-
-#if OS_WINDOWS
-		ClientHandle = accept(SocketHandle, (sockaddr*)&SocketAddress, &SizeSmall);
-#else
-		ClientHandle = accept(SocketHandle, (sockaddr*)&SocketAddress, (socklen_t*)&SizeSmall);
-#endif
-		if (ClientHandle != RED_INVALID_SOCKET)
+		if (Description.Version == SV_IPv4)
 		{
-			if (getpeername(ClientHandle, (sockaddr*)&SocketAddress, (socklen_t*)&SizeSmall) == 0)
+			SOCKET ClientHandle;
+			sockaddr_in SocketAddress;
+			int SizeSmall = sizeof(SocketAddress);
+
+			ClientHandle = accept(SocketHandle, (sockaddr*)&SocketAddress, (socklen_t*)&SizeSmall);
+
+			if (ClientHandle != RED_INVALID_SOCKET)
 			{
-				BSDSocket* ClientSocket = new BSDSocket();
+				if (getpeername(ClientHandle, (sockaddr*)&SocketAddress, (socklen_t*)&SizeSmall) == 0)
+				{
+					BSDSocket* ClientSocket = new BSDSocket();
 
-				// Do not Initialize(), as that will allocate a separate socket.
-				ClientSocket->SocketHandle = ClientHandle;
-				ClientSocket->Description = Description;
-				ClientSocket->Description.Type = ST_Client;
+					// Do not Initialize(), as that will allocate a separate socket.
+					ClientSocket->SocketHandle = ClientHandle;
+					ClientSocket->Description = Description;
+					ClientSocket->Description.Type = ST_Client;
 
-				ClientSocket->Configure();
+					ClientSocket->Configure();
 
-				ClientAddress = IP4EndPoint(ntohl(SocketAddress.sin_addr.s_addr), ntohs(SocketAddress.sin_port));
+					if (ClientAddress && ClientAddress->Version == IPv4)
+					{
+						IP4EndPoint Result(ntohl(SocketAddress.sin_addr.s_addr), ntohs(SocketAddress.sin_port));
 
-				return ClientSocket;
-			}
+						IP4EndPoint* const ClientAddress4 = static_cast<IP4EndPoint*>(ClientAddress);
 
-			// Manually kill the created socket.
+						*ClientAddress4 = Result;
+					}
+
+					return ClientSocket;
+				}
+
+				// Manually kill the created socket.
 #if OS_WINDOWS
-			closesocket(ClientHandle);
+				closesocket(ClientHandle);
 #else
-			close(ClientHandle);
+				close(ClientHandle);
 #endif
+			}
+		}
+
+		else
+		{
+			SOCKET ClientHandle;
+			sockaddr_in6 SocketAddress;
+			int SizeSmall = sizeof(SocketAddress);
+
+			ClientHandle = accept(SocketHandle, (sockaddr*)&SocketAddress, (socklen_t*)&SizeSmall);
+
+			if (ClientHandle != RED_INVALID_SOCKET)
+			{
+				if (getpeername(ClientHandle, (sockaddr*)&SocketAddress, (socklen_t*)&SizeSmall) == 0)
+				{
+					BSDSocket* ClientSocket = new BSDSocket();
+
+					// Do not Initialize(), as that will allocate a separate socket.
+					ClientSocket->SocketHandle = ClientHandle;
+					ClientSocket->Description = Description;
+					ClientSocket->Description.Type = ST_Client;
+
+					ClientSocket->Configure();
+
+					if (ClientAddress && ClientAddress->Version == IPv6)
+					{
+						IP6EndPoint Result(SocketAddress, ntohs(SocketAddress.sin6_port));
+
+						IP6EndPoint* const ClientAddress6 = static_cast<IP6EndPoint*>(ClientAddress);
+
+						*ClientAddress6 = Result;
+					}
+					
+					return ClientSocket;
+				}
+
+				// Manually kill the created socket.
+#if OS_WINDOWS
+				closesocket(ClientHandle);
+#else
+				close(ClientHandle);
+#endif
+			}
 		}
 
 		return nullptr;
@@ -191,10 +304,22 @@ namespace Red
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
-			IP4EndPoint ClientAddressTemp;
+			if (Description.Version == SV_IPv4)
+			{
+				IP4EndPoint ClientAddressTemp;
 
-			Args->Result.store(Accept(ClientAddressTemp));
-			Args->ClientAddress.store(ClientAddressTemp);
+				Args->SetResult(Accept(&ClientAddressTemp));
+				Args->SetClientAddress(ClientAddressTemp);
+			}
+
+			else
+			{
+				IP6EndPoint ClientAddressTemp;
+
+				Args->SetResult(Accept(&ClientAddressTemp));
+				Args->SetClientAddress(ClientAddressTemp);
+			}
+
 			Args->CompletedCallback(Args);
 		}), this);
 
@@ -208,16 +333,45 @@ namespace Red
 		return BytesSent >= 0;
 	}
 
-	bool BSDSocket::Send(const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length, int& BytesSent)
+	bool BSDSocket::Send(IPEndPoint* const Destination, const unsigned char* Data, unsigned int Length, int& BytesSent)
 	{
-		sockaddr_in SocketAddress;
-		SocketAddress.sin_family = AF_INET;
-		SocketAddress.sin_addr.s_addr = htonl(Destination.Address.Address);
-		SocketAddress.sin_port = htons(Destination.Port);
+		if (Description.Version == SV_IPv4)
+		{
+			if (Destination->Version != IPv4)
+			{
+				return false;
+			}
 
-		BytesSent = sendto(SocketHandle, (const char*)Data, Length, 0, (sockaddr*)&SocketAddress, sizeof(SocketAddress));
+			const IP4EndPoint* const EndPoint4 = static_cast<IP4EndPoint*>(Destination);
 
-		return BytesSent >= 0;
+			sockaddr_in SocketAddress;
+			SocketAddress.sin_family = AF_INET;
+			SocketAddress.sin_addr.s_addr = htonl(EndPoint4->Address.Address);
+			SocketAddress.sin_port = htons(EndPoint4->Port);
+
+			BytesSent = sendto(SocketHandle, (const char*)Data, Length, 0, (sockaddr*)&SocketAddress, sizeof(SocketAddress));
+
+			return BytesSent >= 0;
+		}
+
+		else
+		{
+			if (Destination->Version != IPv6)
+			{
+				return false;
+			}
+
+			const IP6EndPoint* const EndPoint6 = static_cast<IP6EndPoint*>(Destination);
+
+			sockaddr_in6 SocketAddress;
+			SocketAddress.sin6_family = AF_INET6;
+			SocketAddress.sin6_addr = EndPoint6->Address.Address.sin6_addr;
+			SocketAddress.sin6_port = htons(EndPoint6->Port);
+
+			BytesSent = sendto(SocketHandle, (const char*)Data, Length, 0, (sockaddr*)&SocketAddress, sizeof(SocketAddress));
+
+			return BytesSent >= 0;
+		}
 	}
 
 	AsyncTask* BSDSocket::SendAsync(AsyncSendArgs* Args, const unsigned char* Data, unsigned int Length)
@@ -226,22 +380,22 @@ namespace Red
 		{
 			int BytesSentTemp;
 
-			Args->Result.store(Send(Data, Length, BytesSentTemp));
-			Args->BytesSent.store(BytesSentTemp);
+			Args->SetResult(Send(Data, Length, BytesSentTemp));
+			Args->SetBytesSent(BytesSentTemp);
 			Args->CompletedCallback(Args);
 		}), this);
 
 		return Task;
 	}
 
-	AsyncTask* BSDSocket::SendAsync(AsyncSendArgs* Args, const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length)
+	AsyncTask* BSDSocket::SendAsync(AsyncSendArgs* Args, IPEndPoint* const Destination, const unsigned char* Data, unsigned int Length)
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
 			int BytesSentTemp;
 
-			Args->Result.store(Send(Destination, Data, Length, BytesSentTemp));
-			Args->BytesSent.store(BytesSentTemp);
+			Args->SetResult(Send(Destination, Data, Length, BytesSentTemp));
+			Args->SetBytesSent(BytesSentTemp);
 			Args->CompletedCallback(Args);
 		}), this);
 
@@ -255,29 +409,60 @@ namespace Red
 		return BytesReceived >= 0;
 	}
 
-	bool BSDSocket::Receive(IP4Address& Source, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived)
+	bool BSDSocket::Receive(IPAddress* Source, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived)
 	{
-		sockaddr_in ClientAddress;
-		int Size = sizeof(ClientAddress);
+		if (Description.Version == SV_IPv4)
+		{
+			if (Source->Version != IPv4)
+			{
+				return false;
+			}
 
-		BytesReceived = recvfrom(SocketHandle, (char*)Data, MaxReceivingBytes, 0, (sockaddr*)&ClientAddress, (socklen_t*)&Size);
+			IP4Address* Address4 = static_cast<IP4Address*>(Source);
 
-		Source.Address = ntohl(ClientAddress.sin_addr.s_addr);
+			sockaddr_in ClientAddress;
+			int Size = sizeof(ClientAddress);
 
-		return BytesReceived >= 0;
+			BytesReceived = recvfrom(SocketHandle, (char*)Data, MaxReceivingBytes, 0, (sockaddr*)&ClientAddress, (socklen_t*)&Size);
+
+			Address4->Address = ntohl(ClientAddress.sin_addr.s_addr);
+
+			return BytesReceived >= 0;
+		}
+
+		else
+		{
+			if (Source->Version != IPv6)
+			{
+				return false;
+			}
+
+			IP6Address* Address6 = static_cast<IP6Address*>(Source);
+
+			sockaddr_in6 ClientAddress;
+			int Size = sizeof(ClientAddress);
+
+			BytesReceived = recvfrom(SocketHandle, (char*)Data, MaxReceivingBytes, 0, (sockaddr*)&ClientAddress, (socklen_t*)&Size);
+
+			Address6->Address = ClientAddress;
+
+			return BytesReceived >= 0;
+		}
 	}
 
 	AsyncTask* BSDSocket::ReceiveAsync(AsyncReceiveArgs* Args, unsigned int MaxReceivingBytes)
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
-			unsigned char* DataTemp = nullptr;
+			unsigned char* DataTemp = new unsigned char[MaxReceivingBytes];
 			int BytesReceivedTemp;
 
-			Args->Result.store(Receive(DataTemp, MaxReceivingBytes, BytesReceivedTemp));
-			Args->Data.store(DataTemp);
-			Args->BytesReceived.store(BytesReceivedTemp);
+			Args->SetResult(Receive(DataTemp, MaxReceivingBytes, BytesReceivedTemp));
+			Args->SetData(DataTemp, MaxReceivingBytes);
+			Args->SetBytesReceived(BytesReceivedTemp);
 			Args->CompletedCallback(Args);
+
+			delete[] DataTemp;
 		}), this);
 
 		return Task;
@@ -287,36 +472,108 @@ namespace Red
 	{
 		AsyncTask* Task = new AsyncTask(std::async(std::launch::async, [=]
 		{
-			unsigned char* DataTemp = nullptr;
-			int BytesReceivedTemp;
-			IP4Address SourceTemp;
+			if (Description.Version == SV_IPv4)
+			{
+				unsigned char* DataTemp = new unsigned char[MaxReceivingBytes];
+				int BytesReceivedTemp;
+				IP4Address SourceTemp;
 
-			Args->Result.store(Receive(SourceTemp, DataTemp, MaxReceivingBytes, BytesReceivedTemp));
-			Args->Data.store(DataTemp);
-			Args->BytesReceived.store(BytesReceivedTemp);
-			Args->Source.store(SourceTemp);
+				Args->SetResult(Receive(&SourceTemp, DataTemp, MaxReceivingBytes, BytesReceivedTemp));
+				Args->SetData(DataTemp, MaxReceivingBytes);
+				Args->SetBytesReceived(BytesReceivedTemp);
+				Args->SetSource(SourceTemp);
+
+				delete[] DataTemp;
+			}
+
+			else
+			{
+				unsigned char* DataTemp = new unsigned char[MaxReceivingBytes];
+				int BytesReceivedTemp;
+				IP6Address SourceTemp;
+
+				Args->SetResult(Receive(&SourceTemp, DataTemp, MaxReceivingBytes, BytesReceivedTemp));
+				Args->SetData(DataTemp, MaxReceivingBytes);
+				Args->SetBytesReceived(BytesReceivedTemp);
+				Args->SetSource(SourceTemp);
+
+				delete[] DataTemp;
+			}
+
 			Args->CompletedCallback(Args);
 		}), this);
 
 		return Task;
 	}
 
-	bool BSDSocket::JoinMulticastGroup(const IP4Address& GroupAddress)
+	bool BSDSocket::JoinMulticastGroup(IPAddress* const GroupAddress)
 	{
-		ip_mreq Mreq;
-		Mreq.imr_interface.s_addr = INADDR_ANY;
-		Mreq.imr_multiaddr.s_addr = GroupAddress.Address;
+		if (Description.Version == SV_IPv4)
+		{
+			if (GroupAddress->Version != IPv4)
+			{
+				return false;
+			}
 
-		return (setsockopt(SocketHandle, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&Mreq, sizeof(Mreq)) == 0);
+			const IP4Address* const Address4 = static_cast<IP4Address*>(GroupAddress);
+
+			ip_mreq Mreq;
+			Mreq.imr_interface.s_addr = INADDR_ANY;
+			Mreq.imr_multiaddr.s_addr = Address4->Address;
+
+			return (setsockopt(SocketHandle, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&Mreq, sizeof(Mreq)) == 0);
+		}
+
+		else
+		{
+			if (GroupAddress->Version != IPv6)
+			{
+				return false;
+			}
+
+			const IP6Address* const Address6 = static_cast<IP6Address*>(GroupAddress);
+
+			ipv6_mreq Mreq;
+			Mreq.ipv6mr_interface = INADDR_ANY;
+			Mreq.ipv6mr_multiaddr = Address6->Address.sin6_addr;
+
+			return (setsockopt(SocketHandle, IPPROTO_IP, IPV6_ADD_MEMBERSHIP, (char*)&Mreq, sizeof(Mreq)) == 0);
+		}
 	}
 
-	bool BSDSocket::LeaveMulticastGroup(const IP4Address& GroupAddress)
+	bool BSDSocket::LeaveMulticastGroup(IPAddress* const GroupAddress)
 	{
-		ip_mreq Mreq;
-		Mreq.imr_interface.s_addr = INADDR_ANY;
-		Mreq.imr_multiaddr.s_addr = GroupAddress.Address;
+		if (Description.Version == SV_IPv4)
+		{
+			if (GroupAddress->Version != IPv4)
+			{
+				return false;
+			}
 
-		return (setsockopt(SocketHandle, IPPROTO_IP, IP_DROP_MEMBERSHIP, (char*)&Mreq, sizeof(Mreq)) == 0);
+			const IP4Address* const Address4 = static_cast<IP4Address*>(GroupAddress);
+
+			ip_mreq Mreq;
+			Mreq.imr_interface.s_addr = INADDR_ANY;
+			Mreq.imr_multiaddr.s_addr = Address4->Address;
+
+			return (setsockopt(SocketHandle, IPPROTO_IP, IP_DROP_MEMBERSHIP, (char*)&Mreq, sizeof(Mreq)) == 0);
+		}
+
+		else
+		{
+			if (GroupAddress->Version != IPv6)
+			{
+				return false;
+			}
+
+			const IP6Address* const Address6 = static_cast<IP6Address*>(GroupAddress);
+
+			ipv6_mreq Mreq;
+			Mreq.ipv6mr_interface = INADDR_ANY;
+			Mreq.ipv6mr_multiaddr = Address6->Address.sin6_addr;
+
+			return (setsockopt(SocketHandle, IPPROTO_IP, IPV6_DROP_MEMBERSHIP, (char*)&Mreq, sizeof(Mreq)) == 0);
+		}
 	}
 
 	bool BSDSocket::SetSendBufferSize(unsigned int Size)
@@ -344,38 +601,112 @@ namespace Red
 		return (setsockopt(SocketHandle, SOL_SOCKET, SO_BROADCAST, (char*)&Value, sizeof(Value)) == 0);
 	}
 
-	IP4EndPoint BSDSocket::GetAddress()
+	bool BSDSocket::GetAddress(IPEndPoint* Output)
 	{
-		sockaddr_in Address;
-		int Size = sizeof(Address);
-
-#if OS_WINDOWS
-		if (getsockname(SocketHandle, (sockaddr*)&Address, &Size) == 0)
-#else
-		if (getsockname(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
-#endif
+		if (!Output)
 		{
-			return IP4EndPoint(ntohl(Address.sin_addr.s_addr), ntohs(Address.sin_port));
+			return false;
 		}
 
-		return IP4EndPoint();
+		if (Description.Version == SV_IPv4)
+		{
+			if (Output->Version != IPv4)
+			{
+				return false;
+			}
+
+			sockaddr_in Address;
+			int Size = sizeof(Address);
+
+			if (getsockname(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
+			{
+				IP4EndPoint Result(ntohl(Address.sin_addr.s_addr), ntohs(Address.sin_port));
+
+				IP4EndPoint* const Output4 = static_cast<IP4EndPoint*>(Output);
+
+				*Output4 = Result;
+
+				return true;
+			}
+		}
+
+		else
+		{
+			if (Output->Version != IPv6)
+			{
+				return false;
+			}
+
+			sockaddr_in6 Address;
+			int Size = sizeof(Address);
+
+			if (getsockname(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
+			{
+				IP6EndPoint Result(Address, ntohs(Address.sin6_port));
+
+				IP6EndPoint* const Output6 = static_cast<IP6EndPoint*>(Output);
+
+				*Output6 = Result;
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
-	IP4EndPoint BSDSocket::GetPeerAddress()
+	bool BSDSocket::GetPeerAddress(IPEndPoint* Output)
 	{
-		sockaddr_in Address;
-		int Size = sizeof(Address);
-
-#if OS_WINDOWS
-		if (getpeername(SocketHandle, (sockaddr*)&Address, &Size) == 0)
-#else
-		if (getpeername(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
-#endif
+		if (!Output)
 		{
-			return IP4EndPoint(ntohl(Address.sin_addr.s_addr), ntohs(Address.sin_port));
+			return false;
 		}
 
-		return IP4EndPoint();
+		if (Description.Version == SV_IPv4)
+		{
+			if (Output->Version != IPv4)
+			{
+				return false;
+			}
+
+			sockaddr_in Address;
+			int Size = sizeof(Address);
+
+			if (getpeername(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
+			{
+				IP4EndPoint Result(ntohl(Address.sin_addr.s_addr), ntohs(Address.sin_port));
+
+				IP4EndPoint* const Output4 = static_cast<IP4EndPoint*>(Output);
+
+				*Output4 = Result;
+
+				return true;
+			}
+		}
+
+		else
+		{
+			if (Output->Version != IPv6)
+			{
+				return false;
+			}
+
+			sockaddr_in6 Address;
+			int Size = sizeof(Address);
+
+			if (getpeername(SocketHandle, (sockaddr*)&Address, (socklen_t*)&Size) == 0)
+			{
+				IP6EndPoint Result(Address, ntohs(Address.sin6_port));
+
+				IP6EndPoint* const Output6 = static_cast<IP6EndPoint*>(Output);
+
+				*Output6 = Result;
+
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	bool BSDSocket::Configure()
@@ -438,11 +769,24 @@ namespace Red
 		{
 			// Disable Multicast Loopback
 			Value = 1;
-			if (setsockopt(SocketHandle, IPPROTO_IP, IP_MULTICAST_LOOP, (char*)&Value, sizeof(Value)) != 0)
+			if (Description.Version == SV_IPv4)
 			{
-				Shutdown();
+				if (setsockopt(SocketHandle, IPPROTO_IP, IP_MULTICAST_LOOP, (char*)&Value, sizeof(Value)) != 0)
+				{
+					Shutdown();
 
-				return false;
+					return false;
+				}
+			}
+
+			else
+			{
+				if (setsockopt(SocketHandle, IPPROTO_IP, IPV6_MULTICAST_LOOP, (char*)&Value, sizeof(Value)) != 0)
+				{
+					Shutdown();
+
+					return false;
+				}
 			}
 		}
 

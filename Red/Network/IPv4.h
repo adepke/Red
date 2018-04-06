@@ -5,12 +5,17 @@
 
 #include "../Core/Platform.h"
 
-#include <vector>
-#include <sstream>
+#include "IP.h"
+
+#if OS_WINDOWS
+	#include <Ws2tcpip.h>  // inet_pton()
+#else
+	#include <arpa/inet.h>  // inet_pton()
+#endif
 
 namespace Red
 {
-	struct IP4Address
+	struct IP4Address : public IPAddress
 	{
 	public:
 		union
@@ -30,8 +35,8 @@ namespace Red
 		};
 
 	public:
-		constexpr IP4Address() noexcept : Address(0) {}
-		IP4Address(unsigned char InA, unsigned char InB, unsigned char InC, unsigned char InD) :
+		IP4Address() : IPAddress(IPv4), Address(0) {}
+		IP4Address(unsigned char InA, unsigned char InB, unsigned char InC, unsigned char InD) : IPAddress(IPv4),
 #if PLATFORM_BIGENDIAN
 			A(InA),
 			B(InB),
@@ -45,34 +50,33 @@ namespace Red
 #endif
 		{}
 
-		IP4Address(unsigned int InAddress) : Address(InAddress) {}
+		IP4Address(unsigned int InAddress) : IPAddress(IPv4), Address(InAddress) {}
 
-		IP4Address(const char* InAddress)
+		IP4Address(const char* InAddress) : IPAddress(IPv4)
 		{
-			std::stringstream AddressStream(InAddress);
-			std::string Component;
-			std::vector<unsigned char> ComponentList;
+			unsigned int NetworkAddress;
 
-			while (std::getline(AddressStream, Component, '.'))
+			if (inet_pton(AF_INET, InAddress, &NetworkAddress) == 1)
 			{
-				ComponentList.push_back((unsigned char)std::atoi(Component.c_str()));
-			}
-
-			if (ComponentList.size() > 4)
-			{
-				Address = 0;
+				Address = ntohl(NetworkAddress);
 			}
 
 			else
 			{
-				A = ComponentList[0];
-				B = ComponentList[1];
-				C = ComponentList[2];
-				D = ComponentList[3];
+				Address = 0;
 			}
 		}
 
+		virtual ~IP4Address() {}
+
 	public:
+		IP4Address& operator=(const IP4Address& Target)
+		{
+			Address = Target.Address;
+
+			return *this;
+		}
+
 		bool operator==(const IP4Address& Target) const
 		{
 			return (Address == Target.Address);
@@ -85,7 +89,7 @@ namespace Red
 
 	public:
 		// Loopback: 127.X.X.X
-		bool IsLoopbackAddress() const
+		virtual bool IsLoopbackAddress() const override
 		{
 			return (A == 127);
 		}
@@ -99,21 +103,44 @@ namespace Red
 		}
 
 		// Multicast: 224-239.X.X.X
-		bool IsMulticastAddress() const
+		virtual bool IsMulticastAddress() const override
 		{
 			return ((A >= 224) && (A <= 239));
 		}
+
+		virtual operator std::string() const override
+		{
+			char AddressString[64];
+
+			in_addr InAddress;
+			InAddress.s_addr = htonl(Address);
+
+			inet_ntop(AF_INET, &InAddress, AddressString, sizeof(AddressString));
+
+			return std::string(AddressString);
+		}
 	};
 
-	struct IP4EndPoint
+	struct IP4EndPoint : public IPEndPoint
 	{
 	public:
 		IP4Address Address;
 		unsigned short Port;
 
 	public:
-		constexpr IP4EndPoint() noexcept : Port(0) {}
-		IP4EndPoint(const IP4Address& InAddress, unsigned short InPort) : Address(InAddress), Port(InPort) {}
+		IP4EndPoint() : IPEndPoint(IPv4), Port(0) {}
+		IP4EndPoint(const IP4Address& InAddress, unsigned short InPort) : IPEndPoint(IPv4), Address(InAddress), Port(InPort) {}
+
+		virtual ~IP4EndPoint() {}
+
+	public:
+		IP4EndPoint& operator=(const IP4EndPoint& Target)
+		{
+			Address = Target.Address;
+			Port = Target.Port;
+
+			return *this;
+		}
 
 		bool operator==(const IP4EndPoint& Target) const
 		{
@@ -123,6 +150,23 @@ namespace Red
 		bool operator!=(const IP4EndPoint& Target) const
 		{
 			return (Address != Target.Address || Port != Target.Port);
+		}
+
+	public:
+		virtual operator std::string() const override
+		{
+			char AddressString[64];
+
+			in_addr InAddress;
+			InAddress.s_addr = htonl(Address.Address);
+
+			inet_ntop(AF_INET, &InAddress, AddressString, sizeof(AddressString));
+
+			std::string AddressStringType(AddressString);
+
+			AddressStringType += ":" + std::to_string(Port);
+
+			return AddressStringType;
 		}
 	};
 }  // namespace Red

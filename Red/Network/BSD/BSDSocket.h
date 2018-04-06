@@ -27,28 +27,28 @@ namespace Red
 		virtual bool Initialize(const SocketDescription& InDescription) override;
 		virtual bool Shutdown() override;
 
-		virtual bool Connect(const IP4EndPoint& EndPoint) override;
-		virtual AsyncTask* ConnectAsync(AsyncConnectArgs* Args, const IP4EndPoint& EndPoint) override;
+		virtual bool Connect(IPEndPoint* const EndPoint) override;
+		virtual AsyncTask* ConnectAsync(AsyncConnectArgs* Args, IPEndPoint* const EndPoint) override;
 
 		virtual bool Bind(unsigned short Port) override;
 
 		virtual bool Listen(int MaxBacklog) override;
 
-		virtual ISocket* Accept(IP4EndPoint& ClientAddress) override;
+		virtual ISocket* Accept(IPEndPoint* ClientAddress) override;
 		virtual AsyncTask* AcceptAsync(AsyncAcceptArgs* Args) override;
 
 		virtual bool Send(const unsigned char* Data, unsigned int Length, int& BytesSent) override;
-		virtual bool Send(const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length, int& BytesSent) override;
+		virtual bool Send(IPEndPoint* const Destination, const unsigned char* Data, unsigned int Length, int& BytesSent) override;
 		virtual AsyncTask* SendAsync(AsyncSendArgs* Args, const unsigned char* Data, unsigned int Length) override;
-		virtual AsyncTask* SendAsync(AsyncSendArgs* Args, const IP4EndPoint& Destination, const unsigned char* Data, unsigned int Length) override;
+		virtual AsyncTask* SendAsync(AsyncSendArgs* Args, IPEndPoint* const Destination, const unsigned char* Data, unsigned int Length) override;
 
 		virtual bool Receive(unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) override;
-		virtual bool Receive(IP4Address& Source, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) override;
+		virtual bool Receive(IPAddress* Source, unsigned char* Data, unsigned int MaxReceivingBytes, int& BytesReceived) override;
 		virtual AsyncTask* ReceiveAsync(AsyncReceiveArgs* Args, unsigned int MaxReceivingBytes) override;
 		virtual AsyncTask* ReceiveAsync(AsyncReceiveFromArgs* Args, unsigned int MaxReceivingBytes) override;
 
-		virtual bool JoinMulticastGroup(const IP4Address& GroupAddress) override;
-		virtual bool LeaveMulticastGroup(const IP4Address& GroupAddress) override;
+		virtual bool JoinMulticastGroup(IPAddress* const GroupAddress) override;
+		virtual bool LeaveMulticastGroup(IPAddress* const GroupAddress) override;
 
 		virtual bool SetSendBufferSize(unsigned int Size) override;
 		virtual bool SetReceiveBufferSize(unsigned int Size) override;
@@ -58,8 +58,8 @@ namespace Red
 
 		virtual bool SetBroadcastsEnabled(bool Value) override;
 
-		virtual IP4EndPoint GetAddress() override;
-		virtual IP4EndPoint GetPeerAddress() override;
+		virtual bool GetAddress(IPEndPoint* Output) override;
+		virtual bool GetPeerAddress(IPEndPoint* Output) override;
 
 	protected:
 		virtual bool Configure() override;
