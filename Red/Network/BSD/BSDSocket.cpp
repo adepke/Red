@@ -209,11 +209,8 @@ namespace Red
 			sockaddr_in SocketAddress;
 			int SizeSmall = sizeof(SocketAddress);
 
-#if OS_WINDOWS
-			ClientHandle = accept(SocketHandle, (sockaddr*)&SocketAddress, &SizeSmall);
-#else
 			ClientHandle = accept(SocketHandle, (sockaddr*)&SocketAddress, (socklen_t*)&SizeSmall);
-#endif
+
 			if (ClientHandle != RED_INVALID_SOCKET)
 			{
 				if (getpeername(ClientHandle, (sockaddr*)&SocketAddress, (socklen_t*)&SizeSmall) == 0)
@@ -251,11 +248,8 @@ namespace Red
 			sockaddr_in6 SocketAddress;
 			int SizeSmall = sizeof(SocketAddress);
 
-#if OS_WINDOWS
-			ClientHandle = accept(SocketHandle, (sockaddr*)&SocketAddress, &SizeSmall);
-#else
 			ClientHandle = accept(SocketHandle, (sockaddr*)&SocketAddress, (socklen_t*)&SizeSmall);
-#endif
+
 			if (ClientHandle != RED_INVALID_SOCKET)
 			{
 				if (getpeername(ClientHandle, (sockaddr*)&SocketAddress, (socklen_t*)&SizeSmall) == 0)
