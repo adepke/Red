@@ -52,6 +52,13 @@ namespace Red
 		virtual ~IP6Address() {}
 
 	public:
+		IP6Address& operator=(const IP6Address& Target)
+		{
+			Address = Target.Address;
+
+			return *this;
+		}
+
 		bool operator==(const IP6Address& Target) const
 		{
 			return (memcmp((void*)&Address, (void*)&Target.Address, sizeof(Address)) == 0);
@@ -105,6 +112,15 @@ namespace Red
 
 		virtual ~IP6EndPoint() {}
 
+	public:
+		IP6EndPoint& operator=(const IP6EndPoint& Target)
+		{
+			Address = Target.Address;
+			Port = Target.Port;
+
+			return *this;
+		}
+
 		bool operator==(const IP6EndPoint& Target) const
 		{
 			return (Address == Target.Address && Port == Target.Port);
@@ -115,6 +131,7 @@ namespace Red
 			return (Address != Target.Address || Port != Target.Port);
 		}
 
+	public:
 		virtual operator std::string() const override
 		{
 			char AddressString[64];

@@ -70,6 +70,13 @@ namespace Red
 		virtual ~IP4Address() {}
 
 	public:
+		IP4Address& operator=(const IP4Address& Target)
+		{
+			Address = Target.Address;
+
+			return *this;
+		}
+
 		bool operator==(const IP4Address& Target) const
 		{
 			return (Address == Target.Address);
@@ -126,6 +133,15 @@ namespace Red
 
 		virtual ~IP4EndPoint() {}
 
+	public:
+		IP4EndPoint& operator=(const IP4EndPoint& Target)
+		{
+			Address = Target.Address;
+			Port = Target.Port;
+
+			return *this;
+		}
+
 		bool operator==(const IP4EndPoint& Target) const
 		{
 			return (Address == Target.Address && Port == Target.Port);
@@ -136,6 +152,7 @@ namespace Red
 			return (Address != Target.Address || Port != Target.Port);
 		}
 
+	public:
 		virtual operator std::string() const override
 		{
 			char AddressString[64];
