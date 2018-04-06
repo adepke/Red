@@ -97,6 +97,11 @@ namespace Red
 		{
 			if (Description.Version == SV_IPv4)
 			{
+				if (EndPoint->Version != IPv4)
+				{
+					return false;
+				}
+
 				const IP4EndPoint* const EndPoint4 = static_cast<IP4EndPoint*>(EndPoint);
 
 				sockaddr_in SocketAddress;
@@ -112,6 +117,11 @@ namespace Red
 
 			else
 			{
+				if (EndPoint->Version != IPv6)
+				{
+					return false;
+				}
+
 				const IP6EndPoint* const EndPoint6 = static_cast<IP6EndPoint*>(EndPoint);
 
 				sockaddr_in6 SocketAddress;
@@ -224,7 +234,7 @@ namespace Red
 
 					ClientSocket->Configure();
 
-					if (ClientAddress)
+					if (ClientAddress && ClientAddress->Version == IPv4)
 					{
 						IP4EndPoint Result(ntohl(SocketAddress.sin_addr.s_addr), ntohs(SocketAddress.sin_port));
 
@@ -266,7 +276,7 @@ namespace Red
 
 					ClientSocket->Configure();
 
-					if (ClientAddress)
+					if (ClientAddress && ClientAddress->Version == IPv6)
 					{
 						IP6EndPoint Result(SocketAddress, ntohs(SocketAddress.sin6_port));
 
@@ -327,6 +337,11 @@ namespace Red
 	{
 		if (Description.Version == SV_IPv4)
 		{
+			if (Destination->Version != IPv4)
+			{
+				return false;
+			}
+
 			const IP4EndPoint* const EndPoint4 = static_cast<IP4EndPoint*>(Destination);
 
 			sockaddr_in SocketAddress;
@@ -341,6 +356,11 @@ namespace Red
 
 		else
 		{
+			if (Destination->Version != IPv6)
+			{
+				return false;
+			}
+
 			const IP6EndPoint* const EndPoint6 = static_cast<IP6EndPoint*>(Destination);
 
 			sockaddr_in6 SocketAddress;
@@ -393,6 +413,11 @@ namespace Red
 	{
 		if (Description.Version == SV_IPv4)
 		{
+			if (Source->Version != IPv4)
+			{
+				return false;
+			}
+
 			IP4Address* Address4 = static_cast<IP4Address*>(Source);
 
 			sockaddr_in ClientAddress;
@@ -407,6 +432,11 @@ namespace Red
 
 		else
 		{
+			if (Source->Version != IPv6)
+			{
+				return false;
+			}
+
 			IP6Address* Address6 = static_cast<IP6Address*>(Source);
 
 			sockaddr_in6 ClientAddress;
@@ -480,6 +510,11 @@ namespace Red
 	{
 		if (Description.Version == SV_IPv4)
 		{
+			if (GroupAddress->Version != IPv4)
+			{
+				return false;
+			}
+
 			const IP4Address* const Address4 = static_cast<IP4Address*>(GroupAddress);
 
 			ip_mreq Mreq;
@@ -491,6 +526,11 @@ namespace Red
 
 		else
 		{
+			if (GroupAddress->Version != IPv6)
+			{
+				return false;
+			}
+
 			const IP6Address* const Address6 = static_cast<IP6Address*>(GroupAddress);
 
 			ipv6_mreq Mreq;
@@ -505,6 +545,11 @@ namespace Red
 	{
 		if (Description.Version == SV_IPv4)
 		{
+			if (GroupAddress->Version != IPv4)
+			{
+				return false;
+			}
+
 			const IP4Address* const Address4 = static_cast<IP4Address*>(GroupAddress);
 
 			ip_mreq Mreq;
@@ -516,6 +561,11 @@ namespace Red
 
 		else
 		{
+			if (GroupAddress->Version != IPv6)
+			{
+				return false;
+			}
+
 			const IP6Address* const Address6 = static_cast<IP6Address*>(GroupAddress);
 
 			ipv6_mreq Mreq;
@@ -560,6 +610,11 @@ namespace Red
 
 		if (Description.Version == SV_IPv4)
 		{
+			if (Output->Version != IPv4)
+			{
+				return false;
+			}
+
 			sockaddr_in Address;
 			int Size = sizeof(Address);
 
@@ -577,6 +632,11 @@ namespace Red
 
 		else
 		{
+			if (Output->Version != IPv6)
+			{
+				return false;
+			}
+
 			sockaddr_in6 Address;
 			int Size = sizeof(Address);
 
@@ -604,6 +664,11 @@ namespace Red
 
 		if (Description.Version == SV_IPv4)
 		{
+			if (Output->Version != IPv4)
+			{
+				return false;
+			}
+
 			sockaddr_in Address;
 			int Size = sizeof(Address);
 
@@ -621,6 +686,11 @@ namespace Red
 
 		else
 		{
+			if (Output->Version != IPv6)
+			{
+				return false;
+			}
+
 			sockaddr_in6 Address;
 			int Size = sizeof(Address);
 
