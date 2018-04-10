@@ -77,7 +77,7 @@ list(APPEND ${PROJECT_NAME}_SOURCE_BASE ${${PROJECT_NAME}_SOURCE_PLATFORM})
 add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCE_BASE})
 
 # Remove GCC Code Coverage
-string(REPLACE "-fprofile-arcs -ftest-coverage" "" ${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS})
+string(REPLACE "-fprofile-arcs -ftest-coverage" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 
 # Debugging
 message(STATUS "CXX FLAGS AFTER: ${CMAKE_CXX_FLAGS}")
