@@ -73,6 +73,9 @@ list(APPEND ${PROJECT_NAME}_SOURCE_BASE ${${PROJECT_NAME}_SOURCE_PLATFORM})
 
 add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCE_BASE})
 
+# Remove GCC Code Coverage
+string(REPLACE "-fprofile-arcs -ftest-coverage" "" ${CMAKE_CXX_FLAGS})
+
 set(GTEST_ROOT 3rdParty/googletest CACHE STRING "Google Test Root")
 
 include_directories(
