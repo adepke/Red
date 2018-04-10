@@ -26,9 +26,12 @@ else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
 endif()
 
+set(GCC_COVERAGE_ON FALSE)
+
 # Build For GCC Coverage?
 option(COVERAGE "Build for code coverage analysis" OFF)
 if(COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES GNU)
+	set(GCC_COVERAGE_ON TRUE)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
 endif()
 
@@ -89,6 +92,11 @@ set(GTEST_SOURCE
 )
 
 add_library(googletest ${GTEST_SOURCE})
+
+# Reapply Coverage Flags if Coverage Build
+if (GCC_COVERAGE_ON)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+endif()
 
 # Find All Base Unit Tests. Don't Recursively Search
 file(GLOB TEST_SOURCE
