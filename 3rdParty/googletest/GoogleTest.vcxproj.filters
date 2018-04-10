@@ -95,6 +95,27 @@
     <ClCompile Include="src\gtest-all.cc">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\gtest.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gtest-death-test.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gtest-filepath.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gtest-port.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gtest-printers.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gtest-test-part.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gtest-typed-test.cc">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\gtest\gtest-param-test.h.pump">
