@@ -35,9 +35,6 @@ endif()
 message(STATUS "System Name: ${CMAKE_SYSTEM}")
 message(STATUS "System Processor: ${CMAKE_SYSTEM_PROCESSOR}")
 
-# Debugging
-message(STATUS "CXX FLAGS BEFORE: ${CMAKE_CXX_FLAGS}")
-
 # Grab All Base Source Files. Don't Recursively Search
 file(GLOB ${PROJECT_NAME}_SOURCE_BASE
 	"${CMAKE_CURRENT_SOURCE_DIR}/Red/*/*.h"
@@ -78,9 +75,6 @@ add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCE_BASE})
 
 # Remove GCC Code Coverage
 string(REPLACE "-fprofile-arcs -ftest-coverage" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-
-# Debugging
-message(STATUS "CXX FLAGS AFTER: ${CMAKE_CXX_FLAGS}")
 
 set(GTEST_ROOT 3rdParty/googletest CACHE STRING "Google Test Root")
 
