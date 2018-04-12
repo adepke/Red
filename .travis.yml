@@ -43,7 +43,7 @@ script:
     find Build -name "*.gcda"
     find Build -name "*.gcno"
     
-    gcov --relative-only --intermediate-format -o Build/CMakeFiles/Red.dir/Red/*/ *.cpp
+    gcov --relative-only -o Build/CMakeFiles/Red.dir/Red/*/ *.cpp
   fi
 
 after_success:
