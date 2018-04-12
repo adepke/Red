@@ -41,15 +41,13 @@ script:
   if [[ "${TRAVIS_OS_NAME}" == "linux" && "${COMPILER}" == "gcc" ]]; then
     # Debugging
     find Build -name "*.gcda"
-    find Build -name "*.cpp.gcda"
     find Build -name "*.gcno"
-    find Build -name "*.cpp.gcno"
     
-    gcov Build/*.cpp.gcda
+    gcov --relative-only --intermediate-format -o Build/CMakeFiles/Red.dir/Red/*/ *.cpp
   fi
 
 after_success:
-- bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.io/bash) -f '*.gcov'
 
 notifications:
   email: false
