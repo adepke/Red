@@ -28,11 +28,13 @@ endif()
 
 set(GCC_COVERAGE_ON FALSE)
 
+set(COVERAGE_FLAGS "-O0 -fprofile-arcs -ftest-coverage")
+
 # Build For GCC Coverage?
 option(COVERAGE "Build for code coverage analysis" OFF)
 if(COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES GNU)
 	set(GCC_COVERAGE_ON TRUE)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COVERAGE_FLAGS}")
 endif()
 
 message(STATUS "System Name: ${CMAKE_SYSTEM}")
@@ -77,7 +79,7 @@ list(APPEND ${PROJECT_NAME}_SOURCE_BASE ${${PROJECT_NAME}_SOURCE_PLATFORM})
 add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCE_BASE})
 
 # Remove GCC Code Coverage
-string(REPLACE "-fprofile-arcs -ftest-coverage" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+string(REPLACE "${COVERAGE_FLAGS}" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 
 set(GTEST_ROOT 3rdParty/googletest CACHE STRING "Google Test Root")
 
@@ -95,7 +97,7 @@ add_library(googletest ${GTEST_SOURCE})
 
 # Reapply Coverage Flags if Coverage Build
 if (GCC_COVERAGE_ON)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COVERAGE_FLAGS}")
 endif()
 
 # Find All Base Unit Tests. Don't Recursively Search
