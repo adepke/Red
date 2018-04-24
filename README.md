@@ -21,12 +21,7 @@ Changes whether or not debugging information should be included in the build.
 Changes the target system architecture.
 > [**Argument 3\***] coverage
 
-Changes whether or not code coverage data should be included in the build.
-> [**Argument 3\*\***] HASNUGET
-
 **\*** *\*nix build script only, used mainly by CI for code coverage statistics.*
-
-**\*\*** *Windows build script only, use this if you have NuGet in your PATH and don't need to download it.*
 ### Requirements
 #### Windows
 * [Microsoft Visual Studio 2017 15.2 or Later](https://www.visualstudio.com/downloads/)
