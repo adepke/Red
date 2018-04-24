@@ -26,10 +26,15 @@ else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
 endif()
 
+set(GCC_COVERAGE_ON FALSE)
+
+set(COVERAGE_FLAGS "-O0 -fprofile-arcs -ftest-coverage")
+
 # Build For GCC Coverage?
 option(COVERAGE "Build for code coverage analysis" OFF)
 if(COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES GNU)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+	set(GCC_COVERAGE_ON TRUE)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COVERAGE_FLAGS}")
 endif()
 
 message(STATUS "System Name: ${CMAKE_SYSTEM}")
@@ -73,14 +78,10 @@ list(APPEND ${PROJECT_NAME}_SOURCE_BASE ${${PROJECT_NAME}_SOURCE_PLATFORM})
 
 add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCE_BASE})
 
-add_custom_target(
-	Update3rdParty
-	COMMAND git submodule init
-	COMMAND git submodule update
-	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-)
+# Remove GCC Code Coverage
+string(REPLACE "${COVERAGE_FLAGS}" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 
-set(GTEST_ROOT 3rdParty/googletest/googletest CACHE STRING "Google Test Root")
+set(GTEST_ROOT 3rdParty/googletest CACHE STRING "Google Test Root")
 
 include_directories(
 	"${CMAKE_CURRENT_SOURCE_DIR}/${GTEST_ROOT}"
@@ -92,14 +93,12 @@ set(GTEST_SOURCE
 	"${CMAKE_CURRENT_SOURCE_DIR}/${GTEST_ROOT}/src/gtest_main.cc"
 )
 
-# Mark Google Test Sources as Generated
-foreach(SOURCE ${GTEST_SOURCE})
-	set_source_files_properties(${SOURCE} PROPERTIES GENERATED 1)
-endforeach()
-
 add_library(googletest ${GTEST_SOURCE})
 
-add_dependencies(googletest Update3rdParty)
+# Reapply Coverage Flags if Coverage Build
+if (GCC_COVERAGE_ON)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COVERAGE_FLAGS}")
+endif()
 
 # Find All Base Unit Tests. Don't Recursively Search
 file(GLOB TEST_SOURCE

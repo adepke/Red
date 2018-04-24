@@ -6,6 +6,16 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Red", "Red\Red.vcxproj", "{82F74171-90B8-4F97-B44A-F38222E7A923}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test.vcxproj", "{23018650-933B-45B1-AEC8-39A4D4835AEF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5AC641D9-4DB6-4E12-A35F-30173B041BDF} = {5AC641D9-4DB6-4E12-A35F-30173B041BDF}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rdParty", "3rdParty", "{00F732C1-6AB3-4327-B559-FF46607EC673}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GoogleTest", "3rdParty\googletest\GoogleTest.vcxproj", "{5AC641D9-4DB6-4E12-A35F-30173B041BDF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{82F74171-90B8-4F97-B44A-F38222E7A923} = {82F74171-90B8-4F97-B44A-F38222E7A923}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,9 +41,20 @@ Global
 		{23018650-933B-45B1-AEC8-39A4D4835AEF}.Release|x64.Build.0 = Release|x64
 		{23018650-933B-45B1-AEC8-39A4D4835AEF}.Release|x86.ActiveCfg = Release|Win32
 		{23018650-933B-45B1-AEC8-39A4D4835AEF}.Release|x86.Build.0 = Release|Win32
+		{5AC641D9-4DB6-4E12-A35F-30173B041BDF}.Debug|x64.ActiveCfg = Debug|x64
+		{5AC641D9-4DB6-4E12-A35F-30173B041BDF}.Debug|x64.Build.0 = Debug|x64
+		{5AC641D9-4DB6-4E12-A35F-30173B041BDF}.Debug|x86.ActiveCfg = Debug|Win32
+		{5AC641D9-4DB6-4E12-A35F-30173B041BDF}.Debug|x86.Build.0 = Debug|Win32
+		{5AC641D9-4DB6-4E12-A35F-30173B041BDF}.Release|x64.ActiveCfg = Release|x64
+		{5AC641D9-4DB6-4E12-A35F-30173B041BDF}.Release|x64.Build.0 = Release|x64
+		{5AC641D9-4DB6-4E12-A35F-30173B041BDF}.Release|x86.ActiveCfg = Release|Win32
+		{5AC641D9-4DB6-4E12-A35F-30173B041BDF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5AC641D9-4DB6-4E12-A35F-30173B041BDF} = {00F732C1-6AB3-4327-B559-FF46607EC673}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8F1C0A65-D32F-4102-9063-E04B9FF9250C}

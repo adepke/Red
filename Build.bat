@@ -26,22 +26,6 @@ IF NOT "%PLATFORM%" == "x86" (
 	)
 )
 
-IF NOT "%3" == "HASNUGET" (
-	mkdir Tools
-
-	ECHO Fetching Latest NuGet...
-
-	rem Get NuGet
-	powershell -Command "Invoke-WebRequest https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile Tools/nuget.exe"
-
-	rem Restore Required Packages
-	cd Tools
-	nuget.exe restore ../Red.sln
-	cd ../
-) ELSE (
-	nuget.exe restore Red.sln
-)
-
 CALL "!VSINSTALLPATH!\Common7\Tools\VsDevCmd.bat"
 
 MSBuild.exe "%~dp0\Red.sln" /t:Build /p:Configuration=%CONFIG% /p:Platform=%PLATFORM% /nologo
