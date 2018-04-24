@@ -14,12 +14,6 @@ configuration:
 platform:
   - x86
   - x64
- 
-install:
-  # Install NuGet on Ubuntu
-# - sh: sudo apt install nuget
-  # Update the NuGet Packages
-  - nuget restore Red.sln
 
 build:
   project: Red.sln
@@ -29,7 +23,7 @@ build:
 # Stalls on "Press any key to continue". Use built-in testing until a proper work around is implemented.
 #build_script:
 #  - ps: |
-#      Start-Process -FilePath "./Build.bat" -ArgumentList "$env:configuration","$env:platform","HASNUGET" -NoNewWindow -Wait
+#      Start-Process -FilePath "./Build.bat" -ArgumentList "$env:configuration","$env:platform" -NoNewWindow -Wait
 
 after_build:
 - ps: |
